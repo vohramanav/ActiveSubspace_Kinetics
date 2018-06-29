@@ -39,6 +39,7 @@
 \newcommand{\Np}{{N_\text{p}}}
 \newcommand{\E}[1]{\mathrm{E}\left\{{#1} \right\}}
 
+\newcommand{\alennote}[1]{{\color{blue} Alen: {#1}}}
 \newtheorem{theorem}{Theorem}[section]
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -120,18 +121,30 @@ For $f: \Omega \to \R$, we consider the DGSMs~\cite{SobolKucherenko09},
                   \pi(\vec{\xi})d\vec{\xi}, \quad j = 1, \ldots, \Np.   
 \]
 Here $\pi$ is the joint PDF of $\xi$. 
-Let $\mat{C} = \E{\nabla f \nabla f^T}$.
-We define the activity scores~\cite{Diaz16}
+Let $\mat{C} = \E{\nabla f \nabla f^T}$ and note that
+\[
+   \nu_j(f) = \vec{e}_j^T \mat{C} \vec{e}_j, 
+\]
+where $\vec{e}_j \in \R^\Np$ is the $j$th coordinate vector in $\R^\Np$,
+for $j = 1, \ldots, \Np$.
+
+A link between active subspace theory and derivative based global sensitivity 
+analysis was discovered in~\cite{Diaz16} through the notion of 
+the activity scores:
 \[
    \alpha_j(f; r) =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_j}{\vec{u}_k}^2,
    \quad j = 1, \ldots, \Np, \quad r \leq \Np.
 \]
+We consider the spectral decomposition of $\mat{C}$, given by  
+$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T$, where 
+$\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$ and
+$\vec{u}_k$ are the corresponding (orthonormal) eigenvectors.
+The following result can be found in~\cite{Diaz16}. Here we provide
+a simple proof that is somewhat different than that in~\cite{Diaz16}. 
 \begin{theorem}
-Consider the spectral decomposition of $\mat{C}$, given by  
-$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T$.
 We have,
 \begin{enumerate}
-\item $\nu_j(f) = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_j}{\vec{u}_k}^2$.
+\item $\nu_j(f) = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_j}{\vec{u}_k}^2$. 
 \item $\alpha_j(f; r) \leq \nu_j(f) \leq \alpha_j(f; r) + \lambda_{r+1}$, 
 for $j=1, \ldots, \Np$.
 \end{enumerate}
@@ -145,6 +158,12 @@ such cases, this result implies that  $\nu_j(f) \approx \alpha_j(f; r)$,
 where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
 effective if there is a large gap in the eigenvalues.  
 
+\section{Application to $H_2$/$O_2$ reaction mechanism}
+
+\alennote{Manav, can we consider a higher dimensional problem with uncertain
+activation energies as well?}
+
+\section{Conclusion}
 
 \section*{References}
 

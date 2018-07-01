@@ -1,0 +1,10 @@
+\beamer@sectionintoc {1}{Active Subspaces}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{ac}{2}{0}{1}
+\beamer@sectionintoc {2}{\scshape Methodology}{3}{0}{2}
+\beamer@subsectionintoc {2}{1}{ac}{3}{0}{2}
+\beamer@subsectionintoc {2}{2}{ac}{4}{0}{2}
+\beamer@sectionintoc {3}{\scshape Application}{5}{0}{3}
+\beamer@subsectionintoc {3}{1}{ac}{5}{0}{3}
+\beamer@sectionintoc {4}{\scshape Results}{6}{0}{4}
+\beamer@subsectionintoc {4}{1}{res}{6}{0}{4}
+\beamer@subsectionintoc {4}{2}{res}{7}{0}{4}

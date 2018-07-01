@@ -4,9 +4,37 @@ clear all;
 % gradient based
 active_subspace;
 
+xi_grad = xi;
+g_grad = G;
 
 % gradient free
 local_linear_approx;
+
+xi_loclin = xi;
+g_loclin = f;
+
+% compare eigenvalues
+figure;
+hold on;
+g1 = V(:,1)'*xi_grad';
+g2 = W(:,1)'*xi_loclin';
+plot(g1, g_grad, 'ko', 'markerfacecolor', 'k');
+plot(g2, g_loclin, 'r*', 'markerfacecolor', 'r');
+legend('alg 1.1', 'alg 1.2');
+set(gca, 'fontsize', 20);
+title('comparing SSPs');
+print -dpng comp_ssp.png
+
+% compare SSPs
+figure;
+hold on;
+
+semilogy(abs(lambda_grad)./lambda_grad(1),'-o','linewidth',2);
+semilogy(abs(lambda_loclin)./lambda_loclin(1),'-*','linewidth',2);
+legend('alg 1.1', 'alg 1.2');
+set(gca, 'fontsize', 20);
+title('comparing dominant eigenvalues');
+print -dpng comp_eig.png
 
 
 % compare dominant eigenvectors

@@ -30,7 +30,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\grad}{\nabla}
 \newcommand{\hessian}{\nabla^2}
-\newcommand{\V}{\mathscr{V}}
+\newcommand{\V}{\mathbb{V}}
 \renewcommand{\S}{\mathbb{S}}
 \newcommand{\ST}{\mathbb{S}^{\text{tot}}}
 \newcommand{\ip}[2]{\langle{#1}, {#2}\rangle}
@@ -41,6 +41,7 @@
 
 \newcommand{\alennote}[1]{{\color{blue} Alen: {#1}}}
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %% Elsevier bibliography styles
@@ -149,7 +150,6 @@ We have,
 for $j=1, \ldots, \Np$.
 \end{enumerate}
 \end{theorem} 
-
 The utility of this result is realized in 
 problems with 
 high-dimensional parameter spaces in which 
@@ -158,6 +158,17 @@ such cases, this result implies that  $\nu_j(f) \approx \alpha_j(f; r)$,
 where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
 effective if there is a large gap in the eigenvalues.  
 
+Consider a function $f = f(\xi_1, \xi_2, \ldots, \xi_\Np)$ where
+$\xi_i$ are independent are either uniformly distributed or
+distributed according to a log-concave probability distribution.  
+Generalizing the result presented in~\cite{Diaz16}, we present
+the following theorem linking activity scores and Sobol' indices.
+\begin{theorem}
+We have
+\[
+    T_i(f) \leq \frac{C_i}{\V(f)}(\alpha_j(f; r) + \lambda_{r+1}).
+\]
+\end{theorem}
 \section{Application to $H_2$/$O_2$ reaction mechanism}
 
 \alennote{Manav, can we consider a higher dimensional problem with uncertain

@@ -42,6 +42,7 @@
 \newcommand{\alennote}[1]{{\color{blue} Alen: {#1}}}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %% Elsevier bibliography styles
@@ -142,14 +143,14 @@ $\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$ and
 $\vec{u}_k$ are the corresponding (orthonormal) eigenvectors.
 The following result can be found in~\cite{Diaz16}. Here we provide
 a simple proof that is somewhat different than that in~\cite{Diaz16}. 
-\begin{theorem}
+\begin{proposition}
 We have,
 \begin{enumerate}
 \item $\nu_j(f) = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_j}{\vec{u}_k}^2$. 
-\item $\alpha_j(f; r) \leq \nu_j(f) \leq \alpha_j(f; r) + \lambda_{r+1}$, 
+\item $0 \leq \nu_j(f) - \alpha_j(f; r) \leq \lambda_{r+1}$, 
 for $j=1, \ldots, \Np$.
 \end{enumerate}
-\end{theorem} 
+\end{proposition} 
 The utility of this result is realized in 
 problems with 
 high-dimensional parameter spaces in which 
@@ -161,14 +162,31 @@ effective if there is a large gap in the eigenvalues.
 Consider a function $f = f(\xi_1, \xi_2, \ldots, \xi_\Np)$ where
 $\xi_i$ are independent are either uniformly distributed or
 distributed according to a log-concave probability distribution.  
-Generalizing the result presented in~\cite{Diaz16}, we present
-the following theorem linking activity scores and Sobol' indices.
-\begin{theorem}
-We have
+It was shown in~[ref] that the total Sobol' index $T_i(f)$ can be bounded
+in terms of $\nu_i(f)$:
 \[
-    T_i(f) \leq \frac{C_i}{\V(f)}(\alpha_j(f; r) + \lambda_{r+1}).
+T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np.
 \]
-\end{theorem}
+This provides a strong theoretical basis for using DGSMs to identify 
+unimportant inputs.
+In~\cite{VohraAlexanderianSaftaEtAl18} we introduced the normalized screening metric
+\[
+   \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
+\]
+for detecting unimportant input parameters. 
+Generalizing the result presented in~\cite{Diaz16}, we present
+the following proposition linking activity scores and Sobol' indices.
+\begin{proposition}
+For $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
+\begin{enumerate}
+\item $\displaystyle 
+       T_i(f) \leq \frac{C_i}{\V(f)}(\alpha_j(f; r) + \lambda_{r+1})$.
+\item $\displaystyle
+\tilde{\nu}_i(f) \leq \frac{ C_i \big(\alpha_i(f; r) + \lambda_{r+1})}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}$.
+\end{enumerate}
+\end{proposition}
+
+
 \section{Application to $H_2$/$O_2$ reaction mechanism}
 
 \alennote{Manav, can we consider a higher dimensional problem with uncertain

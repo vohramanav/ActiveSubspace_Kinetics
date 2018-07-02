@@ -35,6 +35,7 @@
 \newcommand{\ST}{\mathbb{S}^{\text{tot}}}
 \newcommand{\ip}[2]{\langle{#1}, {#2}\rangle}
 \newcommand{\tp}{{\!\mathsf{T}}}
+\newcommand{\trace}{\mathrm{trace}}
 \newcommand{\mat}[1]{\mathbf{{#1}}}
 \newcommand{\Np}{{N_\text{p}}}
 \newcommand{\E}[1]{\mathrm{E}\left\{{#1} \right\}}
@@ -174,6 +175,13 @@ In~\cite{VohraAlexanderianSaftaEtAl18} we introduced the normalized screening me
    \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
 \]
 for detecting unimportant input parameters. 
+Of course, if $\xi_i$ are iid, the $C_i$'s will cancel and the normalized screening
+metric reduces to 
+\[
+    \tilde{\nu}_i(f) = \frac{\nu_i(f)}{\sum_{i=1}^\Np \nu_i(f)} 
+      = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
+      = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
+\]
 Generalizing the result presented in~\cite{Diaz16}, we present
 the following proposition linking activity scores and Sobol' indices.
 \begin{proposition}

@@ -118,48 +118,49 @@ Insert introduction here.
 \section{Active subspaces and activity scores}
 For $f: \Omega \to \R$, we consider the DGSMs~\cite{SobolKucherenko09},
 \[
-    \nu_j(f) := \E{\left(\frac{\partial f}{\partial\xi_j}\right)^2} =
+    \nu_i(f) := \E{\left(\frac{\partial f}{\partial\xi_i}\right)^2} =
                   \int_\Omega 
-                  \left(\frac{\partial f}{\partial\xi_j}\right)^2
+                  \left(\frac{\partial f}{\partial\xi_i}\right)^2
                   \pi(\vec{\xi})d\vec{\xi}, \quad j = 1, \ldots, \Np.   
 \]
 Here $\pi$ is the joint PDF of $\xi$. 
 Let $\mat{C} = \E{\nabla f \nabla f^T}$ and note that
 \[
-   \nu_j(f) = \vec{e}_j^T \mat{C} \vec{e}_j, 
+   \nu_i(f) = \vec{e}_i^T \mat{C} \vec{e}_i, 
 \]
-where $\vec{e}_j \in \R^\Np$ is the $j$th coordinate vector in $\R^\Np$,
-for $j = 1, \ldots, \Np$. This also shows that $\sum_{j=1}^\Np \nu_j(f) = \trace(\mat{C})$.
+where $\vec{e}_i$ is the $j$th coordinate vector in $\R^\Np$,
+for $j = 1, \ldots, \Np$. This also shows that $\sum_{j=1}^\Np \nu_i(f) = \trace(\mat{C})$.
 We consider the spectral decomposition of $\mat{C}$, given by  
 $\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T$, where 
 $\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$ and
 $\vec{u}_k$ are the corresponding (orthonormal) eigenvectors.
 We note that,
 \begin{equation}\label{equ:spectral_DGSM}
-\nu_j(f) = \vec{e}_j^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T\Big) \vec{e}_j
- = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_j}{\vec{u}_k}^2, 
+\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T\Big) \vec{e}_i
+ = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2, 
 \end{equation}
 which gives a spectral representation for the DGSMs. Truncating the summation 
 leads to the notion of activity scores introduced in~\cite{Diaz16,ConstantineDiaz17}
 defined as follows: 
 \[
-   \alpha_j(f; r) =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_j}{\vec{u}_k}^2,
+   \alpha_i(f; r) =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2,
    \quad j = 1, \ldots, \Np, \quad r \leq \Np.
 \]
 The activity scores connect ideas from active subspaces and global sensitivity
 analysis, and can be used to approximate DGSMs.  The following result, which
 can be found in~\cite{Diaz16,ConstantineDiaz17}, quantifies the error in this
 approximation. We provide a short proof for completeness (Hayley will do it).
-\begin{proposition} For $1 \leq r \leq \Np$,
+\begin{proposition}\label{prp:dgsm_bound} 
+For $1 \leq r \leq \Np$,
 \[
-0 \leq \nu_j(f) - \alpha_j(f; r) \leq \lambda_{r+1},
+0 \leq \nu_i(f) - \alpha_i(f; r) \leq \lambda_{r+1},
 \] 
 for $j=1, \ldots, \Np$.
 \end{proposition} 
 The utility of this result is realized in problems with 
 high-dimensional parameter spaces in which 
-the eigenvalues $\lambda_j$ decay rapidly to zero; in 
-such cases, this result implies that  $\nu_j(f) \approx \alpha_j(f; r)$,
+the eigenvalues $\lambda_i$ decay rapidly to zero; in 
+such cases, this result implies that  $\nu_i(f) \approx \alpha_i(f; r)$,
 where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
 effective if there is a large gap in the eigenvalues.  
 
@@ -168,9 +169,9 @@ $\xi_i$ are independent are either uniformly distributed or
 distributed according to a Boltzman probability distribution.  
 It was shown in~\cite{LamboniIoossPopelinEtAl13} that the total Sobol' 
 index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
-\[
+\begin{equation}\label{equ:sobol_bound}
 T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
-\]
+\end{equation}
 where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant.
 This provides a strong theoretical basis for using DGSMs to identify 
 unimportant inputs. Moreover, 
@@ -186,27 +187,30 @@ metric reduces to
       = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
-Generalizing the result of~\cite{Diaz16}, we present
-the following proposition linking activity scores and Sobol' indices.
+The following result is a straightforward generalization of
+the result from~\cite{Diaz16}, and 
+links activity scores and Sobol' indices.
 \begin{proposition}
 For $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
-\begin{enumerate}
-\item $\displaystyle 
-       T_i(f) \leq \frac{C_i}{\V(f)}(\alpha_j(f; r) + \lambda_{r+1})$.
-\item $\displaystyle
+\[
+       T_i(f) \leq \frac{C_i}{\V(f)}(\alpha_i(f; r) + \lambda_{r+1}).
+\]
+\end{proposition}
+\begin{proof}
+The result follows immediately from Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}.
+\end{proof}
+We can also bound the normalized DGSMs using activity scores; it is easy to see  
+\[
 \tilde{\nu}_i(f) \leq 
 \frac{ C_i \big(\alpha_i(f; r) + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}
-\leq \kappa 
-\frac{ \alpha_i(f; r) + \lambda_{r+1}}{\sum_{i=1}^\Np \alpha_i(f; r)}$, with 
-$\kappa = \displaystyle\frac{\max_i C_i}{\min_i C_i}$.
-\end{enumerate}
-\end{proposition}
-
+=\frac{C_i \alpha_i(f; r)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)} + \kappa_i \lambda_{r+1}, 
+\]
+whith $\kappa_i = C_i / (\sum_i C_i \alpha_i(f; r))$. 
 In the case where where $\lambda_{r+1} \approx 0$, 
-the above result motivate definition of
+this motivates definition of
 normalized activity scores
 \[
-   \tilde{\alpha}_i(f; r) =  \frac{\alpha_i(f; r)}{\sum_{i=1}^\Np \alpha_i(f; r)}.
+   \tilde{\alpha}_i(f; r) =  \frac{C_i \alpha_i(f; r)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}.
 \] 
 
 \section{Application to $H_2$/$O_2$ reaction mechanism}

@@ -1,4 +1,4 @@
-function [dGdx, lambda1, W1] = eig_eigvec(dim);
+function [dGdx, lambda1, W1] = Alg1_1(dim);
 
 %
 %

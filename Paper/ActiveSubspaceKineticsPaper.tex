@@ -121,15 +121,15 @@ For $f: \Omega \to \R$, we consider the DGSMs~\cite{SobolKucherenko09},
     \nu_i(f) := \E{\left(\frac{\partial f}{\partial\xi_i}\right)^2} =
                   \int_\Omega 
                   \left(\frac{\partial f}{\partial\xi_i}\right)^2
-                  \pi(\vec{\xi})d\vec{\xi}, \quad j = 1, \ldots, \Np.   
+                  \pi(\vec{\xi})d\vec{\xi}, \quad i = 1, \ldots, \Np.   
 \]
 Here $\pi$ is the joint PDF of $\xi$. 
 Let $\mat{C} = \E{\nabla f \nabla f^T}$ and note that
 \[
    \nu_i(f) = \vec{e}_i^T \mat{C} \vec{e}_i, 
 \]
-where $\vec{e}_i$ is the $j$th coordinate vector in $\R^\Np$,
-for $j = 1, \ldots, \Np$. This also shows that $\sum_{j=1}^\Np \nu_i(f) = \trace(\mat{C})$.
+where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$.
+This also shows that $\sum_{j=1}^\Np \nu_i(f) = \trace(\mat{C})$.
 We consider the spectral decomposition of $\mat{C}$, given by  
 $\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T$, where 
 $\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$ and
@@ -153,9 +153,8 @@ approximation. We provide a short proof for completeness.
 \begin{proposition}\label{prp:dgsm_bound} 
 For $1 \leq r \leq \Np$,
 \[
-0 \leq \nu_i(f) - \alpha_i(f; r) \leq \lambda_{r+1},
+0 \leq \nu_i(f) - \alpha_i(f; r) \leq \lambda_{r+1}, \quad i = 1, \ldots, \Np.
 \] 
-for $j=1, \ldots, \Np$.
 \end{proposition}
 \begin{proof} 
 
@@ -188,11 +187,13 @@ for $j=1, \ldots, \Np$.
 Note that, $\nu_i(f) - \alpha(f; r)  = \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \geq 0$,
 which gives the first inequality. To see the upper bound, we note,
 \[
-   \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_j}{\vec{u}_k}^2 \leq \lambda_{r+1} \sum_{k=r+1}^\Np \ip{\vec{e}_j}{\vec{u}_k}^2
+   \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \leq \lambda_{r+1} \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2
    \leq \lambda_{r+1}. 
 \]
 The last inequality holds because 
-$1 = \norm{\vec{e}_j}^2 = \sum_{k = 1}^\Np \ip{\vec{e}_j}{\vec{u}_k}^2 \geq \sum_{k=r+1}^\Np \ip{\vec{e}_j}{\vec{u}_k}^2$.
+$1 = \norm{\vec{e}_i}^2 = 
+\sum_{k = 1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2 
+\geq \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2$.
 \end{proof} 
 The utility of this result is realized in problems with 
 high-dimensional parameter spaces in which 

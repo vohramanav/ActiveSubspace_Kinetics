@@ -18,7 +18,7 @@ k = m + 1;
 alpha = 3;
 
 %N = alpha * m + 1;
-N = 30;
+N = 5;
 M = floor( alpha *k * log(m) );
 
 %
@@ -48,7 +48,7 @@ save('pts_grad_free.txt','pts_x','-ASCII');
 end
 
 function [lambda_loclin,W,f] = compute_subspace(m,N,M,xi,y)
-id = load('record_data_files/record_id_grad_free6.txt');
+id = load('record_data_files/record_id_grad_free1.txt');
 f = zeros(N,1);
 f(:,1) = id(1:N);
 %

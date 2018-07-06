@@ -58,10 +58,14 @@ ev6 = load('eigv_data_files/eigv6.txt');
 
 rel_nor = zeros(6,1);
 ev = [ev1 ev2 ev3 ev4 ev5 ev6];
-ev_diff = [ev1-ev2 ev2-ev3 ev3-ev4 ev4-ev5 ev5-ev6];
+ev_diff = [sqrt((ev1-ev2).^2) sqrt((ev2-ev3).^2) sqrt((ev3-ev4).^2) sqrt((ev4-ev5).^2) sqrt((ev5-ev6).^2)];
+max_ev_diff = [max(ev_diff(:,1)) max(ev_diff(:,2)) max(ev_diff(:,3)) max(ev_diff(:,4)) max(ev_diff(:,5))];
+global_max = max(max_ev_diff);
 rel_nor = [sqrt(sum(ev_diff(:,1).^2)) sqrt(sum(ev_diff(:,2).^2)) sqrt(sum(ev_diff(:,3).^2))...
            sqrt(sum(ev_diff(:,4).^2)) sqrt(sum(ev_diff(:,5).^2))];
-rel_nor = rel_nor./max(rel_nor);
+for i = 1:5
+  rel_nor(i) = rel_nor(i)./global_max;
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 subplot(1,2,1)
@@ -82,16 +86,17 @@ box on;
 axis square;
 
 subplot(1,2,2)
-plot(rel_nor(1:5),':ko','MarkerFaceColor','k');
-xticklabels({'$\mathrm{5-10}$','$\mathrm{10-15}$','$\mathrm{15-20}$','$\mathrm{20-25}$',...
-'$\mathrm{25-30}$'});
+%plot(rel_nor(1:1),':ko','MarkerFaceColor','k');
+%xticklabels({'$\mathrm{5-10}$','$\mathrm{10-15}$','$\mathrm{15-20}$','$\mathrm{20-25}$',...
+%'$\mathrm{25-30}$'});
+xticklabels({'$\mathrm{5-10}$'});
 xlabel('$$\mathrm{N_{i} - N_{i+1}}$$','interpreter','latex','fontsize',12);
-ylabel('$$\mathrm{\frac{\sqrt{\sum\limits_{j=1}^{N_p}(v_j^i - v_j^{i+1})^2}}{\|(|v_j^i - v_j^{i+1}|)\|_\infty}}$$','interpreter','latex','fontsize',12);
-set(gca,'xtick',1:5,'fontsize',6,'TickLabelInterpreter','latex');
+ylabel('$$\mathrm{\frac{\sqrt{\sum\limits_{j=1}^{N_p}(v_j^i - v_j^{i+1})^2}}{\|(|v^i - v^{i+1}|)\|_\infty}}$$','interpreter','latex','fontsize',12);
+set(gca,'xtick',1:1,'fontsize',6,'TickLabelInterpreter','latex');
 box on;
 axis square;
 
-print -depsc eigv6.eps
+print -depsc eigv1.eps
 
 %% compare normalized eigenvalues
 %l1 = lambda_grad./lambda_grad(1);

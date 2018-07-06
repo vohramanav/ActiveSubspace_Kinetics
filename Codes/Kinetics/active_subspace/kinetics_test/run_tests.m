@@ -13,28 +13,35 @@ local_linear_approx;
 xi_loclin = xi;
 g_loclin = f;
 
-% compare eigenvalues
+% compare SSPs
 figure;
 hold on;
 g1 = V(:,1)'*xi_grad';
 g2 = W(:,1)'*xi_loclin';
 plot(g1, g_grad, 'ko', 'markerfacecolor', 'k');
 plot(g2, g_loclin, 'r*', 'markerfacecolor', 'r');
-legend('alg 1.1', 'alg 1.2');
-set(gca, 'fontsize', 20);
-title('comparing SSPs');
-print -dpng comp_ssp.png
+xlabel('$$\mathrm{\eta^{\top}x}$$','interpreter','latex','fontsize',20);
+ylabel('$$\mathrm{G(\eta^{\top}x)}$$','interpreter','latex','fontsize',20);
+leg = legend('$\mathrm{Gradient~Based}$', '$\mathrm{Gradient~Free}$');
+set(leg,'interpreter','latex','fontsize',16,'location','NorthWest');
+set(gca,'TickLabelInterpreter','Latex','fontsize', 18);
+%title('comparing SSPs');
+box on;
+print -depsc comp_ssp.eps
 
-% compare SSPs
+% compare eigenvalues
 figure;
 hold on;
-
-semilogy(abs(lambda_grad)./lambda_grad(1),'-o','linewidth',2);
-semilogy(abs(lambda_loclin)./lambda_loclin(1),'-*','linewidth',2);
-legend('alg 1.1', 'alg 1.2');
-set(gca, 'fontsize', 20);
-title('comparing dominant eigenvalues');
-print -dpng comp_eig.png
+semilogy(1:length(lambda_grad),abs(lambda_grad)./lambda_grad(1),'-o','linewidth',2,'MarkerFaceColor','k');
+semilogy(1:length(lambda_loclin),abs(lambda_loclin)./lambda_loclin(1),'-*','linewidth',2,'MarkerFaceColor','r');
+xlabel('$$\mathrm{Index~(i)}$$','interpreter','latex','fontsize',20);
+ylabel('$$\mathrm{Eigenvalue~(\lambda_i)}$$','interpreter','latex','fontsize',20);
+leg = legend('$\mathrm{Gradient~Based}$', '$\mathrm{Gradient~Free}$');
+set(leg,'interpreter','latex','fontsize',16);
+set(gca,'TickLabelInterpreter','Latex','fontsize', 18);
+%title('comparing dominant eigenvalues');
+box on;
+print -depsc comp_eig.eps
 
 
 % compare dominant eigenvectors
@@ -45,13 +52,16 @@ hold on;
 %V(:,1) = V(:,1)*sign(V(1,1));
 %W(:,1) = W(:,1)*sign(W(1,1));
 
-plot(V(:,1), '-o', 'linewidth',2);
-plot(W(:,1), '-*', 'linewidth',2);
-
-legend('alg 1.1', 'alg 1.2');
-set(gca, 'fontsize', 20);
-title('comparing dominant eigenvectors');
-print -dpng comp_eigv.png
+plot(V(:,1), '-ko', 'linewidth',2, 'markerfacecolor', 'k');
+plot(W(:,1), '-r*', 'linewidth',2, 'markerfacecolor', 'r');
+xlabel('$$\mathrm{Index~(i)}$$','interpreter','latex','fontsize',20);
+ylabel('$$\mathrm{Eigenvector~Components~(v_i)}$$','interpreter','latex','fontsize',20);
+leg = legend('$\mathrm{Gradient~Based}$', '$\mathrm{Gradient~Free}$');
+set(leg,'interpreter','latex','fontsize',16);
+set(gca,'TickLabelInterpreter','Latex','fontsize', 18);
+%title('comparing dominant eigenvectors');
+box on;
+print -depsc comp_eigv.eps
 
 %% compare normalized eigenvalues
 %l1 = lambda_grad./lambda_grad(1);
@@ -85,7 +95,15 @@ as_loclin = as_loclin / sum(as_loclin);
 
 figure;
 bar([as_grad(:) as_loclin(:)]);
-legend('alg 1.1', 'alg 1.2');
-set(gca, 'fontsize', 20);
-print -dpng comp_as.png
+xticklabels({'$\mathrm{A_1}$','$\mathrm{A_2}$','$\mathrm{A_3}$','$\mathrm{A_4}$',...
+             '$\mathrm{A_5}$','$\mathrm{A_6}$','$\mathrm{A_7}$','$\mathrm{A_8}$',...
+             '$\mathrm{A_9}$','$\mathrm{A_{10}}$','$\mathrm{A_{11}}$','$\mathrm{A_{12}}$',...
+             '$\mathrm{A_{13}}$','$\mathrm{A_{14}}$','$\mathrm{A_{15}}$','$\mathrm{A_{16}}$',...
+             '$\mathrm{A_{17}}$','$\mathrm{A_{18}}$','$\mathrm{A_{19}}$'});
+leg = legend('$\mathrm{Gradient~Based}$', '$\mathrm{Gradient~Free}$');
+set(leg,'interpreter','latex','fontsize',16);
+set(gca,'xtick',1:19,'fontsize',10,'TickLabelInterpreter','latex');
+ylabel('$$\mathrm{Activity~Scores}$$','interpreter','latex','fontsize',20);
+box on;
+print -depsc comp_as.eps
 

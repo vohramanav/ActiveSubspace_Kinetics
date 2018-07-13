@@ -244,7 +244,7 @@ color(3cm)=(LightSlateGrey!15)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title[Dimension Reduction: Chemical Kinetics]{\textbf{Efficient UQ for Chemical Systems
+\title[Dimension Reduction: Chemical Kinetics]{\textbf{Efficient UQ for Chemical Kinetics
 using Active Subspaces}}
 \thispagestyle{empty}
 \pgfsetfillopacity{0.9}
@@ -336,26 +336,6 @@ f(\bm{x}) &= g(w_1^\top x)~~~\text{\tiny{[P. Constantine, 2015]}}
 \subsection{ac}
 \begin{frame}{Gradient-based Approach} 
 
-\end{frame}
-
-%___________________________NEW SLIDE______________________________________
-
-\subsection{ac}
-\begin{frame}{Convergence Analysis} 
-\begin{columns}
-\begin{column}{0.5\textwidth}
- \begin{center}
-\vspace{1.7mm}
-  \includegraphics[width=0.95\textwidth]{./Figures/eig_comp}
-\end{center}
-\end{column}
-\hspace{-10mm}
-\begin{column}{0.5\textwidth}
- \begin{center}
-  \includegraphics[width=0.95\textwidth]{./Figures/eigv_comp}
-\end{center}
-\end{column}
-\end{columns}
 \end{frame}
 
 
@@ -467,6 +447,41 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 
 \section{\scshape Results}
 \subsection{res}
+\begin{frame}{Convergence: Eigenvalues} 
+\begin{center}
+        \animategraphics[poster=first,controls,height=0.4\textwidth]{5}
+       {./Figures/eig_comp}{1}{5}
+\end{center}
+\end{frame}
+
+%___________________________NEW SLIDE______________________________________
+
+\subsection{res}
+\begin{frame}{Convergence: Eigenvectors} 
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+ \begin{center}
+  \includegraphics[width=0.88\textwidth]{./Figures/err_eigv_1_5}
+   \\ \vspace{2mm}
+  \includegraphics[width=0.85\textwidth]{./Figures/err_eigv_6_10}
+\end{center}
+\end{column}
+%\hspace{-20mm}
+\begin{column}{0.5\textwidth}
+ \begin{center}
+  \includegraphics[width=0.8\textwidth]{./Figures/err_eigv_11_15}
+   \\ \vspace{2mm}
+  \includegraphics[width=0.82\textwidth]{./Figures/err_eigv_16_19}
+\end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%___________________________NEW SLIDE______________________________________
+
+\subsection{res}
 \begin{frame}{Comparative Assessment} 
 
 \begin{center}
@@ -542,6 +557,55 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 
 \end{column}
 \end{columns}
+
+\end{frame}
+
+%___________________________NEW SLIDE______________________________________
+
+\subsection{res}
+\begin{frame}{High-Dimensional Problem} 
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+\begin{center}
+\begin{figure}[htbp]
+\includegraphics[width=0.78\textwidth]{./Figures/eig_33D}
+\end{figure}
+\end{center}
+
+\end{column}
+
+\hspace{-15mm}
+\begin{column}{0.5\textwidth}
+
+\begin{center}
+\begin{figure}[htbp]
+\includegraphics[width=0.78\textwidth]{./Figures/eigv_33D}
+\end{figure}
+\end{center}
+
+\end{column}
+\end{columns}
+
+\begin{center}
+\begin{figure}[htbp]
+\includegraphics[width=0.40\textwidth]{./Figures/ssp_33D}
+\end{figure}
+\end{center}
+
+\end{frame}
+
+%___________________________NEW SLIDE______________________________________
+
+\subsection{res}
+\begin{frame}{Sensitivity Analysis} 
+
+\vspace{-3mm}
+\begin{figure}[htbp]
+\hspace{-5mm}
+\includegraphics[width=1.1\textwidth]{./Figures/as_33D}
+\end{figure}
 
 \end{frame}
 

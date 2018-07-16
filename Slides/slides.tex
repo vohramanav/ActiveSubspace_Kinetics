@@ -253,7 +253,7 @@ using Active Subspaces}}
 
 %\subtitle{SUBTITLE}
 \author[M. Vohra et al.]{Manav Vohra$^{\dag}$, Sankaran Mahadevan$^{\dag}$ \\ \vspace{2mm}
-\textbf{Collaborators}: Alen Alexanderian$^{\S}$, Hailey Guy$^{\S}$}
+\textbf{Collaborators}: Alen Alexanderian$^{\S}$, Hayley Guy$^{\S}$}
 \vspace{-1mm}
 \institute{$^{\dag}$Vanderbilt University\\ \vspace{1mm}
 $^{\S}$North Carolina State University}
@@ -342,7 +342,7 @@ f(\bm{x}) &= g(w_1^\top x)~~~\text{\tiny{[P. Constantine, 2015]}}
 %___________________________NEW SLIDE______________________________________
 
 \subsection{ac}
-\begin{frame}{Adaptive Gradient-free Approach} 
+\begin{frame}{Gradient-free Approach} 
 
 \end{frame}
 
@@ -368,7 +368,7 @@ k_i(T) = A_iT^{n_i}\exp(-E_{a,i}/RT) \nonumber
 \tiny \vspace{-1mm}
 $A_i$: Pre-exponent~~~$E_{a,i}$: Activation Energy
 \normalsize \vspace{1mm}
-\myitem Uniform Priors:  \scriptsize $A_i\in[0.9A_i^\ast, 1.1A_i^\ast]$, $E_{a,i}\in[0.9E_{a,i}^\ast, 1.1E_{a,i}^\ast]$
+\myitem Uniform Priors:  \scriptsize $A_i\in[0.9A_i^\ast, 1.1A_i^\ast]$, $E_{a,i}\in[0.99E_{a,i}^\ast, 1.01E_{a,i}^\ast]$
 \vspace{1mm}
 \normalsize
 
@@ -459,23 +459,9 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 \subsection{res}
 \begin{frame}{Convergence: Eigenvectors} 
 
-\begin{columns}
-\begin{column}{0.5\textwidth}
  \begin{center}
-  \includegraphics[width=0.88\textwidth]{./Figures/err_eigv_1_5}
-   \\ \vspace{2mm}
-  \includegraphics[width=0.85\textwidth]{./Figures/err_eigv_6_10}
+  \includegraphics[width=0.65\textwidth]{./Figures/err_eigv_1_5}
 \end{center}
-\end{column}
-%\hspace{-20mm}
-\begin{column}{0.5\textwidth}
- \begin{center}
-  \includegraphics[width=0.8\textwidth]{./Figures/err_eigv_11_15}
-   \\ \vspace{2mm}
-  \includegraphics[width=0.82\textwidth]{./Figures/err_eigv_16_19}
-\end{center}
-\end{column}
-\end{columns}
 
 \end{frame}
 
@@ -599,6 +585,14 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 %___________________________NEW SLIDE______________________________________
 
 \subsection{res}
+\begin{frame}{Convergence Analysis} 
+
+
+\end{frame}
+
+%___________________________NEW SLIDE______________________________________
+
+\subsection{res}
 \begin{frame}{Sensitivity Analysis} 
 
 \vspace{-3mm}
@@ -606,6 +600,36 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 \hspace{-5mm}
 \includegraphics[width=1.1\textwidth]{./Figures/as_33D}
 \end{figure}
+
+\end{frame}
+
+%___________________________NEW SLIDE______________________________________
+
+\subsection{res}
+\begin{frame}{Verification} 
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\scriptsize
+Relative L-2 error norm:\\
+\begin{align}
+\varepsilon &= \frac{\|G(\bm{\theta})^2 - Y(\bm{\xi})^2\|}{\|G(\bm{\theta})^2\|} \nonumber \\ 
+&= 9.05\times10^{-2} \nonumber
+\end{align}
+
+
+\end{column}
+
+\hspace{-15mm}
+\begin{column}{0.5\textwidth}
+\begin{center}
+\begin{figure}[htbp]
+\includegraphics[width=1.0\textwidth]{./Figures/pdf_comp_id_33D}
+\end{figure}
+\end{center}
+
+\end{column}
+\end{columns}
 
 \end{frame}
 

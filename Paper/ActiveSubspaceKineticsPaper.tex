@@ -1,273 +1,98 @@
-\documentclass[11pt]{article}
+\documentclass[final,11pt]{article}
+%
+\input{def}
+\usepackage[table]{xcolor}
+\usepackage{booktabs} 
+\usepackage{relsize}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amssymb}
+\def\ol{\overline}
+\def\no{\noindent}
+\def\qd{\dot{Q}}
+%%%%%%%FLOW DIAGRAM%%%%%%%%%%
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+%\usepackage[table]{xcolor}
+\usetikzlibrary{positioning,shapes,arrows,arrows.meta}
+\usetikzlibrary{shapes.geometric}
+% Define block styles
+\tikzstyle{decision} = [diamond, minimum width=2.5cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{startstop} = [rectangle, draw, 
+   text width=4.5em, text centered, rounded corners]
+ \tikzstyle{process} = [rectangle, draw, 
+   text width=9.0em, text centered]  
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, node distance=3cm,
+   minimum height=2em]
+   \tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=2cm, text width=9.5em,minimum height=1cm, text centered, draw, inner sep=0pt]
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{lineno,hyperref}
-\usepackage{latexsym,amsthm,amsmath,xcolor,graphicx, amssymb, color,hyperref,booktabs,mathrsfs}
+\newcommand{\cs}[1]{\textcolor{blue}{CS: #1}}
 
-%\modulolinenumbers[5]
+%% Breakable algorithm %%%
+\usepackage{algorithm,algpseudocode,float}
+\usepackage{lipsum}
+\makeatletter
 
-\usepackage{geometry}
- \geometry{
- letterpaper,
- total={8.5in,11in},
- left=.75in,
- right=.75in,
- top=.75in,
- bottom=.75in,
- }
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+  \makeatother
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
+%%%%%%%%%%%%%%%%%
 
 
-% Macros
-\renewcommand{\vec}[1]{{\mathchoice
-                     {\mbox{\boldmath$\displaystyle{#1}$}}
-                     {\mbox{\boldmath$\textstyle{#1}$}}
-                     {\mbox{\boldmath$\scriptstyle{#1}$}}
-                     {\mbox{\boldmath$\scriptscriptstyle{#1}$}}}}
-\newcommand{\norm}[1]{\left\| {#1} \right\|}
-\newcommand{\D}{\mathcal{D}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\grad}{\nabla}
-\newcommand{\hessian}{\nabla^2}
-\newcommand{\V}{\mathbb{V}}
-\renewcommand{\S}{\mathbb{S}}
-\newcommand{\ST}{\mathbb{S}^{\text{tot}}}
-\newcommand{\ip}[2]{\langle{#1}, {#2}\rangle}
-\newcommand{\tp}{{\!\mathsf{T}}}
-\newcommand{\trace}{\mathrm{trace}}
-\newcommand{\mat}[1]{\mathbf{{#1}}}
-\newcommand{\Np}{{N_\text{p}}}
-\newcommand{\E}[1]{\mathrm{E}\left\{{#1} \right\}}
-
-\newcommand{\alennote}[1]{{\color{blue} Alen: {#1}}}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}{Lemma}[section]
-\newtheorem{proposition}{Proposition}[section]
-
-%%%%%%%%%%%%%%%%%%%%%%%
-%% Elsevier bibliography styles
-%%%%%%%%%%%%%%%%%%%%%%%
-%% To change the style, put a % in front of the second line of the current style and
-%% remove the % from the second line of the style you would like to use.
-%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Numbered
-%\bibliographystyle{model1-num-names}
-
-%% Numbered without titles
-%\bibliographystyle{model1a-num-names}
-
-%% Harvard
-%\bibliographystyle{model2-names.bst}\biboptions{authoryear}
-
-%% Vancouver numbered
-%\usepackage{numcompress}\bibliographystyle{model3-num-names}
-
-%% Vancouver name/year
-%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
-
-%% APA style
-%\bibliographystyle{model5-names}\biboptions{authoryear}
-
-%% AMA style
-%\usepackage{numcompress}\bibliographystyle{model6-num-names}
-
-%% `Elsevier LaTeX' style
-\bibliographystyle{elsarticle-num}
-%%%%%%%%%%%%%%%%%%%%%%%
-\title{Efficient UQ for chemical systems using active 
-\author{Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan}
-subspaces}
+%-------------------------------------------------------------------
 
 \begin{document}
-\maketitle
 
+\thispagestyle{empty}
+\input{cover}
 
-
-\begin{abstract}
-Insert abstract here.
-\end{abstract}
+%\baselineskip=22pt
 
 \tableofcontents
-\section{Introduction}
 
-Constributions:
-\begin{enumerate}
-\item Iterative computation of active subspaces for efficient surrogate modeling 
-\item Comparison of gradient-free and gradient based approaches.
-\item Perspectives on activity scores as means of approximating DGSMs.
-\item Application to challenging chemical kinetics problem. 
-\end{enumerate}
-Insert introduction here.
+\input{abstract}
+\clearpage
 
-\section{Active subspaces and sensitivity analysis}
+\input{intro}
+\bigskip
+\bigskip
 
-\subsection{Active subspaces}
-We recall some background regarding active subspaces~\cite{Constantine15}.
-\subsection{Global sensitivity measures}
-Define the total Sobol' indices $T_i(f)$ and discuss their use. 
+\input{assa}
+\bigskip
+\bigskip
 
-For $f: \Omega \to \R$, we consider the DGSMs~\cite{SobolKucherenko09},
-\[
-    \nu_i(f) := \E{\left(\frac{\partial f}{\partial\xi_i}\right)^2} =
-                  \int_\Omega 
-                  \left(\frac{\partial f}{\partial\xi_i}\right)^2
-                  \pi(\vec{\xi})d\vec{\xi}, \quad i = 1, \ldots, \Np.   
-\]
-Here $\pi$ is the joint PDF of $\xi$. 
-Let $\mat{C} = \E{\nabla f \nabla f^T}$ and note that
-\[
-   \nu_i(f) = \vec{e}_i^T \mat{C} \vec{e}_i, 
-\]
-where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$.
-This also shows that $\sum_{j=1}^\Np \nu_i(f) = \trace(\mat{C})$.
-We consider the spectral decomposition of $\mat{C}$, given by  
-$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T$, where 
-$\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$ and
-$\vec{u}_k$ are the corresponding (orthonormal) eigenvectors.
-We note that,
-\begin{equation}\label{equ:spectral_DGSM}
-\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T\Big) \vec{e}_i
- = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2, 
-\end{equation}
-which gives a spectral representation for the DGSMs. Truncating the summation 
-leads to the notion of activity scores introduced in~\cite{Diaz16,ConstantineDiaz17}
-defined as follows: 
-\[
-   \alpha_i(f; r) =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2,
-   \quad j = 1, \ldots, \Np, \quad r \leq \Np.
-\]
-The activity scores connect ideas from active subspaces and global sensitivity
-analysis, and can be used to approximate DGSMs.  The following result, which
-can be found in~\cite{Diaz16,ConstantineDiaz17}, quantifies the error in this
-approximation. We provide a short proof for completeness. 
-\begin{proposition}\label{prp:dgsm_bound} 
-For $1 \leq r \leq \Np$,
-\[
-0 \leq \nu_i(f) - \alpha_i(f; r) \leq \lambda_{r+1}, \quad i = 1, \ldots, \Np.
-\] 
-\end{proposition}
-\begin{proof} 
+\input{method}
+\bigskip
+\bigskip
 
-%Using the spectral representation of the DGSMs and the definition of activity
-%scores we clearly see:
-%\[
-%\alpha_i(f;r) = \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 \leq \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 = \nu_i(f), \quad \quad i = 1,\ldots,N_p, \quad r \leq N_p
-%\]
-%In other words
-%\[
-%0 \leq  \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 - \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2,  \quad \quad i = 1,\ldots,N_p
-%\]
-%with equality if $N_p=r$.
-%\newline
-%We can write:
-%\[
-%\begin{aligned}
-%\nu_i(f) = \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 = \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 + \sum_{k=r+1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2  \\
-%= \alpha_i(f;r) + \sum_{k=r+1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 \leq \alpha_i(f;r) + \lambda_{r+1} \sum_{k=r+1}^{N_p} \langle \vec{e}_i, \vec{u}_k \rangle^2,  \quad \quad i = 1,\ldots,N_p
-%\end{aligned}
-%\]
-%The eigenvectors $\vec{u}_k$ are orthonormal so they all have length 1. Also note that for every $x \in \R^n$ we have \[ \norm{x}^2 = \sum_{k=1}^{n} \langle \vec{x}, \vec{u}_k \rangle^2\] This is known as Parseval's identity.
-%In particular in this case $\vec{x} = \vec{e}_i \in \R^{N_p}$ so
-%\[1 = \norm{\vec{e}_i}^2 = \sum_{k=r+1}^{N_p} \langle \vec{e}_i, \vec{u}_k \rangle^2\]
-%Finally we write:
-%\[
-%\nu_i(f) \leq \alpha_i(f;r) + \lambda_{r+1}, \quad \quad i = 1,\ldots,N_p
-%\]
+\input{app}
+\bigskip
+\bigskip
 
-Note that, $\nu_i(f) - \alpha(f; r)  = \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \geq 0$,
-which gives the first inequality. To see the upper bound, we note,
-\[
-   \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \leq \lambda_{r+1} \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2
-   \leq \lambda_{r+1}. 
-\]
-The last inequality holds because 
-$1 = \norm{\vec{e}_i}^2 = 
-\sum_{k = 1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2 
-\geq \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2$.
-\end{proof} 
-The utility of this result is realized in problems with 
-high-dimensional parameter spaces in which 
-the eigenvalues $\lambda_i$ decay rapidly to zero; in 
-such cases, this result implies that  $\nu_i(f) \approx \alpha_i(f; r)$,
-where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
-effective if there is a large gap in the eigenvalues.  
+\input{conc}
+\bigskip
+\bigskip
 
-Consider a function $y = f(\xi_1, \xi_2, \ldots, \xi_\Np)$ where
-$\xi_i$ are independent are either uniformly distributed or
-distributed according to a Boltzman probability distribution.  
-It was shown in~\cite{LamboniIoossPopelinEtAl13} that the total Sobol' 
-index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
-\begin{equation}\label{equ:sobol_bound}
-T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
-\end{equation}
-where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant.
-This provides a strong theoretical basis for using DGSMs to identify 
-unimportant inputs. Moreover, 
-in~\cite{VohraAlexanderianSaftaEtAl18} we introduced the normalized screening metric
-\[
-   \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
-\]
-for detecting unimportant input parameters. 
-Note that if $\xi_i$ are iid, the $C_i$'s will cancel and the normalized screening
-metric reduces to 
-\[
-    \tilde{\nu}_i(f) = \frac{\nu_i(f)}{\sum_{i=1}^\Np \nu_i(f)} 
-      = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
-      = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
-\]
-The following result is a straightforward generalization of
-the result from~\cite{Diaz16}, and 
-links activity scores and Sobol' indices.
-\begin{proposition}
-For $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
-\[
-       T_i(f) \leq \frac{C_i}{\V(f)}(\alpha_i(f; r) + \lambda_{r+1}).
-\]
-\end{proposition}
-\begin{proof}
-The result follows immediately from Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}.
-\end{proof}
-We can also bound the normalized DGSMs using activity scores; it is easy to see  
-\[
-\tilde{\nu}_i(f) \leq 
-\frac{ C_i \big(\alpha_i(f; r) + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}
-=\frac{C_i \alpha_i(f; r)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)} + \kappa_i \lambda_{r+1}, 
-\]
-whith $\kappa_i = C_i / (\sum_i C_i \alpha_i(f; r))$. 
-In the case where where $\lambda_{r+1} \approx 0$, 
-this motivates definition of
-normalized activity scores
-\[
-   \tilde{\alpha}_i(f; r) =  \frac{C_i \alpha_i(f; r)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}.
-\] 
-
-\section{Method}
-
-\section{Application to $H_2$/$O_2$ reaction mechanism: high-dimensional case}
-
-\alennote{Manav, can we consider a higher dimensional problem with uncertain
-activation energies as well?}
-
-\section{Conclusion}
-
-\section*{References}
-
-\bibliography{mybibfile}
-
-\begin{figure}[htbp]
- \begin{center}
-  \includegraphics[width=0.40\textwidth]{./Figures/comp_eig}
-\hspace{1mm}
-  \includegraphics[width=0.45\textwidth]{./Figures/comp_eigv}
-  \\ \vspace{5mm}
-  \includegraphics[width=0.40\textwidth]{./Figures/comp_ssp}
-\hspace{1mm}
-  \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
-  \\ \vspace{5mm}
-  \includegraphics[width=0.42\textwidth]{./Figures/ub_conv_kinetics_rich}
-\end{center}
-\end{figure}
-
+\bibliographystyle{unsrt}
+\bibliography{REFER}
 
 \end{document}

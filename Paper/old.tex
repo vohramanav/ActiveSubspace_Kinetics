@@ -1,12 +1,113 @@
+\documentclass[11pt]{article}
+
+\usepackage{lineno,hyperref}
+\usepackage{latexsym,amsthm,amsmath,xcolor,graphicx, amssymb, color,hyperref,booktabs,mathrsfs}
+
+%\modulolinenumbers[5]
+
+\usepackage{geometry}
+ \geometry{
+ letterpaper,
+ total={8.5in,11in},
+ left=.75in,
+ right=.75in,
+ top=.75in,
+ bottom=.75in,
+ }
+
+
+% Macros
+\renewcommand{\vec}[1]{{\mathchoice
+                     {\mbox{\boldmath$\displaystyle{#1}$}}
+                     {\mbox{\boldmath$\textstyle{#1}$}}
+                     {\mbox{\boldmath$\scriptstyle{#1}$}}
+                     {\mbox{\boldmath$\scriptscriptstyle{#1}$}}}}
+\newcommand{\norm}[1]{\left\| {#1} \right\|}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\grad}{\nabla}
+\newcommand{\hessian}{\nabla^2}
+\newcommand{\V}{\mathbb{V}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\ST}{\mathbb{S}^{\text{tot}}}
+\newcommand{\ip}[2]{\langle{#1}, {#2}\rangle}
+\newcommand{\tp}{{\!\mathsf{T}}}
+\newcommand{\trace}{\mathrm{trace}}
+\newcommand{\mat}[1]{\mathbf{{#1}}}
+\newcommand{\Np}{{N_\text{p}}}
+\newcommand{\E}[1]{\mathrm{E}\left\{{#1} \right\}}
+
+\newcommand{\alennote}[1]{{\color{blue} Alen: {#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Elsevier bibliography styles
+%%%%%%%%%%%%%%%%%%%%%%%
+%% To change the style, put a % in front of the second line of the current style and
+%% remove the % from the second line of the style you would like to use.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Numbered
+%\bibliographystyle{model1-num-names}
+
+%% Numbered without titles
+%\bibliographystyle{model1a-num-names}
+
+%% Harvard
+%\bibliographystyle{model2-names.bst}\biboptions{authoryear}
+
+%% Vancouver numbered
+%\usepackage{numcompress}\bibliographystyle{model3-num-names}
+
+%% Vancouver name/year
+%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
+
+%% APA style
+%\bibliographystyle{model5-names}\biboptions{authoryear}
+
+%% AMA style
+%\usepackage{numcompress}\bibliographystyle{model6-num-names}
+
+%% `Elsevier LaTeX' style
+\bibliographystyle{elsarticle-num}
+%%%%%%%%%%%%%%%%%%%%%%%
+\title{Efficient UQ for chemical systems using active 
+\author{Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan}
+subspaces}
+
+\begin{document}
+\maketitle
+
+
+
+\begin{abstract}
+Insert abstract here.
+\end{abstract}
+
+\tableofcontents
+\section{Introduction}
+
+Constributions:
+\begin{enumerate}
+\item Iterative computation of active subspaces for efficient surrogate modeling 
+\item Comparison of gradient-free and gradient based approaches.
+\item Perspectives on activity scores as means of approximating DGSMs.
+\item Application to challenging chemical kinetics problem. 
+\end{enumerate}
+Insert introduction here.
+
 \section{Active subspaces and sensitivity analysis}
-\label{sec:assa}
 
 \subsection{Active subspaces}
-We recall some background regarding active subspaces~\cite{Constantine:2015}.
+We recall some background regarding active subspaces~\cite{Constantine15}.
 \subsection{Global sensitivity measures}
 Define the total Sobol' indices $T_i(f)$ and discuss their use. 
 
-For $f: \Omega \to \R$, we consider the DGSMs~\cite{Sobol:2009},
+For $f: \Omega \to \R$, we consider the DGSMs~\cite{SobolKucherenko09},
 \[
     \nu_i(f) := \E{\left(\frac{\partial f}{\partial\xi_i}\right)^2} =
                   \int_\Omega 
@@ -30,7 +131,7 @@ We note that,
  = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2, 
 \end{equation}
 which gives a spectral representation for the DGSMs. Truncating the summation 
-leads to the notion of activity scores introduced in~\cite{Diaz:2016,Constantine:2017}
+leads to the notion of activity scores introduced in~\cite{Diaz16,ConstantineDiaz17}
 defined as follows: 
 \[
    \alpha_i(f; r) =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2,
@@ -38,7 +139,7 @@ defined as follows:
 \]
 The activity scores connect ideas from active subspaces and global sensitivity
 analysis, and can be used to approximate DGSMs.  The following result, which
-can be found in~\cite{Diaz:2016,Constantine:2017}, quantifies the error in this
+can be found in~\cite{Diaz16,ConstantineDiaz17}, quantifies the error in this
 approximation. We provide a short proof for completeness. 
 \begin{proposition}\label{prp:dgsm_bound} 
 For $1 \leq r \leq \Np$,
@@ -95,7 +196,7 @@ effective if there is a large gap in the eigenvalues.
 Consider a function $y = f(\xi_1, \xi_2, \ldots, \xi_\Np)$ where
 $\xi_i$ are independent are either uniformly distributed or
 distributed according to a Boltzman probability distribution.  
-It was shown in~\cite{Lamboni:2013} that the total Sobol' 
+It was shown in~\cite{LamboniIoossPopelinEtAl13} that the total Sobol' 
 index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
 \begin{equation}\label{equ:sobol_bound}
 T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
@@ -103,7 +204,7 @@ T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
 where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant.
 This provides a strong theoretical basis for using DGSMs to identify 
 unimportant inputs. Moreover, 
-in~\cite{Vohra:2018} we introduced the normalized screening metric
+in~\cite{VohraAlexanderianSaftaEtAl18} we introduced the normalized screening metric
 \[
    \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
 \]
@@ -116,7 +217,7 @@ metric reduces to
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
 The following result is a straightforward generalization of
-the result from~\cite{Diaz:2016}, and 
+the result from~\cite{Diaz16}, and 
 links activity scores and Sobol' indices.
 \begin{proposition}
 For $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
@@ -141,3 +242,32 @@ normalized activity scores
    \tilde{\alpha}_i(f; r) =  \frac{C_i \alpha_i(f; r)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}.
 \] 
 
+\section{Method}
+
+\section{Application to $H_2$/$O_2$ reaction mechanism: high-dimensional case}
+
+\alennote{Manav, can we consider a higher dimensional problem with uncertain
+activation energies as well?}
+
+\section{Conclusion}
+
+\section*{References}
+
+\bibliography{mybibfile}
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=0.40\textwidth]{./Figures/comp_eig}
+\hspace{1mm}
+  \includegraphics[width=0.45\textwidth]{./Figures/comp_eigv}
+  \\ \vspace{5mm}
+  \includegraphics[width=0.40\textwidth]{./Figures/comp_ssp}
+\hspace{1mm}
+  \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
+  \\ \vspace{5mm}
+  \includegraphics[width=0.42\textwidth]{./Figures/ub_conv_kinetics_rich}
+\end{center}
+\end{figure}
+
+
+\end{document}

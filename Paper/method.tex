@@ -1,2 +1,67 @@
 \section{Methodology}
 \label{sec:method}
+
+%% Grad-based algorithm
+
+\bigskip
+\begin{breakablealgorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+  \caption{An iterative gradient-based approach for discovering the active subspace}
+  \begin{algorithmic}[1]
+\Require $\theta_l$, $\theta_u$, $\tau$. 
+\Ensure $\Lambda$, $W$, $\alpha$. 
+    \Procedure{Gradient-based}{}
+	\State Draw $n_1$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
+         according to $\bm{f(\xi)}$.
+	\State Project to the physical space:
+        $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
+	\State $N_\text{total}$ = $n_1$ 
+	\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
+             $k=1, \ldots, N_\text{total}$.  
+	\Statex\hspace{5mm} Using Finite Difference:
+	\Statex\hspace{5mm} i. Assign a small increment, $d\xi$.
+	\Statex\hspace{5mm} ii. Augment the set of samples with neighboring points.
+	\be \{\bm{\Xi}_k\}_{k=1}^{n_1(d+1)}:~\{\bm{\xi}_k\}_{k=1}^{n_1} \cup
+        \{\xi_{k,j}+d\xi\}_{j=1}^{d} \nonumber
+	\ee
+	\Statex\hspace{5mm} iii. Project to the physical space:
+        $\{\bm{\theta}_k\}_{k=1}^{n_1(d+1)}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\Xi}_k\}_{k=1}^{n_1(d+1)}$
+	\Statex\hspace{5mm} iv. Using the augmented set, $\{\bm{\theta}_k\}_{k=1}^{n_1(d+1)}$
+        to compute $\bm{g}^k$. 
+	\State Compute the matrix, $\mathcal{C}$ = 
+        $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
+	\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
+	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
+        \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
+        $W^{(0)}~=~\begin{bmatrix} w_1^{(0)} & w_2^{(0)} \end{bmatrix}$, 
+        $\Lambda_1^{(0)}\in \mathbb{R}^{d\times\mathcal{S}}$
+	\State Set $r$ = 0
+	\Loop
+		\State Set $r$ = $r$ + 1
+		\State Draw $n_r$ = $\lceil \beta n_1 \rceil$ new random samples 
+                $\{\bm{\xi}_k\}$ $\in$ [-1,1], $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$.
+		\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
+		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
+		\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
+             	$k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
+		\State Compute $\mathcal{C}$ = 
+        	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
+		\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
+		\State Compute $\delta w_{1,j}^{(r)}$ = 
+                       \scalebox{1.25}{$\frac{\|w_{1,j}^{r} - 
+                       w_{1,j}^{r-1}\|}{\|w_{1,j}^{r-1}\|}$}, 
+                       $j = 1,\ldots,\mathcal{S}$.
+		\If {$\max\left(\delta w_{1,j}^{(r)}\right)<\tau$}
+			\State break
+		\EndIf
+	\EndLoop
+	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1,j}w_{1,j}^2$,
+	$i=1,\ldots,d$.
+	
+    \EndProcedure
+  \end{algorithmic}
+  \label{alg:screen}
+\end{breakablealgorithm}
+\bigskip
+

@@ -33,6 +33,9 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}{Lemma}[section]
 \newtheorem{proposition}{Proposition}[section]
+\newcommand*{\skipnumber}[2][1]{%
+   {\renewcommand*{\alglinenumber}[1]{}\State #2}%
+   \addtocounter{ALG@line}{-#1}}
 %
 \def\Wb{\overline{W}}
 \def\td{\tilde \delta}

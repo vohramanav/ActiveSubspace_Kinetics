@@ -11,10 +11,27 @@
 %Insert introduction here.
 
 % Outline
-1. Significance of the H2/O2 reaction. Include the mechanism and a discussion on why
-   is it important to study the kinetics? 
-2. Literature survey of studies aimed at quantifying the uncertainty associated with
-reaction kinetics (including my own work) and specifically for the H2/O2 reaction.
-3. Focus of this work and associated challenges (include a table).
-4. Key contributions.
-5. Organization
+%1. Significance of the H2/O2 reaction. Include the mechanism and a discussion on why
+%   is it important to study the kinetics? 
+%2. Literature survey of studies aimed at quantifying the uncertainty associated with
+%reaction kinetics (including my own work) and specifically for the H2/O2 reaction.
+%3. Focus of this work and associated challenges (include a table).
+%4. Key contributions.
+%5. Organization
+
+Time evolution of a chemically reacting system is largely dependent upon rate constants
+associated with individual reactions. The rate constants are typically assumed to exhibit
+a certain correlation with temperature (e.g. Arrhenius-type). Hence, accurate specification
+of the rate-controlling parameters is critical to the fidelity of simulations. However,
+in practical applications, the parameters are either specified using expert knowledge or
+estimated based on a regression-fit to a set of sparse and noisy data. Consequently, the
+underlying uncertainty associated with the parameters and therefore the simulation-prediction
+is typically ignored. Vohra et al. calibrated the Arrhenius diffusion parameters to quantify
+the uncertainty in mixing rates in Zr/Al reactive multilayers using a Bayesian framework
+in~\cite{Vohra:2014} and~\cite{Vohra:2017}. The framework accounted for prior knowledge,
+measurement noise, and the discrepancy between model and experiments. Bayesian calibration
+was accelerated in these efforts using a polynomial chaos surrogate for the model. However,
+the number of uncertain parameters for calibration were limited to two in both cases. In
+higher dimensions, the construction of surrogate as well as the calibration process become
+remarkably challenging.      
+

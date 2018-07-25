@@ -28,10 +28,12 @@ estimated based on a regression-fit to a set of sparse and noisy data. Consequen
 underlying uncertainty associated with the parameters and therefore the simulation-prediction
 is typically ignored. Vohra et al. calibrated the Arrhenius diffusion parameters to quantify
 the uncertainty in mixing rates in Zr/Al reactive multilayers using a Bayesian framework
-in~\cite{Vohra:2014} and~\cite{Vohra:2017}. The framework accounted for prior knowledge,
-measurement noise, and the discrepancy between model and experiments. Bayesian calibration
-was accelerated in these efforts using a polynomial chaos~\cite{Ghanem:2003, Xiu:2002} 
-surrogate for the model. However,
+in~\cite{Vohra:2014}. The framework accounted for prior knowledge,
+measurement noise, and the discrepancy between model and experiments. Additionally, 
+in~\cite{Vohra:2017}, a design strategy was implemented to determine optimal conditions
+for experiments in order to enhance the information gain in the uncertain diffusion parameters.
+Bayesian calibration was accelerated in these efforts using a polynomial 
+chaos~\cite{Ghanem:2003, Xiu:2002} surrogate for the model. However,
 the number of uncertain parameters for calibration were limited to two in both cases. In
 higher dimensions, the construction of surrogate as well as the calibration process become
 remarkably challenging due to increase in computational effort. 
@@ -42,11 +44,25 @@ accomplish this by implementing an efficient approach that aims to reduce the di
 of the problem by computing the so-called active subspace~\cite{Constantine:2015}. 
 The active subspace, discussed later in~\ref{sub:ac}, essentially constitutes the dominant
 eigenspace of a matrix derived from the gradient information of the model output with respect
-to an input. The high-dimensional application problem considered in this work is the H$_2$/O$_2$
+to an input. The dominant eigenspace essentially comprises `important' directions in the parameter
+space that predominantly capture the variability in the model output due to uncertainty in the
+inputs. 
+
+The high-dimensional application problem considered in this work is the H$_2$/O$_2$
 reaction mechanism~\cite{Yetter:1991}. This mechanism has been gaining a lot of attention in the
 recent years as a potential source of clean energy for locomotive applications~\cite{Das:1996}.   
 The mechanism involves 19 reactions including chain reactions, dissociation/recombination reactions, and
-formation and consumption of intermediate species:
+formation and consumption of intermediate species. For each reaction in table~\ref{tab:kinetics}, 
+the reaction rate is assumed to show an Arrhenius correlation with temperature:
+%
+\be
+k_i(T) = A_iT^{n_i}\exp(-E_{a,i}/RT), 
+\label{eq:rate}
+\ee
+%
+where $A_i$ is the pre-exponent, $n_i$ is the index of $T$, $E_{a,i}$ is the
+activation energy corresponding to the $i^{th}$ reaction, and $R$ is the
+universal gas constant.  
 
 \begin{table}[htbp]
 \renewcommand*{\arraystretch}{0.9}
@@ -81,17 +97,7 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 \label{tab:kinetics}
 \end{table}
 
-For each reaction in table~\ref{tab:kinetics}, the reaction rate is assumed to show an Arrhenius
-correlation with temperature:
-%
-\be
-k_i(T) = A_iT^{n_i}\exp(-E_{a,i}/RT), 
-\label{eq:rate}
-\ee
-%
-where $A_i$ is the pre-exponent, $n_i$ is the index of $T$, $E_{a,i}$ is the
-activation energy corresponding to the $i^{th}$ reaction, and $R$ is the
-universal gas constant.  The global reaction associated with the H$_2$/O$_2$ mechanism can
+The global reaction associated with the H$_2$/O$_2$ mechanism can
 be considered as follows:
 %
 \be
@@ -130,14 +136,37 @@ The two strategies are observed to yield consistent results which encourages the
 for discovering the active subspace especially in high-dimensional problems. In section~\ref{sec:app}, we present
 our findings based on the implementation of the grad-free approach to the original 33-dimensional application. 
 
-The dominant eigenvectors that constitute the active subspace correspond to the important directions in the
-parameter space. In other words, the variability in the model output is predominantly observed along these
-directions. Moreover, the components of these eigenvectors can be used to estimate the so-called 
+Components of the dominant eigenvectors can be used to estimate the so-called 
 activity scores~\cite{Diaz:2016,Constantine:2017} which provide an insight into the relative importance
 of the uncertain parameters. In 
 section~\ref{sub:gsa}, we demonstrate that the activity scores could be used to approximate the 
 derivative-based global sensitivity measures (DGSMs)~\cite{Sobol:2009}, and establish a relationship between
-the Sobol' total effect index, the DGSMs, and the activity scores.
+the Sobol' total effect index, the DGSMs, and the activity scores. Below, we summarize key contributions of
+the paper and its organization. 
+
+\paragraph{Contributions}
+Main contributions of this paper are as follows: (1) A perspective on activity scores as means for approximating
+the DGSMs is provided. (2) A general relationship between DGSMs, activity scores, and the total Sobol' index 
+is established. (3) Iterative gradient-based and gradient-free approaches for computing the active subspace are
+ demonstrated. The two approaches are shown to be consistent and yield computational gains compared to the 
+ conventional approach. As mentioned above, the gains are greater in the case of grad-free approach. (4) The
+ grad-free approach is implemented for discovering an active subspace in a 33-dimensional parameter space 
+ for the H$_2$/O$_2$ reaction kinetics application. 
+ 
+ \paragraph{Organization}
+ The paper is organized as follows. In Section~\ref{sub:ac}, a brief theoretical background on
+ the active subspace methodology is provided. In Section~\ref{sub:gsa}, it is shown that the activity
+ scores provide a reasonable approximation to the DGSMs especially in a high-dimensional setting. 
+ Additionally, a relationship between the three global sensitivity measures, namely, the activity scores,
+ DGSMs, and the total Sobol' indices is established. In Section~\ref{sec:method}, a systematic framework
+ for computing the active subspace using the grad-based, and the grad-free approaches is presented. 
+The two approaches are implemented to the H$_2$/O$_2$ reaction kinetics problem whereby only
+the $A_i$'s are considered as uncertain. Our findings illustrate the consistency in the results based on
+the two approaches thereby encouraging the use of the grad-free approach. In Section~\ref{sec:app},
+we further explore the suitability of the grad-free approach by implementing it to a higher-dimensional
+H$_2$/O$_2$ reaction kinetics problem by accounting for the uncertainty in $E_{a,i}$'s as well. 
+Finally, we draw important conclusions based on the various aspects of this work in Section~\ref{sec:conc}.
+
 
 
 

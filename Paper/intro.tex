@@ -130,11 +130,7 @@ effort. To reduce the effort, we explore two strategies: one involving the use o
 and the other involving local linear approximation which does require gradient computation (grad-free).
 These strategies are based on algorithms 1.1 and 1.2 provided  in~\cite{Constantine:2015}. The amount of 
 computational effort associated with the grad-free approach is significantly smaller than the grad-based
-approach. In section~\ref{sec:method}, we implement the two strategies to a simpler problem accounting for the
-uncertainty only in the pre-exponents ($A_i$'s) of the rate constants in the H$_2$/O$_2$ reaction mechanism.
-The two strategies are observed to yield consistent results which encourages the use of the grad-free approach
-for discovering the active subspace especially in high-dimensional problems. In section~\ref{sec:app}, we present
-our findings based on the implementation of the grad-free approach to the original 33-dimensional application. 
+approach as discussed later in section~\ref{sec:method}.
 
 Components of the dominant eigenvectors can be used to estimate the so-called 
 activity scores~\cite{Diaz:2016,Constantine:2017} which provide an insight into the relative importance
@@ -148,7 +144,8 @@ the paper and its organization.
 Main contributions of this paper are as follows: (1) A perspective on activity scores as means for approximating
 the DGSMs is provided. (2) A general relationship between DGSMs, activity scores, and the total Sobol' index 
 is established. (3) Iterative gradient-based and gradient-free approaches for computing the active subspace are
- demonstrated. The two approaches are shown to be consistent and yield computational gains compared to the 
+ demonstrated. The two approaches are shown to be consistent and yield greater
+computational gains compared to the 
  conventional approach. As mentioned above, the gains are greater in the case of grad-free approach. (4) The
  grad-free approach is implemented for discovering an active subspace in a 33-dimensional parameter space 
  for the H$_2$/O$_2$ reaction kinetics application. 

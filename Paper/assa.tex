@@ -1,15 +1,90 @@
 \section{Active subspaces and sensitivity analysis}
 \label{sec:assa}
+In this section, we provide key elements of the active subspace methodology in~\ref{sub:ac}, and
+provide theoretical connections between the global sensitivity measures: DGSMs, activity scores,
+and the total Sobol index in~\ref{sub:gsa}.
 
 \subsection{Active subspaces}
 \label{sub:ac}
-We recall some background regarding active subspaces~\cite{Constantine:2015}.
-
+%We recall some background regarding active subspaces~\cite{Constantine:2015}.
+As mentioned earlier, the active subspace is low-dimensional linear subspace that constitutes
+important directions in a model's input space~\cite{Constantine:2015}. The effective variability
+in the model output due to uncertain inputs is predominantly captured along these directions.
+Mathematically, these directions are essentially the eigenvectors of a positive semi-definite
+matrix, $\mat{C}$, defined as follows:
+%
+\be
+\mat{C} = \int_\Omega (\nabla_{\bm{\xi}}f)(\nabla_{\bm{\xi}}f)^\top dP_{\bm{\xi}}
+\label{eq:C}
+\ee
+%
+where $\Omega$:~$[-1,1]^{N_p}$ is the domain of $\bm{\xi}$, and $N_p$ is the number of uncertain
+inputs. $dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
+distribution of $\bm{\xi}$. Note that the function, $f$ is considered to be continuous and differentiable
+in the considered parameter domain. Hence, it is possible that a given $f(\bm{\xi})$ might not admit an
+active subspace. However, it is of remarkable interest to investigate if one exists since the subspace could
+be exploited to reduce the dimensionality of the problem and hence the associated computational effort.
+$\nabla_{\bm{\xi}}f$ denotes a vector with individual components
+being partial derivatives of $f$ with respect to the $i^\text{th}$ input, $\xi_i$. Since $\mat{C}$ is symmetric and
+positive semi-definite, it admits a real eigenvalue decomposition:
+%
+\be
+\mat{C} = \bm{W}\bm{\Lambda}\bm{W}^\top
+\ee
+%
+where $\bm{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with $\lambda_i$'s
+ sorted in descending order, $i:\{1,2,\ldots,N_p\}$. The eigenpairs are partitioned about
+ the $i^{\text{th}}$ eigenvalue such that the ratio, $\left(\frac{\lambda_i}{\lambda_{i+1}}\right)$ $\gg$ 1
+ as follows:
+ %
+ \be
+ \bm{W} = [\bm{W}_1~\bm{W}_2],~~\bm{\Lambda} = \begin{bmatrix}\bm{\Lambda}_1 & \\  &
+  \bm{\Lambda}_2 \\
+\end{bmatrix}
+ \ee
+ %
+ where $\bm{W}_1$ comprises the dominant eigenspace of $\mat{C}$ regarded as the active subspace,
+ and $\bm{\Lambda}_1$ is the corresponding set of eigenvalues. The active subspace is used to 
+ construct the so-called active variables, $\bm{w}_1^\top \bm{\xi}$ and $f(\bm{\xi}(\theta))$ is transformed
+ as $G(\bm{w}_1^\top \bm{\xi})$. In practice, the set of samples, $\bm{\xi}_i$'s are projected to the
+ physical space as $\bm{\theta}_i$'s at which the model output, $f(\bm{\xi}(\theta))$ is computed. 
+ The matrix, $\mat{C}$ is typically approximated using pseudo-random sampling techniques such 
+ as Monte Carlo and Latin hypercube sampling. The integral in~\eqref{eq:C} is replaced with a
+ summation as follows:
+ %
+ \be
+ \mat{C}\approx \hat{\mat{C}} = \frac{1}{N}\sum\limits_{i=1}^{N} 
+ (\nabla_{\bm{\xi}}f(\bm{\xi}_i))(\nabla_{\bm{\xi}}f(\bm{\xi}_i))^\top
+ = \hat{\bm{W}}\hat{\bm{\Lambda}}\hat{\bm{W}}^\top
+ \ee
+ %
+ It has been shown that the accuracy of approximated dominant eigenspace, $\hat{\bm{W}}_1$ is inversely
+ proportional to the difference between the smallest eigenvalue in $\hat{\bm{\Lambda}}_1$ and the
+ largest eigenvalue in $\hat{\bm{\Lambda}}_2$~\cite{Constantine:2014}. 
+ 
+ Components of the eigenvectors
+ in the active subspace could be used for estimating the so-called activity scores as a measure for
+ global sensitivity and also be used for approximating the DGSMs as discussed in the following section.
+  
 \subsection{Global sensitivity measures}
 \label{sub:gsa}
-Define the total Sobol' indices $T_i(f)$ and discuss their use. 
+The total Sobol' index ($T_i(f)$) of a model output, $f(\theta_i)$ quantifies the total contribution of the
+input, $\theta_i$ to the variance of the output. Mathematically, this can be expressed as follows:
+%
+\be
+T_i(f) = 1 - 
+\frac{\V[\mathbb{E}(f|\bm{\theta}_{\sim i})]}{\V(f)},
+\label{eq:total}
+\ee
+%
+where $\bm{\theta}_{\sim i}$ is a vector of all but $i^\text{th}$ uncertain input, and $\V$ denotes the variance.
+Determining converged estimates of $T_i(f)$ typically involves tens of thousands of model runs and is therefore
+prohibitive in the case of compute-intensive applications. The DGSMs~\cite{Sobol:2009}
+provide a means for approximating the upper bound on $T_i(f)$ with fewer computations as 
+discussed in~\cite{Vohra:2018}. 
+\smallskip
 
-For $f: \Omega \to \R$, we consider the DGSMs~\cite{Sobol:2009},
+For $f: \Omega \to \R$, we consider the DGSMs,
 \[
     \nu_i(f) := \E{\left(\frac{\partial f}{\partial\xi_i}\right)^2} =
                   \int_\Omega 
@@ -17,19 +92,19 @@ For $f: \Omega \to \R$, we consider the DGSMs~\cite{Sobol:2009},
                   \pi(\vec{\xi})d\vec{\xi}, \quad i = 1, \ldots, \Np.   
 \]
 Here $\pi$ is the joint PDF of $\xi$. 
-Let $\mat{C} = \E{\nabla f \nabla f^T}$ and note that
+Let $\mat{C} = \E{\nabla f \nabla f^\top}$ and note that
 \[
-   \nu_i(f) = \vec{e}_i^T \mat{C} \vec{e}_i, 
+   \nu_i(f) = \vec{e}_i^\top \mat{C} \vec{e}_i, 
 \]
 where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$.
 This also shows that $\sum_{j=1}^\Np \nu_i(f) = \trace(\mat{C})$.
 We consider the spectral decomposition of $\mat{C}$, given by  
-$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T$, where 
+$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top$, where 
 $\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$ and
 $\vec{u}_k$ are the corresponding (orthonormal) eigenvectors.
 We note that,
 \begin{equation}\label{equ:spectral_DGSM}
-\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^T\Big) \vec{e}_i
+\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top\Big) \vec{e}_i
  = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2, 
 \end{equation}
 which gives a spectral representation for the DGSMs. Truncating the summation 

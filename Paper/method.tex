@@ -1,6 +1,44 @@
 \section{Methodology}
 \label{sec:method}
 
+In this section, we present the computational strategy used for computing the active subspace in the case of
+H$_2$/O$_2$ reaction kinetics with uncertain pre-exponent of individual reaction rates provided in
+Table~\ref{tab:kinetics}. Specifically, we employ two strategies: One that involves computation of model
+gradients in order to construct the matrix (grad-based), $\mat{C}$ in~\eqref{eq:chat}, and the other that involves a local 
+linear approximation of the model output to circumvent the computational cost associated with gradient
+computation (grad-free). The grad-based approach is based on Algorithm 1.1, and the grad-free approach is
+based on Algorithm 1.2 in~\cite{Constantine:2015}. However, in this work, we have implemented the
+two strategies in an iterative manner and have demonstrated potential for additional savings in both cases.
+Additionally, for the present application, our findings based on the two strategies are observed to be consistent.
+Since, the grad-free approach is relatively more efficient, this observation encourages its use for high-dimensional
+applications as discussed later in Section~\ref{sec:app}. Note however, that the model output is required to be
+differentiable throughout the input domain in both cases.
+
+\subsection{Grad-based approach}
+\label{sub:grad}
+
+As discussed earlier, in the grad-based approach, the elements of $\mat{C}$ are estimated using model gradients.
+ In situations where the gradient is not available analytically, one could consider using
+finite difference and other relatively more efficient techniques such as automatic differentiation~\cite{Kiparissides:2009} 
+and adjoint-based gradient computation~\cite{Jameson:1988,Gunzburger:2003,Borzi:2011,Alexanderian:2017}.
+Model evaluations at neighbouring points are required if finite difference is used. Hence, for 
+$N$ samples in a $d$-dimensional parameter space, $N(d+1)$ model evaluations are needed. 
+
+We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$, at an initial set of $n_1$ samples. 
+For this purpose, $\bm{\xi}_i$'s are projected to the physical space as $\bm{\theta}_i$'s. Using the gradient
+evaluations, the matrix, $\mat{C}$ is computed. Eigenvalue decomposition of $\mat{C}$ yields an initial
+estimate of the dominant eigenspace, $\bm{W}_1$ and corresponding set of eigenvalues, $\bm{\Lambda}_1$.
+At each subsequent iteration, model evaluations are generated at a new set of $n_s$ samples. The new set
+of gradient evaluations are augmented with the available set to re-construct $\mat{C}$ followed by its eigenvalue
+decomposition. The relative
+change in the norm of the difference in individual components of the dominant eigenvectors between subsequent 
+iterations is evaluated. The process is terminated and the resulting eigenspace is considered to be converged once the
+relative change, $\delta w_{1,j}^{(r)}$, is smaller a given tolerance, $\tau$. A regression fit to
+ $G(\bm{w}_1^\top\bm{\xi})$ is used as a surrogate to characterize and quantify the uncertainty in the model
+ output. Moreover, the components of the dominant eigenvectors are used to compute the activity scores which
+ provide an insight into the relative importance of the uncertain parameters. The sequence of steps for the grad-based
+ approach are provided in Algorithm~\ref{alg:grad}.
+
 %% Grad-based algorithm
 
 \bigskip
@@ -65,6 +103,41 @@
 \end{breakablealgorithm}
 \bigskip
 
+In order to motivate the iterative strategy used in this work, we implement Algorithm~\ref{alg:grad} to the
+19-dimensional H$_2$/O$_2$ reaction kinetics problem with uncertain $A_i$'s. For the purpose of
+verification, $\mat{C}$ is initially constructed using a large set of samples ($N$~=~1000) in the input
+domain and the corresponding active subspace is computed. In Figure~\ref{fig:eig_comp}(a), we illustrate
+the comparison of the resulting eigenvalue spectrum ($\lambda_1 - \lambda_{19}$) with the same using a much 
+smaller set of samples, $n$~=~$\{20,40,80,120\}$. Additionally, in Figure~\ref{fig:eig_comp}(b), we compare
+relative L-2 norm of the difference between the first five eigenvectors of $\mat{C}$.
+%
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=0.45\textwidth]{./Figures/eig_comp}
+   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1_5}
+\caption{Left: A comparison of the eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
+obtained using a much larger sample size, $N$~=~1000. Right: Relative L-2 norm of the difference between
+individual components of the first five eigenvectors of $\mat{C}$, constructed using $N$~=~1000 samples,
+and using a smaller sample size, $n$ ranging from 20 to 240.} 
+\label{fig:eig_comp}
+\end{center}
+\end{figure}
+%
+Interestingly, we observe that the dominant eigenvalues~($\lambda_1 - \lambda_4$) are approximated 
+reasonably well with just 20 samples. As expected, the accuracy of higher-order eigenvalues is observed
+to improve with the sample size. Similarly, the relative error associated with the dominant eigenvectors
+($i$ = 1,2) is found to range from $\mathcal{O}(10^{-2} - 10^{-1})$ and is relatively much smaller than 
+the higher-order eigenvalues. In this case, since $\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we have
+a 1-dimensional active subspace. Hence, the first eigenvector sufficiently captures the uncertainty in
+the  model output. Therefore, a sample size of 20 is adequate for computing the active subspace in this
+case. The iterative strategy therefore offers a significant potential for computational advantage. 
+However, estimating the gradient of the model output imposes a significant computational burden.
+Hence, we explore the applicability of a so-called gradient-free approach as mentioned earlier, in the
+following section.  
+
+\subsection{Grad-free approach}
+\label{sub:gradfree}
+
 \bigskip
 \begin{breakablealgorithm}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
@@ -84,7 +157,7 @@
 	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N_\text{total}$.
 	\State Draw $M$ random samples, $\{\bm{\nu}_k\}_{k=1}^{M}$ $\in$ [-1,1]
          according to $\bm{f(\xi)}$.
-	\State Construct the matrix, $\mathcal{C}$ using Algorithm~\ref{alg:C}.
+	\State Construct the matrix, $\mathcal{C}$.
 	\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
 	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
         \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
@@ -98,7 +171,7 @@
 		\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
 		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
 		\State Compute $G(\bm\theta_k)$, $k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
-		\State Construct the matrix, $\mathcal{C}$ using Algorithm~\ref{alg:C}.
+		\State Construct the matrix, $\mathcal{C}$.
 		\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
 		\State Compute $\delta w_{1,j}^{(r)}$ = 
                        \scalebox{1.25}{$\frac{\|w_{1,j}^{r} - 
@@ -116,57 +189,57 @@
 \end{breakablealgorithm}
 \bigskip
 
-\bigskip
-\begin{breakablealgorithm}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-  \caption{Algorithm for constructing the matrix, $\mathcal{C}$}
-  \begin{algorithmic}[1]
-\Require $N_\text{total}$, $M$, $\{G(\bm\theta_k)\}_{k=1}^{N_\text{total}}$, 
-$\{\bm{\xi}_k\}_{k=1}^{N_\text{total}}$,
-         $\{\bm{\nu}_k\}_{k=1}^{M}$. 
-\Ensure $\mathcal{C}$. 
-    \Procedure{Matrix $\mathcal{C}$}{}
-	\State Set $p$ = $N_\text{total}$ - 1
-	\State Initialize $\mathcal{D}$ = $[0,\ldots,0]^\top$, $\mathcal{D}\in
-                            \mathbb{R}^{N_\text{total}\times 1}$
-	\For{$i$ = 1 to $M$}
-	\For {$j$ = 1 to $N_\text{total}$}
-	\State $\mathcal{D}(j)$ = 0
-	\For {$k$ = 1 to $d$}
-	\Statex\hspace{20mm} $\mathcal{D}(j) = \mathcal{D}(j) + \|\nu(i,k) - \xi(j,k)\|$
-	\EndFor
-	\EndFor
-	\State $[z,index(i,:)]$ = sort($\mathcal{D}$)
-	\For {$j$ = 1 to $p$}
-	\State $ip = (i-1)p + j$
-	\State $points(ip,:) = \xi(index(i,j),:)$
-	\EndFor
-	\EndFor
-	\For{$np$ = 1 to $M$}
-	\State $A$ = [1 $points((np-1)p+1,:)$]
-	\For{$i$ = $(np-1)p+2$ to ($np\ast p$)}
-	\State $A=[A; 1~points(i,:)]$
-	\EndFor
-	\State $B = G(index(np,1))$
-	\For{$i$ = 2 to $p$}
-	\State $B = [B;~G(index(np,i))]$
-	\EndFor
-	\State $z = A\setminus B$
-	\If {$np$ == 1}
-	\State $\mathcal{B} = z(2:N_p+1)$	
-	\Else 
-	\State $\mathcal{B} = [\mathcal{B}~z(2:N_p+1)]$
-	\EndIf
-	\EndFor
-	\State $\mathcal{C}$ = 0
-	\For {$i$ = 1 to $M$}
-	\State $z$ = $\mathcal{B}(:,i)$
-	\State $\mathcal{C}=\mathcal{C}+zz^\top$
-	\EndFor
-	\State $\mathcal{C}=\mathcal{C}/M$
-    \EndProcedure
-  \end{algorithmic}
-  \label{alg:C}
-\end{breakablealgorithm}
-\bigskip
+%\bigskip
+%\begin{breakablealgorithm}
+%\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+%\renewcommand{\algorithmicensure}{\textbf{Output:}}
+%  \caption{Algorithm for constructing the matrix, $\mathcal{C}$}
+%  \begin{algorithmic}[1]
+%\Require $N_\text{total}$, $M$, $\{G(\bm\theta_k)\}_{k=1}^{N_\text{total}}$, 
+%$\{\bm{\xi}_k\}_{k=1}^{N_\text{total}}$,
+%         $\{\bm{\nu}_k\}_{k=1}^{M}$. 
+%\Ensure $\mathcal{C}$. 
+%    \Procedure{Matrix $\mathcal{C}$}{}
+%	\State Set $p$ = $N_\text{total}$ - 1
+%	\State Initialize $\mathcal{D}$ = $[0,\ldots,0]^\top$, $\mathcal{D}\in
+%                            \mathbb{R}^{N_\text{total}\times 1}$
+%	\For{$i$ = 1 to $M$}
+%	\For {$j$ = 1 to $N_\text{total}$}
+%	\State $\mathcal{D}(j)$ = 0
+%	\For {$k$ = 1 to $d$}
+%	\Statex\hspace{20mm} $\mathcal{D}(j) = \mathcal{D}(j) + \|\nu(i,k) - \xi(j,k)\|$
+%	\EndFor
+%	\EndFor
+%	\State $[z,index(i,:)]$ = sort($\mathcal{D}$)
+%	\For {$j$ = 1 to $p$}
+%	\State $ip = (i-1)p + j$
+%	\State $points(ip,:) = \xi(index(i,j),:)$
+%	\EndFor
+%	\EndFor
+%	\For{$np$ = 1 to $M$}
+%	\State $A$ = [1 $points((np-1)p+1,:)$]
+%	\For{$i$ = $(np-1)p+2$ to ($np\ast p$)}
+%	\State $A=[A; 1~points(i,:)]$
+%	\EndFor
+%	\State $B = G(index(np,1))$
+%	\For{$i$ = 2 to $p$}
+%	\State $B = [B;~G(index(np,i))]$
+%	\EndFor
+%	\State $z = A\setminus B$
+%	\If {$np$ == 1}
+%	\State $\mathcal{B} = z(2:N_p+1)$	
+%	\Else 
+%	\State $\mathcal{B} = [\mathcal{B}~z(2:N_p+1)]$
+%	\EndIf
+%	\EndFor
+%	\State $\mathcal{C}$ = 0
+%	\For {$i$ = 1 to $M$}
+%	\State $z$ = $\mathcal{B}(:,i)$
+%	\State $\mathcal{C}=\mathcal{C}+zz^\top$
+%	\EndFor
+%	\State $\mathcal{C}=\mathcal{C}/M$
+%    \EndProcedure
+%  \end{algorithmic}
+%  \label{alg:C}
+%\end{breakablealgorithm}
+%\bigskip

@@ -27,7 +27,7 @@ $N$ samples in a $d$-dimensional parameter space, $N(d+1)$ model evaluations are
 We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$, at an initial set of $n_1$ samples. 
 For this purpose, $\bm{\xi}_i$'s are projected to the physical space as $\bm{\theta}_i$'s. Using the gradient
 evaluations, the matrix, $\hat{\mat{C}}$ is computed. Eigenvalue decomposition of $\hat{\mat{C}}$ yields an initial
-estimate of the dominant eigenspace, $\hat{\bm{W}_1}$ and corresponding set of eigenvalues, $\hat{\bm{\Lambda}_1}$.
+estimate of the dominant eigenspace, $\hat{\bm{w}_1}$ and corresponding set of eigenvalues, $\hat{\bm{\Lambda}_1}$.
 At each subsequent iteration, model evaluations are generated at a new set of $n_s$ samples. The new set
 of gradient evaluations are augmented with the available set to re-construct $\hat{\mat{C}}$ followed by its eigenvalue
 decomposition. The relative
@@ -94,7 +94,7 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\eta_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1,j}w_{1,j}^2$,
+	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}w_{1_{i,j}}^2$,
 	$i=1,\ldots,d$.
 	
     \EndProcedure
@@ -179,7 +179,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
   \caption{An iterative gradient-free approach for discovering the active subspace}
   \begin{algorithmic}[1]
-\Require $\theta_l$, $\theta_u$, $\alpha$, $M$, $\tau$. 
+\Require $\theta_l$, $\theta_u$, $M$, $\tau$. 
 \Ensure $\Lambda$, $W$, $\eta$. 
     \Procedure{Gradient-free}{}
 	\State Draw $n_1$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
@@ -214,7 +214,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\eta_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1,j}w_{1,j}^2$,
+	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}w_{1_{i,j}}^2$,
 	$i=1,\ldots,d$.
     \EndProcedure
   \end{algorithmic}
@@ -258,5 +258,53 @@ were found to be sufficient for approximating the active subspace in the 19-dime
 
 As mentioned earlier, the model output $f(\bm{\xi}(\bm{\theta}))$ predominantly varies in the active subspace. Hence, 
 $f(\bm{\xi}(\bm{\theta}))$ can be transformed as a function of the active variable as $G(\bm{w}_1^\top\bm{\xi})$ in
-the subspace. 
+the subspace. The plot of $G$ versus $\bm{w}_1^\top\bm{\xi}$, regarded as the \textit{sufficient summary plot} (SSP) is 
+compared for the two approaches in Figure~\ref{fig:comp_ssp}.
+%
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=0.48\textwidth]{./Figures/comp_ssp}
+\caption{An illustrative comparison of the SSPs generated using the grad-based and the grad-free approaches.}
+\label{fig:comp_ssp}
+\end{center}
+\end{figure}
+%
+The two SSPs are observed to be in excellent agreement with each other. Moreover, it is interesting to note
+that the variability in ignition
+delay based on the considered prior marginals for $A_i$'s is observed to be approximately linear in the
+active subspace; consistent with the fact the it is 1-dimensional.
+
+We extend the comparative assessment of the two approaches by estimating the activity score for individual
+uncertain parameters ($\alpha_i$) using
+the components of the dominant eigenvector in the following equation:
+%
+\be
+\alpha_i(n) = \sum\limits_{j=1}^{\mathcal{S}}\Lambda_{1_{i,j}}w_{1_{i,j}}^2,~i = 1,\ldots,N_p
+\ee
+%
+where $n$ is the sample size. The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated using
+the two approaches are plotted in Figure~\ref{fig:comp_as} (left). Additionally, for the purpose of verification, we 
+compare these estimates with those obtained using the DGSMs~\cite{Vohra:2018} in 
+Figure~\ref{fig:comp_as} (right). 
+%
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
+  \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
+\caption{Left: A bar-graph of activity scores ($\alpha_i$'s) for the 19 uncertain pre-exponents ($A_i$'s).
+Right: A plot of the screening metric ($\widehat{\mathcal{C}_i\mu_i}$), defined as a normalized product of the
+Poincare constant and the DGSM ($\mu_i$) (adapted from~\cite{Vohra:2018}).}
+\label{fig:comp_as}
+\end{center}
+\end{figure}
+%
+The activity scores estimated using the two approaches agree favourably with each other as well as those
+based on the screening metric involving the DGSMs from~\cite{Vohra:2018}. It is observed that the uncertainty
+associated with the ignition delay is largely due to the uncertainty in $A_9$ and $A_1$. Sensitivity towards
+$A_{15}$ and $A_{17}$ is also found to be significant. 
+
+The above comparisons establish consistency between the two approaches. Note that the computational
+effort in the case of grad-free approach is significantly smaller. Hence, we are encouraged to use the
+grad-free approach for the 33-dimensional application in the next section. 
+
 

@@ -66,10 +66,10 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 	\Statex\hspace{5mm} iii. Project to the physical space:
         $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\Xi}_k\}_{k=1}^{n_1(N_p+1)}$
 	\Statex\hspace{5mm} iv. Using the augmented set, $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}$
-        to compute $\bm{g}^k$. 
-	\State Compute the matrix, $\mathcal{C}$ = 
+         compute $\bm{g}^k$. 
+	\State Compute the matrix, $\mat{C}$ = 
         $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
-	\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
+	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
 	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
         \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
         $W^{(0)}~=~\begin{bmatrix} w_1^{(0)} & w_2^{(0)} \end{bmatrix}$, 
@@ -83,9 +83,9 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
 		\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
              	$k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
-		\State Compute $\mathcal{C}$ = 
+		\State Compute $\mat{C}$ = 
         	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
-		\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
+		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
 		\State Compute $\delta w_{1,j}^{(r)}$ = 
                        \scalebox{1.25}{$\frac{\|(w_{1,j}^{r})^2 - 
                        (w_{1,j}^{r-1})^2\|}{\|(w_{1,j}^{r-1})^2\|}$}, 
@@ -188,10 +188,10 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
         $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
 	\State $N_\text{total}$ = $n_1$ 
 	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N_\text{total}$.
-	\State Draw $M$ random samples, $\{\bm{\nu}_k\}_{k=1}^{M}$ $\in$ [-1,1]
+	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
          according to $\bm{f(\xi)}$.
-	\State Construct the matrix, $\mathcal{C}$.
-	\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
+	\State Construct the matrix, $\mat{C}$.
+	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
 	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
         \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
         $W^{(0)}~=~\begin{bmatrix} w_1^{(0)} & w_2^{(0)} \end{bmatrix}$, 
@@ -204,8 +204,8 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 		\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
 		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
 		\State Compute $G(\bm\theta_k)$, $k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
-		\State Construct the matrix, $\mathcal{C}$.
-		\State Eigenvalue decomposition, $\mathcal{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
+		\State Construct the matrix, $\mat{C}$.
+		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
 		\State Compute $\delta w_{1,j}^{(r)}$ = 
                        \scalebox{1.25}{$\frac{\|(w_{1,j}^{r})^2 - 
                        (w_{1,j}^{r-1})^2\|}{\|(w_{1,j}^{r-1})^2\|}$}, 
@@ -229,11 +229,35 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
   \caption{Algorithm for constructing the matrix, $\mat{C}$}
   \begin{algorithmic}[1]
 	\Procedure{Local Linear Approximation}{}
+	\State Draw $N$ random samples, $\{\bm{\xi}_k\}_{k=1}^{N}$ $\in$ [-1,1]
+	according to $\bm{f(\xi)}$.
+	\State Project to the physical space:
+	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{N}$
+	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N$.
+	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
+	according to $\bm{f(\xi)}$.
+	\State Choose an integer $p \leq N$ 
+	\State For each $i=1, \ldots, M$, compute 
+	\[
+	\begin{aligned}
+	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_k\}_{k=1}^{N} \text{ to } \bm{\nu}_i\}\\
+	\vspace{-2mm}
+	\Psi_i &= \text{subset of } G(\bm\theta_k) \text{ corresponding to the points in } \Phi_i
+	\end{aligned}
+	\]
+	\State Compute linear least square fits 
+	 $G(\bm\theta_k) \approx c_i + b_i^T\bm{\xi}_k$, \  $\bm{\xi}_k \in \Phi_i, \ G(\bm\theta_k) \in \Psi_i$
+	\State Compute the matrix 
+	\[
+	\mat{C} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = {W}{\Lambda}{W}^T
+	\]
 	\EndProcedure
   \end{algorithmic}
   \label{alg:free2}
 \end{breakablealgorithm}
 \bigskip
+
+
 
 The grad-free approach when implemented to the 19-dimensional H$_2$/O$_2$ reaction kinetics problem
 with uncertain pre-exponents ($A_i$'s) also yielded a 1-dimensional active subspace. In Figure~\ref{fig:comp} (left),

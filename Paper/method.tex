@@ -21,7 +21,7 @@ As discussed earlier, in the grad-based approach, the elements of $\hat{\mat{C}}
  In situations where the gradient is not available analytically, one could consider using
 finite difference and other relatively more efficient techniques such as automatic differentiation~\cite{Kiparissides:2009} 
 and adjoint-based gradient computation~\cite{Jameson:1988,Gunzburger:2003,Borzi:2011,Alexanderian:2017}.
-Model evaluations at neighbouring points are required if finite difference is used. Hence, for 
+Model evaluations at neighboring points are required if finite difference is used. Hence, for 
 $N$ samples in a $d$-dimensional parameter space, $N(d+1)$ model evaluations are needed. 
 
 We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$, at an initial set of $n_1$ samples. 
@@ -35,9 +35,16 @@ change in the norm of the difference in squared value of individual components o
 iterations is evaluated. The process is terminated and the resulting eigenspace is considered to be converged once
 highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a given tolerance, $\tau$. A regression fit to
  $G(\bm{w}_1^\top\bm{\xi})$ is used as a surrogate to characterize and quantify the uncertainty in the model
- output. Moreover, the components of the dominant eigenvectors are used to compute the activity scores which
- provide an insight into the relative importance of the uncertain parameters. The sequence of steps for the grad-based
- approach are provided in Algorithm~\ref{alg:grad}.
+ output. Moreover, the components of the dominant eigenvectors are used to compute the activity scores ($\alpha_i$'s)
+ which provide an insight into the relative importance of the uncertain parameters:
+ %
+ \be
+\alpha_i(n) = \sum\limits_{j=1}^{\mathcal{S}}\Lambda_{1_{i,j}}w_{1_{i,j}}^2,~i = 1,\ldots,N_p
+\label{eq:as}
+\ee
+%
+where $n$ is the sample size. The sequence of steps for the grad-based approach are provided in 
+Algorithm~\ref{alg:grad}.
 
 %% Grad-based algorithm
 
@@ -48,12 +55,12 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
   \caption{An iterative gradient-based approach for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $\tau$. 
-\Ensure $\Lambda$, $W$, $\eta$. 
+\Ensure $\bm{\hat{\Lambda}}$, $\bm{\hat{W}}$, $\bm{\alpha}$. 
     \Procedure{Gradient-based}{}
 	\State Draw $n_1$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
          according to $\bm{f(\xi)}$.
 	\State Project to the physical space:
-        $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
+        $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)(\{\bm{\xi}_k\}_{k=1}^{n_1}$+1)
 	\State $N_\text{total}$ = $n_1$ 
 	\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
              $k=1, \ldots, N_\text{total}$.  
@@ -64,16 +71,17 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
         \{\xi_{k,j}+d\xi\}_{j=1}^{N_p} \nonumber
 	\ee
 	\Statex\hspace{5mm} iii. Project to the physical space:
-        $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\Xi}_k\}_{k=1}^{n_1(N_p+1)}$
+        $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}=\theta_l+0.5(\theta_u-\theta_l)(\{\bm{\Xi}_k\}_{k=1}^{n_1(N_p+1)}$+1)
 	\Statex\hspace{5mm} iv. Using the augmented set, $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}$
          compute $\bm{g}^k$. 
-	\State Compute the matrix, $\mat{C}$ = 
+	\State Compute the matrix, $\hat{\mat{C}}$ = 
         $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
-	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
-	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
-        \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
-        $W^{(0)}~=~\begin{bmatrix} w_1^{(0)} & w_2^{(0)} \end{bmatrix}$, 
-        $\Lambda_1^{(0)}\in \mathbb{R}^{N_p\times\mathcal{S}}$
+	\State Eigenvalue decomposition, $\hat{\mat{C}}$ = $\bm{\hat{W}^{(0)}}\bm{\hat{\Lambda}^{(0)}} 
+	\bm{\hat{W}^{(0)\top}}$
+	\State Partition the Eigenpairs: $\bm{\hat{\Lambda}^{(0)}}~=~ 
+        \begin{bmatrix} \bm{\Lambda_1^{(0)}} & \\ & \bm{\Lambda_2^{(0)}} \end{bmatrix}$, 
+        $\bm{\hat{W}^{(0)}}~=~\begin{bmatrix} \bm{w_1^{(0)}} & \bm{w_2^{(0)}} \end{bmatrix}$, 
+        $\bm{\Lambda_1^{(0)}}\in \mathbb{R}^{N_p\times\mathcal{S}}$
 	\State Set $r$ = 0
 	\Loop
 		\State Set $r$ = $r$ + 1
@@ -85,16 +93,17 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
              	$k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
 		\State Compute $\mat{C}$ = 
         	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
-		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
-		\State Compute $\delta w_{1,j}^{(r)}$ = 
-                       \scalebox{1.25}{$\frac{\|(w_{1,j}^{r})^2 - 
-                       (w_{1,j}^{r-1})^2\|}{\|(w_{1,j}^{r-1})^2\|}$}, 
+		\State Eigenvalue decomposition, $\hat{\mat{C}}$ = $\bm{\hat{W}^{(r)}}\bm{\hat{\Lambda}^{(r)}} 
+		\bm{\hat{W}^{(r)\top}$}
+		\State Compute $\bm{\delta w_{1,j}^{(r)}}$ = 
+                       \scalebox{1.25}{$\frac{\|(\bm{w_{1,j}^{r}})^2 - 
+                       (\bm{w_{1,j}^{r-1}})^2\|}{\|(\bm{w_{1,j}^{r-1}})^2\|}$}, 
                        $j = 1,\ldots,\mathcal{S}$.
-		\If {$\max\left(\delta w_{1,j}^{(r)}\right)<\tau$}
+		\If {$\max\left(\bm{\delta w_{1,j}^{(r)}}\right)<\tau$}
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}w_{1_{i,j}}^2$,
+	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \hat{\Lambda}_{1_{i,j}}w_{1_{i,j}}^2$,
 	$i=1,\ldots,d$.
 	
     \EndProcedure
@@ -113,8 +122,8 @@ relative L-2 norm of the difference between the first five eigenvectors of $\hat
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/eig_comp}
-   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1_5}
+  \includegraphics[width=0.42\textwidth]{./Figures/eig_comp}
+   \includegraphics[width=0.45\textwidth]{./Figures/err_eigv_1_5}
 \caption{Left: A comparison of the eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
 obtained using a much larger sample size, $N$~=~1000. Right: Relative L-2 norm of the difference between
 individual components of the first five eigenvectors of $\mat{C}$, constructed using $N$~=~1000 samples,
@@ -156,7 +165,7 @@ as discussed further below.
 
 In the grad-free approach, the model output is first computed at an initial set of $n_1$ samples. An independent
 set of $M$ samples is also drawn according to the joint probability distribution of the inputs. For each sample
-in $M$, $p$ nearest neighbours in the $n_1$ set are identified. A least-squares fit to model evaluations at
+in $M$, $p$ nearest neighbors in the $n_1$ set are identified. A least-squares fit to model evaluations at
 the $p$ samples is performed. The slope vector ($\bm{b}_i$) of the regression-fit is stored separately and the process is
 repeated for each sample in $M$. The symmetric and positive semi-definite matrix, $\hat{\mat{C}}$ is hence constructed
 using the slope vectors as follows:
@@ -180,22 +189,23 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
   \caption{An iterative gradient-free approach for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $M$, $\tau$. 
-\Ensure $\Lambda$, $W$, $\eta$. 
+\Ensure $\bm{\hat{\Lambda}}$, $\bm{\hat{W}}$, $\bm{\alpha}$. 
     \Procedure{Gradient-free}{}
 	\State Draw $n_1$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
          according to $\bm{f(\xi)}$.
 	\State Project to the physical space:
-        $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
+        $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)(\{\bm{\xi}_k\}_{k=1}^{n_1}$+1)
 	\State $N_\text{total}$ = $n_1$ 
 	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N_\text{total}$.
 	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
          according to $\bm{f(\xi)}$.
-	\State Construct the matrix, $\mat{C}$.
-	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
-	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
-        \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
-        $W^{(0)}~=~\begin{bmatrix} w_1^{(0)} & w_2^{(0)} \end{bmatrix}$, 
-        $\Lambda_1^{(0)}\in \mathbb{R}^{d\times\mathcal{S}}$
+	\State Construct the matrix, $\hat{\mat{C}}$ using Algorithm~\ref{alg:free2}.
+	\State Eigenvalue decomposition, $\hat{\mat{C}}$ = 
+	$\bm{\hat{W}^{(0)}}\bm{\hat{\Lambda}^{(0)}} \bm{\hat{W}^{(0)\top}}$
+	\State Partition the Eigenpairs: $\bm{\hat{\Lambda}^{(0)}}~=~ 
+        \begin{bmatrix} \bm{\Lambda_1^{(0)}} & \\ & \bm{\Lambda_2^{(0)}} \end{bmatrix}$, 
+        $\bm{\hat{W}^{(0)}}~=~\begin{bmatrix} \bm{w_1^{(0)}} & \bm{w_2^{(0)}} \end{bmatrix}$, 
+        $\bm{\Lambda_1^{(0)}}\in \mathbb{R}^{d\times\mathcal{S}}$
 	\State Set $r$ = 0
 	\Loop
 		\State Set $r$ = $r$ + 1
@@ -204,13 +214,14 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 		\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
 		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
 		\State Compute $G(\bm\theta_k)$, $k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
-		\State Construct the matrix, $\mat{C}$.
-		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
-		\State Compute $\delta w_{1,j}^{(r)}$ = 
-                       \scalebox{1.25}{$\frac{\|(w_{1,j}^{r})^2 - 
-                       (w_{1,j}^{r-1})^2\|}{\|(w_{1,j}^{r-1})^2\|}$}, 
+		\State Construct the matrix, $\hat{\mat{C}}$ using Algorithm~\ref{alg:free2}.
+		\State Eigenvalue decomposition, $\hat{\mat{C}}$ = $\bm{\hat{W}^{(r)}}\bm{\hat{\Lambda}^{(r)}}
+		 \bm{\hat{W}^{(r)\top}}$
+		\State Compute $\bm{\delta w_{1,j}^{(r)}}$ = 
+                       \scalebox{1.25}{$\frac{\|(\bm{w_{1,j}^{r}})^2 - 
+                       (\bm{w_{1,j}^{r-1}})^2\|}{\|(\bm{w_{1,j}^{r-1}})^2\|}$}, 
                        $j = 1,\ldots,\mathcal{S}$.
-		\If {$\max\left(\delta w_{1,j}^{(r)}\right)<\tau$}
+		\If {$\max\left(\bm{\delta w_{1,j}^{(r)}}\right)<\tau$}
 			\State break
 		\EndIf
 	\EndLoop
@@ -232,7 +243,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 	\State Draw $N$ random samples, $\{\bm{\xi}_k\}_{k=1}^{N}$ $\in$ [-1,1]
 	according to $\bm{f(\xi)}$.
 	\State Project to the physical space:
-	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{N}$
+	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)(\{\bm{\xi}_k\}_{k=1}^{N}$+1)
 	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N$.
 	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
 	according to $\bm{f(\xi)}$.
@@ -246,10 +257,11 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 	\end{aligned}
 	\]
 	\State Compute linear least square fits 
-	 $G(\bm\theta_k) \approx c_i + b_i^T\bm{\xi}_k$, \  $\bm{\xi}_k \in \Phi_i, \ G(\bm\theta_k) \in \Psi_i$
+	 $G(\bm\theta_k) \approx c_i + \bm{b}_i^T\bm{\xi}_k$, \  $\bm{\xi}_k \in \Phi_i, \ G(\bm\theta_k) \in \Psi_i$
 	\State Compute the matrix 
 	\[
-	\mat{C} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = {W}{\Lambda}{W}^T
+	\hat{\mat{C}} \approx \frac{1}{M} \sum_{i=1}^{M} \bm{b}_i \bm{b}_i^\top = 
+	{\hat{\bm{W}}}{\hat{\bm{\Lambda}}}{\hat{\bm{W}}}^\top
 	\]
 	\EndProcedure
   \end{algorithmic}
@@ -287,7 +299,7 @@ compared for the two approaches in Figure~\ref{fig:comp_ssp}.
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.48\textwidth]{./Figures/comp_ssp}
+  \includegraphics[width=0.45\textwidth]{./Figures/comp_ssp}
 \caption{An illustrative comparison of the SSPs generated using the grad-based and the grad-free approaches.}
 \label{fig:comp_ssp}
 \end{center}
@@ -299,22 +311,16 @@ delay based on the considered prior marginals for $A_i$'s is observed to be appr
 active subspace; consistent with the fact the it is 1-dimensional.
 
 We extend the comparative assessment of the two approaches by estimating the activity score for individual
-uncertain parameters ($\alpha_i$) using
-the components of the dominant eigenvector in the following equation:
-%
-\be
-\alpha_i(n) = \sum\limits_{j=1}^{\mathcal{S}}\Lambda_{1_{i,j}}w_{1_{i,j}}^2,~i = 1,\ldots,N_p
-\ee
-%
-where $n$ is the sample size. The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated using
-the two approaches are plotted in Figure~\ref{fig:comp_as} (left). Additionally, for the purpose of verification, we 
+uncertain parameters ($\alpha_i$) using~\eqref{eq:as}.
+The activity scores for the 19 uncertain pre-exponents ($A_i$'s) are plotted in Figure~\ref{fig:comp_as} (left). 
+Additionally, for the purpose of verification, we 
 compare these estimates with those obtained using the DGSMs~\cite{Vohra:2018} in 
 Figure~\ref{fig:comp_as} (right). 
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
-  \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
+  \includegraphics[width=0.42\textwidth]{./Figures/comp_as}
+  \includegraphics[width=0.42\textwidth]{./Figures/ub_conv_kinetics_rich}
 \caption{Left: A bar-graph of activity scores ($\alpha_i$'s) for the 19 uncertain pre-exponents ($A_i$'s).
 Right: A plot of the screening metric ($\widehat{\mathcal{C}_i\mu_i}$), defined as a normalized product of the
 Poincare constant and the DGSM ($\mu_i$) (adapted from~\cite{Vohra:2018}).}
@@ -322,7 +328,7 @@ Poincare constant and the DGSM ($\mu_i$) (adapted from~\cite{Vohra:2018}).}
 \end{center}
 \end{figure}
 %
-The activity scores estimated using the two approaches agree favourably with each other as well as those
+The activity scores estimated using the two approaches agree favorably with each other as well as those
 based on the screening metric involving the DGSMs from~\cite{Vohra:2018}. It is observed that the uncertainty
 associated with the ignition delay is largely due to the uncertainty in $A_9$ and $A_1$. Sensitivity towards
 $A_{15}$ and $A_{17}$ is also found to be significant. 

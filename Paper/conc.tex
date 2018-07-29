@@ -1,2 +1,69 @@
-\section{Conclusion}
+\section{Summary and Discussion}
 \label{sec:conc}
+
+%%Brief summary
+%-Mathematical connections between Sobol, DGSMs, and activity scores exist and could
+%be exploited to perform GSA with reduced effort.
+%-Iterative implementation yields advantage
+%-Consistency between the two approaches with DGSM as well as among themselves
+%encourages the use of grad-free.
+%-Grad-free was found to be suitable for a high-dimensional problem.
+%-Based on the results presented, the following parameter were found to be 
+%significant.
+%
+%discussion
+%- Methodology is agnostic to the choice of mechanism and could be applied to other
+%systems.
+%- However, constraints exist in terms of differentiability of the QoI. Not all
+%input/output relationships exhibit an active subspace. However, it is important to
+%check.
+%- Activity scores could be used to identify key reactions and thereby construct
+%reduced order mechanisms for reducing computational effort and investigating the
+%inadequacy associated with rate laws.
+ 
+ In this work, we focused on the uncertainty associated with the rate-controlling parameters in
+ the H$_2$/O$_2$ reaction mechanism and its impact on ignition delay predictions. The mechanism
+ involves 19 different reactions and in each case, the reaction rate depends upon the choice of
+ a pre-exponent and an activation energy. Hence, in theory, the evolution of the chemical system
+ depends upon 38 inputs which is reasonably high-dimensional. In such case, conventional means
+ for uncertainty quantification such as those involving a surrogate model construction as well as
+ sensitivity analysis would be computationally challenging and even prohibitive in some cases. 
+ Hence, we focused our efforts on reducing the dimensionality of the problem by identifying important
+ directions (active subspaces) in the parameter space such that the variability in the model output is 
+ predominantly captured along these directions. Additionally, we demonstrate that the activity scores,
+ computed using the components of the dominant eigenvectors can be used to approximate the
+ DGSMs. Furthermore, we establish mathematical linkages between the different global sensitivity measures:
+ activity scores, DGSMs, and total Sobol' index which could be exploited to reduce computational effort 
+ associated with global sensitivity analysis. 
+ 
+Two computational strategies were explored to compute the active subspace for the H$_2$/O$_2$
+kinetics application in this work. The first strategy referred to as grad-based requires computation of gradient of the 
+model output with respect to the input, whereas, the second strategy, referred to as grad-free implements a local
+linear approximation to the model output in order to estimate the gradient. The two strategies are shown to yield
+consistent results for the 19-dimensional problem whereby only the pre-exponents are considered to be uncertain.
+Additionally, the activity scores are also shown to be consistent with the screening metric estimates based on
+DGSMs in~\cite{Vohra:2018}. Note that an iterative procedure is adopted for implementing the two strategies
+for enhancing computational efficiency. 
+Motivated by these findings, the grad-free approach is used for computing the active subspace in the high-dimensional
+case involving 33 uncertain parameters. Based on the prior marginals of the uncertain parameters, our results
+indicate that the uncertainty in the ignition delay is largely dependent on $A_1$, $A_9$, and $E_{a,1}$, although
+ contributions from $A_{15}$ and $A_{17}$ are also found to be significant. 
+ 
+ The authors would like to highlight that the computational strategy presented in this work is agnostic to the choice
+ of the chemical system and could thus be easily adapted for other systems. However, it is important to note that
+ its applicability depends upon the nature of the relationship between the model output and the inputs. Specifically,
+ the model output is required to be differentiable throughout the considered input domain to be able to evaluate
+ the active subspace with reasonable accuracy. Hence, it is a realistic possibility that an active subspace might not
+ exist for a given input-output relationship. While the active subspace could be exploited for a forward propagation of
+ the uncertainty from inputs to the output, the low-dimensional surrogate could further be used to accelerate 
+ calibration of the rate-controlling parameters in a Bayesian setting. Moreover, the activity scores could help
+ identify important stages in a complex reaction mechanism and thereby guide development of a reduced-order
+ surrogate. Furthermore, dimension reduction using active subspaces could be useful in studies aimed at
+ investigating the inadequacy or model error associated with the reaction rate laws for such systems.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 

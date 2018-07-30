@@ -1,56 +1,66 @@
 \section{Active subspaces and sensitivity analysis}
 \label{sec:assa}
-In this section, we provide key elements of the active subspace methodology in~\ref{sub:ac}, and
-provide theoretical connections between the global sensitivity measures: DGSMs, activity scores,
-and the total Sobol index in~\ref{sub:gsa}.
+In this section, we provide key elements of the active subspace methodology
+and provide theoretical connections between the global
+sensitivity measures (DGSMs), activity scores, and the total Sobol' indices.
 
 \subsection{Active subspaces}
 \label{sub:ac}
-%We recall some background regarding active subspaces~\cite{Constantine:2015}.
-As mentioned earlier, the active subspace is low-dimensional linear subspace that constitutes
-important directions in a model's input space~\cite{Constantine:2015}. The effective variability
-in the model output due to uncertain inputs is predominantly captured along these directions.
-Mathematically, these directions are essentially the eigenvectors of a positive semi-definite
-matrix, $\mat{C}$, defined as follows:
+As mentioned earlier, the active subspace is low-dimensional subspace
+that constitutes important directions in a model's input
+space~\cite{Constantine:2015}. The effective variability in the model output
+due to uncertain inputs is predominantly captured along these directions.
+Mathematically, these directions are the eigenvectors of a positive
+semi-definite matrix, $\mat{C}$, defined as follows:
 %
 \be
 \mat{C} = \int_\Omega (\nabla_{\bm{\xi}}f)(\nabla_{\bm{\xi}}f)^\top dP_{\bm{\xi}}
 \label{eq:C}
 \ee
 %
-where $\Omega$:~$[-1,1]^{N_p}$ is the domain of $\bm{\xi}$, and $N_p$ is the number of uncertain
-inputs. $dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
-distribution of $\bm{\xi}$. Note that the function, $f$ is considered to be continuous and differentiable
-in the considered parameter domain. Hence, it is possible that a given $f(\bm{\xi})$ might not admit an
-active subspace. However, it is of remarkable interest to investigate if one exists since the subspace could
-be exploited to reduce the dimensionality of the problem and hence the associated computational effort.
-$\nabla_{\bm{\xi}}f$ denotes a vector with individual components
-being partial derivatives of $f$ with respect to the $i^\text{th}$ input, $\xi_i$. Since $\mat{C}$ is symmetric and
-positive semi-definite, it admits a real eigenvalue decomposition:
+where $\Omega$:~$[-1,1]^{N_p}$ is the domain of $\bm{\xi}$, and $N_p$ is the
+number of uncertain inputs. \alennote{Why do we limit to $[-1, 1]^\Np$?} 
+$dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
+distribution of $\bm{\xi}$. Note that the function, $f$ is considered to be continuous 
+and differentiable in the considered parameter domain. 
+%Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
+%subspace. However, it is of remarkable interest to investigate if one exists
+%since the subspace could be exploited to reduce the dimensionality of the
+%problem and hence the associated computational effort.
+Here 
+$\nabla_{\bm{\xi}}f$ denotes the gradient vector. 
+%with individual components
+%being partial derivatives of $f$ with respect to the $i^\text{th}$ input, $\xi_i$. 
+Since $\mat{C}$ is symmetric and
+positive semi-definite, it admits a spectral decomposition:
 %
 \be
 \mat{C} = \bm{W}\bm{\Lambda}\bm{W}^\top
 \ee
 %
-where $\bm{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with $\lambda_i$'s
- sorted in descending order, $i:\{1,2,\ldots,N_p\}$. The eigenpairs are partitioned about
- the $i^{\text{th}}$ eigenvalue such that the ratio, $\left(\frac{\lambda_i}{\lambda_{i+1}}\right)$ $\gg$ 1
- as follows:
- %
- \be
+where $\bm{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with
+$\lambda_i$'s sorted in descending order
+\[
+     \lambda_1 \geq \lambda_2 \geq \cdot \geq \lambda_\Np \geq 0.
+\] 
+The eigenpairs are partitioned about the $i^{\text{th}}$ eigenvalue such that
+the ratio, $\left(\frac{\lambda_i}{\lambda_{i+1}}\right)$ $\gg$ 1 as follows:
+\be
  \bm{W} = [\bm{w}_1~\bm{w}_2],~~\bm{\Lambda} = \begin{bmatrix}\bm{\Lambda}_1 & \\  &
   \bm{\Lambda}_2 \\
 \end{bmatrix}
- \ee
+\ee
  %
- where $\bm{w}_1$ comprises the dominant eigenspace of $\mat{C}$ regarded as the active subspace,
- and $\bm{\Lambda}_1$ is the corresponding set of eigenvalues. The active subspace is used to 
- construct the so-called active variables, $\bm{w}_1^\top \bm{\xi}$ and $f(\bm{\xi}(\theta))$ is transformed
- as $G(\bm{w}_1^\top \bm{\xi})$. In practice, the set of samples, $\bm{\xi}_i$'s are projected to the
- physical space as $\bm{\theta}_i$'s at which the model output, $f(\bm{\xi}(\theta))$ is computed. 
- The matrix, $\mat{C}$ is typically approximated using pseudo-random sampling techniques such 
- as Monte Carlo and Latin hypercube sampling. The integral in~\eqref{eq:C} is replaced with a
- summation as follows:
+ where $\bm{w}_1$ comprises the dominant eigenspace of $\mat{C}$ regarded as
+the active subspace, and $\bm{\Lambda}_1$ is the corresponding set of
+eigenvalues. The active subspace is used to construct the so-called active
+variables, $\bm{w}_1^\top \bm{\xi}$ and $f(\bm{\xi}(\theta))$ is transformed as
+$G(\bm{w}_1^\top \bm{\xi})$. In practice, the set of samples, $\bm{\xi}_i$'s
+are projected to the physical space as $\bm{\theta}_i$'s at which the model
+output, $f(\bm{\xi}(\theta))$ is computed.  The matrix, $\mat{C}$ is typically
+approximated using pseudo-random sampling techniques such as Monte Carlo and
+Latin hypercube sampling. The integral in~\eqref{eq:C} is replaced with a
+summation as follows:
  %
  \be
  \mat{C}\approx \hat{\mat{C}} = \frac{1}{N}\sum\limits_{i=1}^{N} 
@@ -59,18 +69,22 @@ where $\bm{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with $\lambda_i$'s
 \label{eq:chat}
  \ee
  %
- It has been shown that the accuracy of approximated dominant eigenspace, $\hat{\bm{w}}_1$ is inversely
- proportional to the difference between the smallest eigenvalue in $\hat{\bm{\Lambda}}_1$ and the
- largest eigenvalue in $\hat{\bm{\Lambda}}_2$~\cite{Constantine:2014}. 
- 
- Components of the eigenvectors
- in the active subspace could be used for estimating the so-called activity scores as a measure for
- global sensitivity and also be used for approximating the DGSMs as discussed in the following section.
+%%It has been shown that the accuracy of approximated dominant eigenspace,
+%%$\hat{\bm{w}}_1$ is inversely proportional to the difference between the
+%%smallest eigenvalue in $\hat{\bm{\Lambda}}_1$ and the largest eigenvalue in
+%%$\hat{\bm{\Lambda}}_2$~\cite{Constantine:2014}. 
+%%Components of the eigenvectors in the active subspace could be used for
+%%estimating the so-called activity scores as a measure for global sensitivity
+%%and also be used for approximating the DGSMs as discussed in the following
+%%section.
   
+
 \subsection{Global sensitivity measures}
 \label{sub:gsa}
-The total Sobol' index ($T_i(f)$) of a model output, $f(\theta_i)$ quantifies the total contribution of the
-input, $\theta_i$ to the variance of the output. Mathematically, this can be expressed as follows:
+The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\theta)$ 
+quantifies the total contribution of the
+input, $\theta_i$ to the variance of the output.\alennote{references} 
+Mathematically, this can be expressed as follows:
 %
 \be
 T_i(f) = 1 - 
@@ -78,12 +92,13 @@ T_i(f) = 1 -
 \label{eq:total}
 \ee
 %
-where $\bm{\theta}_{\sim i}$ is a vector of all but $i^\text{th}$ uncertain input, and $\V$ denotes the variance.
-Determining converged estimates of $T_i(f)$ typically involves tens of thousands of model runs and is therefore
-prohibitive in the case of compute-intensive applications. The DGSMs~\cite{Sobol:2009}
-provide a means for approximating the upper bound on $T_i(f)$ with fewer computations as 
-discussed in~\cite{Vohra:2018}. 
-\smallskip
+where $\bm{\theta}_{\sim i}$ is a vector of all but $i^\text{th}$ uncertain
+input, and $\V$ denotes the variance (~\alennote{Explain this more clearly.}).
+Determining accurate estimates of $T_i(f)$ typically involves tens of
+thousands of model runs and is therefore prohibitive in the case of
+compute-intensive applications. The DGSMs~\cite{Sobol:2009} provide a means for
+approximating the upper bound on $T_i(f)$ with fewer computations; see 
+also~\cite{Vohra:2018}. 
 
 For $f: \Omega \to \R$, we consider the DGSMs,
 \[
@@ -101,28 +116,34 @@ where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$.
 This also shows that $\sum_{j=1}^\Np \nu_i(f) = \trace(\mat{C})$.
 We consider the spectral decomposition of $\mat{C}$, given by  
 $\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top$, where 
-$\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$ and
+$\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$, in descending
+order, and
 $\vec{u}_k$ are the corresponding (orthonormal) eigenvectors.
 We note that,
 \begin{equation}\label{equ:spectral_DGSM}
 \nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top\Big) \vec{e}_i
  = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2, 
 \end{equation}
-which gives a spectral representation for the DGSMs. Truncating the summation 
-leads to the notion of activity scores introduced in~\cite{Diaz:2016,Constantine:2017}
-defined as follows: 
+which gives a spectral representation for the DGSMs. 
+In the case the eigenvalues decay rapidly to zero, we can obtain
+accurate approximations of $\nu_i(f)$ by Truncating the summation: 
+\newcommand{\act}[3]{\nu_{{#2},{#3}}({#1})}
+\newcommand{\actt}[3]{\tilde{\nu}_{{#2},{#3}}({#1})}
 \[
-   \alpha_i(f; r) =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2,
+   \act{f}{i}{r} =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2,
    \quad j = 1, \ldots, \Np, \quad r \leq \Np.
 \]
-The activity scores connect ideas from active subspaces and global sensitivity
-analysis, and can be used to approximate DGSMs.  The following result, which
-can be found in~\cite{Diaz:2016,Constantine:2017}, quantifies the error in this
+The quantities $\act{f}{i}{r}$ are called activity scores
+in~\cite{Diaz:2016,Constantine:2017}.
+%The activity scores connect ideas from active subspaces and global sensitivity
+%analysis, and can be used to approximate DGSMs.  
+The following result, which
+can also be found in~\cite{Diaz:2016,Constantine:2017}, quantifies the error in this
 approximation. We provide a short proof for completeness. 
 \begin{proposition}\label{prp:dgsm_bound} 
 For $1 \leq r \leq \Np$,
 \[
-0 \leq \nu_i(f) - \alpha_i(f; r) \leq \lambda_{r+1}, \quad i = 1, \ldots, \Np.
+0 \leq \nu_i(f) - \act{f}{i}{r} \leq \lambda_{r+1}, \quad i = 1, \ldots, \Np.
 \] 
 \end{proposition}
 \begin{proof} 
@@ -153,27 +174,28 @@ For $1 \leq r \leq \Np$,
 %\nu_i(f) \leq \alpha_i(f;r) + \lambda_{r+1}, \quad \quad i = 1,\ldots,N_p
 %\]
 
-Note that, $\nu_i(f) - \alpha(f; r)  = \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \geq 0$,
+Note that, $\nu_i(f) - \act{f}{i}{r}= \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \geq 0$,
 which gives the first inequality. To see the upper bound, we note,
 \[
    \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \leq \lambda_{r+1} \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2
    \leq \lambda_{r+1}. 
 \]
 The last inequality holds because 
-$1 = \norm{\vec{e}_i}^2 = 
+$1 = \|\vec{e}_i\|_2^2 = 
 \sum_{k = 1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2 
 \geq \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2$.
 \end{proof} 
 The utility of this result is realized in problems with 
 high-dimensional parameter spaces in which 
 the eigenvalues $\lambda_i$ decay rapidly to zero; in 
-such cases, this result implies that  $\nu_i(f) \approx \alpha_i(f; r)$,
+such cases, this result implies that  $\nu_i(f) \approx \act{f}{i}{r}$,
 where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
 effective if there is a large gap in the eigenvalues.  
 
 Consider a function $y = f(\xi_1, \xi_2, \ldots, \xi_\Np)$ where
 $\xi_i$ are independent are either uniformly distributed or
-distributed according to a Boltzmann probability distribution.  
+distributed according to a Boltzmann probability distribution~\alennote{Explain what this
+is}.  
 It was shown in~\cite{Lamboni:2013} that the total Sobol' 
 index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
 \begin{equation}\label{equ:sobol_bound}
@@ -194,29 +216,27 @@ metric reduces to
       = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
-The following result is a straightforward generalization of
-the result from~\cite{Diaz:2016}, and 
-links activity scores and Sobol' indices.
-\begin{proposition}
-For $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
+Using Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, 
+we obtain the following useful inequality, which
+links activity scores and Sobol' indices:
+for $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
 \[
-       T_i(f) \leq \frac{C_i}{\V(f)}(\alpha_i(f; r) + \lambda_{r+1}).
+       T_i(f) \leq \frac{C_i}{\V(f)}(\act{f}{i}{r} + \lambda_{r+1}).
 \]
-\end{proposition}
-\begin{proof}
-The result follows immediately from Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}.
-\end{proof}
+This was noted in~\cite{Diaz:2016} for the specific case of all $\xi_i$'s being
+iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
+
 We can also bound the normalized DGSMs using activity scores; it is easy to see  
 \[
 \tilde{\nu}_i(f) \leq 
-\frac{ C_i \big(\alpha_i(f; r) + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}
-=\frac{C_i \alpha_i(f; r)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)} + \kappa_i \lambda_{r+1}, 
+\frac{ C_i \big(\act{f}{i}{r} + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}
+=\frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}} + \kappa_i \lambda_{r+1}, 
 \]
-with $\kappa_i = C_i / (\sum_i C_i \alpha_i(f; r))$. 
+with $\kappa_i = C_i / (\sum_i C_i \act{f}{i}{r})$. 
 In the case where where $\lambda_{r+1} \approx 0$, 
 this motivates definition of
 normalized activity scores
 \[
-   \tilde{\alpha}_i(f; r) =  \frac{C_i \alpha_i(f; r)}{\sum_{i=1}^\Np C_i \alpha_i(f; r)}.
+   \actt{f}{i}{r} =  \frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}.
 \] 
 

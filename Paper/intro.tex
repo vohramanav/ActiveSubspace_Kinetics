@@ -19,41 +19,54 @@
 %4. Key contributions.
 %5. Organization
 
-Time evolution of a chemically reacting system is largely dependent upon rate constants
-associated with individual reactions. The rate constants are typically assumed to exhibit
-a certain correlation with temperature (e.g. Arrhenius-type). Hence, accurate specification
-of the rate-controlling parameters is critical to the fidelity of simulations. However,
-in practical applications, the parameters are either specified using expert knowledge or
-estimated based on a regression-fit to a set of sparse and noisy data. Consequently, the
-underlying uncertainty associated with the parameters and therefore the simulation-prediction
-is typically ignored. Vohra et al. calibrated the Arrhenius diffusion parameters to quantify
-the uncertainty in mixing rates in Zr/Al reactive multilayers using a Bayesian framework
-in~\cite{Vohra:2014}. The framework accounted for prior knowledge,
-measurement noise, and the discrepancy between model and experiments. Additionally, 
-in~\cite{Vohra:2017}, a design strategy was implemented to determine optimal conditions
-for experiments in order to enhance the information gain in the uncertain diffusion parameters.
-Bayesian calibration was accelerated in these efforts using a polynomial 
-chaos~\cite{Ghanem:2003, Xiu:2002} surrogate for the model. However,
-the number of uncertain parameters for calibration were limited to two in both cases. In
-higher dimensions, the construction of surrogate as well as the calibration process become
-remarkably challenging due to increase in computational effort. 
+Time evolution of a chemically reacting system is largely dependent upon rate
+constants associated with individual reactions. The rate constants are
+typically assumed to exhibit a certain correlation with temperature (e.g.
+Arrhenius-type). Hence, accurate specification of the rate-controlling
+parameters is critical to the fidelity of simulations. However, in practical
+applications, the parameters are either specified using expert knowledge or
+estimated based on a regression-fit to a set of sparse and noisy data.
+(\alennote{Any references for this?})
+Consequently, the underlying uncertainty associated with the parameters and
+therefore the simulation is typically ignored. 
 
-In this paper, we focus our efforts on mitigating the computational challenge posed by uncertainty
-quantification (UQ) for applications involving a large number of chemical reactions. Specifically, we
-accomplish this by implementing an efficient approach that aims to reduce the dimensionality
-of the problem by computing the so-called active subspace~\cite{Constantine:2015}. 
-The active subspace, discussed later in~\ref{sub:ac}, essentially constitutes the dominant
-eigenspace of a matrix derived from the gradient information of the model output with respect
-to an input. The dominant eigenspace essentially comprises `important' directions in the parameter
-space that predominantly capture the variability in the model output due to uncertainty in the
-inputs. 
+Vohra et al.~calibrated the Arrhenius diffusion parameters to quantify the
+uncertainty in mixing rates in Zr/Al reactive multilayers using a Bayesian
+framework in~\cite{Vohra:2014}. The framework accounted for prior knowledge,
+measurement noise, and the discrepancy between model and experiments.
+Additionally, in~\cite{Vohra:2017}, a design strategy was implemented to
+determine optimal conditions for experiments in order to enhance the
+information gain in the uncertain diffusion parameters.  Bayesian calibration
+was accelerated in these efforts using a polynomial chaos~\cite{Ghanem:2003,
+Xiu:2002} surrogate for the model. However, the number of uncertain parameters
+for calibration were limited to two in both cases. In higher dimensions, the
+construction of surrogate as well as the calibration process become remarkably
+challenging due to increase in computational effort.~\alennote{I don't see why
+these references are being cited here. Are these cited as examples of efforts
+in calibrating chemical systems?} 
 
-The high-dimensional application problem considered in this work is the H$_2$/O$_2$
-reaction mechanism~\cite{Yetter:1991}. This mechanism has been gaining a lot of attention in the
-recent years as a potential source of clean energy for locomotive applications~\cite{Das:1996}.   
-The mechanism involves 19 reactions including chain reactions, dissociation/recombination reactions, and
-formation and consumption of intermediate species. For each reaction in table~\ref{tab:kinetics}, 
-the reaction rate is assumed to show an Arrhenius correlation with temperature:
+In this paper, we focus on mitigating the computational challenge
+posed by uncertainty quantification (UQ) for applications involving a large
+number of chemical reactions. We accomplish this by implementing
+an efficient approach that aims to reduce the dimensionality of the problem. This is
+done by
+computing the so-called active subspace~\cite{Constantine:2015}.  The active
+subspace, discussed later in~\ref{sub:ac}, constitutes the dominant
+eigenspace of a matrix derived from the gradient information of the model
+output with respect to an input. The dominant eigenspace essentially comprises
+``important'' directions in the parameter space that predominantly capture the
+variability in the model output due to uncertainty in the inputs. 
+
+The application problem considered in this work is the
+H$_2$/O$_2$ reaction mechanism~\cite{Yetter:1991}. This mechanism has been
+gaining a lot of attention in the recent years as a potential source of clean
+energy for locomotive applications~\cite{Das:1996}. (\alennote{you say recent years, but
+the reference is from 1996, are there more recent papers you can refer to?}.   
+The mechanism involves 19
+reactions including chain reactions, dissociation/recombination reactions, and
+formation and consumption of intermediate species. For each reaction in
+table~\ref{tab:kinetics}, the reaction rate is assumed to show an Arrhenius
+correlation with temperature:
 %
 \be
 k_i(T) = A_iT^{n_i}\exp(-E_{a,i}/RT), 
@@ -99,55 +112,78 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 
 The global reaction associated with the H$_2$/O$_2$ mechanism can
 be considered as follows:
-%
 \be
 2\text{H}_2 + \text{O}_2 \rightarrow 2\text{H}_2\text{O}.
 \label{eq:global}
 \ee 
-%
-The equivalence ration ($\phi$) is given as follows:
+The equivalence ratio ($\phi$) is given as follows:
 %
 \be
 \phi = \frac{(M_{\text{H}_2}/M_{\text{O}_2})_\text{obs}}{(M_{\text{H}_2}/M_{\text{O}_2})_\text{st}}.
 \label{eq:phi}
 \ee
 %
-where the numerator on the right-hand-side denotes the fuel (H$_2$)-oxidizer (O$_2$) ratio at given
-condition to the same quantity under stoichiometric conditions. In this study, computations were performed
-at fuel-rich conditions, $\phi$ = 2.0. Homogeneous ignition at constant pressure is simulated using the
-TChem software package~\cite{Safta:2011}, and the time required for the rate of temperature increase
-to exceed a given threshold, regarded as `ignition delay' is recorded. 
+where the numerator on the right-hand-side denotes the fuel (H$_2$)-oxidizer
+(O$_2$) ratio at given condition to the same quantity under stoichiometric
+conditions. In this study, computations were performed at fuel-rich conditions,
+$\phi$ = 2.0. Homogeneous ignition at constant pressure is simulated using the
+TChem software package~\cite{Safta:2011}, and the time required for the rate of
+temperature increase to exceed a given threshold, regarded as \emph{ignition delay}
+is recorded. 
 
-We are interested in investigating the impact of uncertainty in the rate-controlling parameters, 
-pre-exponent~($A_i$) and the activation energy~($E_{a,i}$) on ignition delay. The $A_i$'s are
-considered to be uniformly distributed about their nominal estimates provided in~\cite{Yetter:1991}.
-The total number of uncertain inputs is 33 which makes the
-present problem reasonably high-dimensional involving a significantly large amount of computational
-effort. To reduce the effort, we explore two strategies: one involving the use of gradients (grad-based)
-and the other involving local linear approximation which does require gradient computation (grad-free).
-These strategies are based on algorithms 1.1 and 1.2 provided  in~\cite{Constantine:2015}. However, it
-must be noted that in this work, an iterative approach is adopted for implementing the two strategies.
-Consequently, the amount of computational effort appears to have decreased, and is found to be
-relatively less in the case of grad-free approach as discussed later in section~\ref{sec:method}.
+We are interested in investigating the impact of uncertainty in the
+rate-controlling parameters, pre-exponent~($A_i$) and the activation
+energy~($E_{a,i}$) on ignition delay. The $A_i$'s are considered to be
+uniformly distributed about their nominal estimates provided
+in~\cite{Yetter:1991}.  The total number of uncertain inputs is 33 which makes
+the present problem computationally challenging. 
+To reduce the effort, we explore two
+strategies: 
+a gradient-based approach and  
+a gradient-free approach.
+%involving local linear approximation which does notrequire gradient computation
+%(grad-free).  
+\alennote{Thorough the paper 
+change grad-based to gradient-based, and similarly for grad-free}. 
+%
+These strategies are based on algorithms 1.1 and 1.2 
+in~\cite{Constantine:2015}. In this work, an
+iterative approach is adopted for implementing the two strategies.
+Consequently, the amount of computational effort appears to have decreased
+\alennote{This will be unclear to readers}, and
+is found to be relatively less in the case of grad-free approach as discussed
+later in section~\ref{sec:method}.
 
-Components of the dominant eigenvectors can be used to estimate the so-called 
-activity scores~\cite{Diaz:2016,Constantine:2017} which provide an insight into the relative importance
-of the uncertain parameters. In 
-section~\ref{sub:gsa}, we demonstrate that the activity scores could be used to approximate the 
-derivative-based global sensitivity measures (DGSMs)~\cite{Sobol:2009}, and establish a relationship between
-the Sobol' total effect index, the DGSMs, and the activity scores. Below, we summarize key contributions of
-the paper and its organization. 
+\alennote{This paragraph will not be meaningful to readers, especially those not familiar
+with active subspaces; Need to explain DGSMs, their importance, 
+and say something general about our
+approach for approximating them.}
+Components of the dominant eigenvectors can be used to estimate the so-called
+activity scores~\cite{Diaz:2016,Constantine:2017} which provide an insight into
+the relative importance of the uncertain parameters. In section~\ref{sub:gsa},
+we demonstrate that the activity scores could be used to approximate the
+derivative-based global sensitivity measures (DGSMs)~\cite{Sobol:2009}, and
+establish a relationship between the Sobol' total effect index, the DGSMs, and
+the activity scores. 
+
+%Below, we summarize key contributions of the paper and its
+%organization. 
 
 \paragraph{Contributions}
-Main contributions of this paper are as follows: (1) A perspective on activity scores as means for approximating
-the DGSMs is provided. (2) A general relationship between DGSMs, activity scores, and the total Sobol' index 
-is established. (3) Iterative gradient-based and gradient-free approaches for computing the active subspace are
- demonstrated. The two approaches are shown to be consistent and yield greater
-computational gains compared to the 
- conventional approach. As mentioned above, the gains are greater in the case of grad-free approach. (4) The
- grad-free approach is implemented for discovering an active subspace in a 33-dimensional parameter space 
- for the H$_2$/O$_2$ reaction kinetics application. 
+Main contributions of this paper are as follows: (1) A perspective on activity
+scores as means for approximating the DGSMs is provided. (2) A general
+relationship between DGSMs, activity scores, and the total Sobol' index is
+established. (3) Iterative gradient-based and gradient-free approaches for
+computing the active subspace are demonstrated. The two approaches are shown to
+be consistent and yield greater computational gains compared to the
+conventional approach. As mentioned above, the gains are greater in the case of
+grad-free approach. (4) The grad-free approach is implemented for discovering
+an active subspace in a 33-dimensional parameter space for the H$_2$/O$_2$
+reaction kinetics application. 
+\alennote{This says too much. Focus on the actual novel 
+contributions; also, the application should be made more prominent.}
  
+
  \paragraph{Organization}
  The paper is organized as follows. In Section~\ref{sub:ac}, a brief theoretical background on
  the active subspace methodology is provided. In Section~\ref{sub:gsa}, it is shown that the activity

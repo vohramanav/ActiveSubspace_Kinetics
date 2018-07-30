@@ -14,7 +14,7 @@ Since, the grad-free approach is relatively more efficient, this observation enc
 applications as discussed later in Section~\ref{sec:app}. Note however, that the model output is required to be
 differentiable throughout the input domain in both cases.
 
-\subsection{Grad-based approach}
+\subsection{Grad-based approach} (\hayleynote{Better to use gradient rather than grad})
 \label{sub:grad}
 
 As discussed earlier, in the grad-based approach, the elements of $\hat{\mat{C}}$ are estimated using model gradients.
@@ -78,7 +78,9 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 	\Loop
 		\State Set $r$ = $r$ + 1
 		\State Draw $n_r$ = $\lceil \beta n_1 \rceil$ new random samples 
-                $\{\bm{\xi}_k\}$ $\in$ [-1,1], $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$.
+                $\{\bm{\xi}_k\}$ $\in$ [-1,1], $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. (\hayleynote{I am unsure what $\beta$ is? Maybe it has been defined somewhere else?})
+                
+                (\hayleynote{We could reduce words below by saying something like repeat steps 3-8 above?})
 		\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
 		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
 		\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
@@ -177,7 +179,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 \begin{breakablealgorithm}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
-  \caption{An iterative gradient-free approach for discovering the active subspace}
+  \caption{An iterative gradient-free approach for discovering the active subspace} (\hayleynote{We can alter this the same way as we did for Algorithm 1?})
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $M$, $\tau$. 
 \Ensure $\Lambda$, $W$, $\eta$. 

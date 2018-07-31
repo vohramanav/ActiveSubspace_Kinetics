@@ -25,37 +25,26 @@ typically assumed to exhibit a certain correlation with temperature (e.g.
 Arrhenius-type). Hence, accurate specification of the rate-controlling
 parameters is critical to the fidelity of simulations. However, in practical
 applications, the parameters are either specified using expert knowledge or
-estimated based on a regression-fit to a set of sparse and noisy data.
-(\alennote{Any references for this?})
+estimated based on a regression-fit to a set of sparse and noisy
+data~\cite{Burnham:1987, Burnham:1988, Vohra:2011, Sarathy:2012}.
 Consequently, the underlying uncertainty associated with the parameters and
-therefore the simulation is typically ignored. 
-
-Vohra et al.~calibrated the Arrhenius diffusion parameters to quantify the
-uncertainty in mixing rates in Zr/Al reactive multilayers using a Bayesian
-framework in~\cite{Vohra:2014}. The framework accounted for prior knowledge,
-measurement noise, and the discrepancy between model and experiments.
-Additionally, in~\cite{Vohra:2017}, a design strategy was implemented to
-determine optimal conditions for experiments in order to enhance the
-information gain in the uncertain diffusion parameters.  Bayesian calibration
-was accelerated in these efforts using a polynomial chaos~\cite{Ghanem:2003,
-Xiu:2002} surrogate for the model. However, the number of uncertain parameters
-for calibration were limited to two in both cases. In higher dimensions, the
-construction of surrogate as well as the calibration process become remarkably
-challenging due to increase in computational effort.~\alennote{I don't see why
-these references are being cited here. Are these cited as examples of efforts
-in calibrating chemical systems?} 
-
-In this paper, we focus on mitigating the computational challenge
-posed by uncertainty quantification (UQ) for applications involving a large
-number of chemical reactions. We accomplish this by implementing
-an efficient approach that aims to reduce the dimensionality of the problem. This is
-done by
-computing the so-called active subspace~\cite{Constantine:2015}.  The active
-subspace, discussed later in~\ref{sub:ac}, constitutes the dominant
+therefore the simulation is typically ignored. Nevertheless, the inclusion of
+uncertainty due to corrupted calibration data, parametric uncertainty,
+and the discrepancy between predictions and experiments
+due to model inadequacy has gained prominence in recent
+years~\cite{Vohra:2014, Vohra:2017, Morrison:2018, Hantouche:2018}. 
+However, in complex mechanisms involving a large number of reactions,
+characterizing the propagation of uncertainty from a large set of inputs to
+the model output becomes remarkably challenging due to associated
+computational effort. 
+A major focus of this paper pertains to the implementation of a robust
+framework that aims to identify `important' directions in the input space
+that predominantly captures the variability in the model output. These
+directions, referred to as the \textit{active subspaces}~\cite{Constantine:2015},
+constitute the dominant
 eigenspace of a matrix derived from the gradient information of the model
-output with respect to an input. The dominant eigenspace essentially comprises
-``important'' directions in the parameter space that predominantly capture the
-variability in the model output due to uncertainty in the inputs. 
+output with respect to an input. The active subspace methodology thus
+focuses on reducing the dimensionality of the problem. 
 
 The application problem considered in this work is the
 H$_2$/O$_2$ reaction mechanism~\cite{Yetter:1991}. This mechanism has been

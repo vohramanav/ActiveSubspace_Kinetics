@@ -51,14 +51,13 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 \Ensure $\Lambda$, $W$, $\eta$. 
     \Procedure{Gradient-based}{}
 	\State Draw $n_1$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
-         according to $\bm{f(\xi)}$. (\hayleynote{Just use N instead then we can get rid of line 4?})
+         according to $\bm{f(\xi)}$. 
+    \State Set $N_\text{total}$ = $n_1$ 
 	\State Project to the physical space:
         $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
-	\State $N_\text{total}$ = $n_1$ 
-	\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
-             $k=1, \ldots, N_\text{total}$.
+	\State For each $k=1, \ldots, N_\text{total}$, compute $G(\bm\theta_k)$ and the gradient $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$
     \iffalse  
-	\Statex\hspace{5mm} Using Finite Difference: (\hayleynote{I don't think it is necessary to include details on how to calculate the gradient.})
+	\Statex\hspace{5mm} Using Finite Difference: 
 	\Statex\hspace{5mm} i. Assign a small increment, $d\xi$.
 	\Statex\hspace{5mm} ii. Augment the set of samples with neighboring points.
 	\be \{\bm{\Xi}_k\}_{k=1}^{n_1(N_p+1)}:~\{\bm{\xi}_k\}_{k=1}^{n_1} \cup
@@ -69,32 +68,35 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 	\Statex\hspace{5mm} iv. Using the augmented set, $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}$
          compute $\bm{g}^k$.
          \fi 
-	\State Compute the matrix, $\mat{C}$ = 
-        $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
-	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
-	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
+	\State Compute $\mat{C}$ and its eigenvalue decomposition 
+		$\mat{C}$= $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top = W^{(0)}\Lambda^{(0)} W^{(0)\top}$
+	%\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$%
+	\State Partition the eigenpairs: $\Lambda^{(0)}~=~ 
         \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
         $W^{(0)}~=~\begin{bmatrix} W_1^{(0)} & W_2^{(0)} \end{bmatrix}$, 
-        $\Lambda_1^{(0)}\in \mathbb{R}^{N_p\times\mathcal{S}}$ (\hayleynote{I think using W1 here would be more clear. small letters make it seem like we are talking about one eigenvector})
+        $\Lambda_1^{(0)}\in \mathbb{R}^{N_p\times\mathcal{S}}$ \hayleynote{What is S?}
+        
 	\State Set $r$ = 0
 	\Loop
 		\State Set $r$ = $r$ + 1
 		\State Draw $n_r$ = $\lceil \beta n_1 \rceil$ new random samples 
                 $\{\bm{\xi}_k\}$ $\in$ [-1,1], $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. (\hayleynote{I am unsure what $\beta$ is? Maybe it has been defined somewhere else?})
                 
-                (\hayleynote{We could reduce words below by saying something like repeat steps 3-8 above?})
-		\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
-		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
+	%	\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.%
+		\State Set $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
+		\iffalse
 		\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
              	$k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
 		\State Compute $\mat{C}$ = 
         	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
 		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
-		\State Compute $\delta w_{1,j}^{(r)}$ = 
-                       \scalebox{1.25}{$\frac{\|(w_{1,j}^{r})^2 - 
-                       (w_{1,j}^{r-1})^2\|}{\|(w_{1,j}^{r-1})^2\|}$}, 
+		\fi
+		\State Repeat steps 4-7 above
+		\State Compute $\delta W_{1,j}^{(r)}$ = 
+                       \scalebox{1.25}{$\frac{\|(W_{1,j}^{r})^2 - 
+                       (W_{1,j}^{r-1})^2\|}{\|(W_{1,j}^{r-1})^2\|}$}, 
                        $j = 1,\ldots,\mathcal{S}$.
-		\If {$\max\left(\delta w_{1,j}^{(r)}\right)<\tau$}
+		\If {$\max\left(\delta W_{1,j}^{(r)}\right)<\tau$}
 			\State break
 		\EndIf
 	\EndLoop
@@ -181,44 +183,46 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 \begin{breakablealgorithm}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
-  \caption{An iterative gradient-free approach for discovering the active subspace} (\hayleynote{We can alter this the same way as we did for Algorithm 1?})
+  \caption{An iterative gradient-free approach for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $M$, $\tau$. 
 \Ensure $\Lambda$, $W$, $\eta$. 
     \Procedure{Gradient-free}{}
-	\State Draw $n_1$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
-         according to $\bm{f(\xi)}$.
+    \State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
+    according to $\bm{f(\xi)}$.
+    \State Set $r$ = 0
+	\State Draw $n_r$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
+         according to $\bm{f(\xi)}$. Set $N_\text{total}$ = $n_r$ 
 	\State Project to the physical space:
         $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
-	\State $N_\text{total}$ = $n_1$ 
 	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N_\text{total}$.
-	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
-         according to $\bm{f(\xi)}$.
-	\State Construct the matrix, $\mat{C}$.
-	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
-	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
-        \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
-        $W^{(0)}~=~\begin{bmatrix} W_1^{(0)} & W_2^{(0)} \end{bmatrix}$, 
-        $\Lambda_1^{(0)}\in \mathbb{R}^{d\times\mathcal{S}}$
-	\State Set $r$ = 0
+	\State Construct the matrix $\mat{C}$.
+	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
+	\State Partition the Eigenpairs: $\Lambda^{(r)}~=~ 
+        \begin{bmatrix} \Lambda_1^{(r)} & \\ & \Lambda_2^{(r)} \end{bmatrix}$, 
+        $W^{(r)}~=~\begin{bmatrix} W_1^{(r)} & W_2^{(r)} \end{bmatrix}$, 
+        $\Lambda_1^{(r)}\in \mathbb{R}^{d\times\mathcal{S}}$
 	\Loop
 		\State Set $r$ = $r$ + 1
-		\State Draw $n_r$ = $\lceil \beta n_1 \rceil$ new random samples 
-                $\{\bm{\xi}_k\}$ $\in$ [-1,1], $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$.
-		\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
-		\State $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
+		\State Draw $n_r$ \iffalse = $\lceil \beta n_1 \rceil$ \fi new random samples 
+                $\{\bm{\xi}_k\}_{k=1}^{n_r}$ $\in$ [-1,1] \iffalse $\beta = 2,\ldots $ $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. \fi
+        \State $N_\text{total}$ = $N_\text{total}$ + $n_r$   
+        \State Repeat steps 5-9  
+		\iffalse \State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
+		 
 		\State Compute $G(\bm\theta_k)$, $k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
 		\State Construct the matrix, $\mat{C}$.
 		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
-		\State Compute $\delta w_{1,j}^{(r)}$ = 
-                       \scalebox{1.25}{$\frac{\|(w_{1,j}^{r})^2 - 
-                       (w_{1,j}^{r-1})^2\|}{\|(w_{1,j}^{r-1})^2\|}$}, 
+		\fi
+		\State Compute $\delta W_{1,j}^{(r)}$ = 
+                       \scalebox{1.25}{$\frac{\|(W_{1,j}^{r})^2 - 
+                       (W_{1,j}^{r-1})^2\|}{\|(W_{1,j}^{r-1})^2\|}$}, 
                        $j = 1,\ldots,\mathcal{S}$.
-		\If {$\max\left(\delta w_{1,j}^{(r)}\right)<\tau$}
+		\If {$\max\left(\delta W_{1,j}^{(r)}\right)<\tau$}
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}w_{1_{i,j}}^2$,
+	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}W_{1_{i,j}}^2$,
 	$i=1,\ldots,d$.
     \EndProcedure
   \end{algorithmic}

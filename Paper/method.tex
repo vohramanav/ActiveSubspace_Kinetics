@@ -56,7 +56,8 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
         $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
 	\State $N_\text{total}$ = $n_1$ 
 	\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
-             $k=1, \ldots, N_\text{total}$.  
+             $k=1, \ldots, N_\text{total}$.
+    \iffalse  
 	\Statex\hspace{5mm} Using Finite Difference: (\hayleynote{I don't think it is necessary to include details on how to calculate the gradient.})
 	\Statex\hspace{5mm} i. Assign a small increment, $d\xi$.
 	\Statex\hspace{5mm} ii. Augment the set of samples with neighboring points.
@@ -66,13 +67,14 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 	\Statex\hspace{5mm} iii. Project to the physical space:
         $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\Xi}_k\}_{k=1}^{n_1(N_p+1)}$
 	\Statex\hspace{5mm} iv. Using the augmented set, $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}$
-         compute $\bm{g}^k$. 
+         compute $\bm{g}^k$.
+         \fi 
 	\State Compute the matrix, $\mat{C}$ = 
         $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
 	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
 	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
         \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
-        $W^{(0)}~=~\begin{bmatrix} w_1^{(0)} & w_2^{(0)} \end{bmatrix}$, 
+        $W^{(0)}~=~\begin{bmatrix} W_1^{(0)} & W_2^{(0)} \end{bmatrix}$, 
         $\Lambda_1^{(0)}\in \mathbb{R}^{N_p\times\mathcal{S}}$ (\hayleynote{I think using W1 here would be more clear. small letters make it seem like we are talking about one eigenvector})
 	\State Set $r$ = 0
 	\Loop
@@ -196,7 +198,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$
 	\State Partition the Eigenpairs: $\Lambda^{(0)}~=~ 
         \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
-        $W^{(0)}~=~\begin{bmatrix} w_1^{(0)} & w_2^{(0)} \end{bmatrix}$, 
+        $W^{(0)}~=~\begin{bmatrix} W_1^{(0)} & W_2^{(0)} \end{bmatrix}$, 
         $\Lambda_1^{(0)}\in \mathbb{R}^{d\times\mathcal{S}}$
 	\State Set $r$ = 0
 	\Loop

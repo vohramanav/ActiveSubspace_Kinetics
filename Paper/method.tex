@@ -48,13 +48,14 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
   \caption{An iterative gradient-based approach for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $\tau$. 
-\Ensure $\Lambda$, $W$, $\eta$. 
+\Ensure $\Lambda$, $W$, $\alpha$ %$\eta$. %
     \Procedure{Gradient-based}{}
-	\State Draw $n_1$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
+    \State Set $r$ = 0
+	\State Draw $n_r$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
          according to $\bm{f(\xi)}$. 
-    \State Set $N_\text{total}$ = $n_1$ 
+    \State Set $N_\text{total}$ = $n_r$ 
 	\State Project to the physical space:
-        $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
+        $\{\bm{\theta}_k\}_{k=1}^{n_r}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_r}$
 	\State For each $k=1, \ldots, N_\text{total}$, compute $G(\bm\theta_k)$ and the gradient $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$
     \iffalse  
 	\Statex\hspace{5mm} Using Finite Difference: 
@@ -69,18 +70,18 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
          compute $\bm{g}^k$.
          \fi 
 	\State Compute $\mat{C}$ and its eigenvalue decomposition 
-		$\mat{C}$= $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top = W^{(0)}\Lambda^{(0)} W^{(0)\top}$
+		$\mat{C}$= $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top = W^{(r)}\Lambda^{(r)} W^{(r)\top}$
 	%\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$%
-	\State Partition the eigenpairs: $\Lambda^{(0)}~=~ 
-        \begin{bmatrix} \Lambda_1^{(0)} & \\ & \Lambda_2^{(0)} \end{bmatrix}$, 
-        $W^{(0)}~=~\begin{bmatrix} W_1^{(0)} & W_2^{(0)} \end{bmatrix}$, 
-        $\Lambda_1^{(0)}\in \mathbb{R}^{N_p\times\mathcal{S}}$ \hayleynote{What is S?}
+	\State Partition the eigenpairs: $\Lambda^{(r)}~=~ 
+        \begin{bmatrix} \Lambda_1^{(r)} & \\ & \Lambda_2^{(r)} \end{bmatrix}$, 
+        $W^{(r)}~=~\begin{bmatrix} W_1^{(r)} & W_2^{(r)} \end{bmatrix}$, 
+        $\Lambda_1^{(r)}\in \mathbb{R}^{N_p\times\mathcal{S}}$ \hayleynote{What is S?}
         
-	\State Set $r$ = 0
+	
 	\Loop
 		\State Set $r$ = $r$ + 1
-		\State Draw $n_r$ = $\lceil \beta n_1 \rceil$ new random samples 
-                $\{\bm{\xi}_k\}$ $\in$ [-1,1], $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. (\hayleynote{I am unsure what $\beta$ is? Maybe it has been defined somewhere else?})
+		\State Draw $n_r =  \beta n_{r-1}$  new random samples 
+                $\{\bm{\xi}_k\}_{k=1}^{n_r}$ $\in$ [-1,1], $\beta =??$ \iffalse $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. \fi
                 
 	%	\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.%
 		\State Set $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
@@ -91,7 +92,7 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
         	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
 		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
 		\fi
-		\State Repeat steps 4-7 above
+		\State Repeat steps 5-8 above
 		\State Compute $\delta W_{1,j}^{(r)}$ = 
                        \scalebox{1.25}{$\frac{\|(W_{1,j}^{r})^2 - 
                        (W_{1,j}^{r-1})^2\|}{\|(W_{1,j}^{r-1})^2\|}$}, 
@@ -100,7 +101,7 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}w_{1_{i,j}}^2$,
+	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}W_{1_{i,j}}^2$,
 	$i=1,\ldots,d$.
 	
     \EndProcedure
@@ -186,15 +187,15 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
   \caption{An iterative gradient-free approach for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $M$, $\tau$. 
-\Ensure $\Lambda$, $W$, $\eta$. 
+\Ensure $\Lambda$, $W$, $\alpha$ %$\eta$. 
     \Procedure{Gradient-free}{}
-    \State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
-    according to $\bm{f(\xi)}$.
     \State Set $r$ = 0
 	\State Draw $n_r$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
          according to $\bm{f(\xi)}$. Set $N_\text{total}$ = $n_r$ 
 	\State Project to the physical space:
-        $\{\bm{\theta}_k\}_{k=1}^{n_1}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_1}$
+        $\{\bm{\theta}_k\}_{k=1}^{n_r}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_r}$
+     \State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
+        according to $\bm{f(\xi)}$.
 	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N_\text{total}$.
 	\State Construct the matrix $\mat{C}$.
 	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
@@ -204,10 +205,10 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
         $\Lambda_1^{(r)}\in \mathbb{R}^{d\times\mathcal{S}}$
 	\Loop
 		\State Set $r$ = $r$ + 1
-		\State Draw $n_r$ \iffalse = $\lceil \beta n_1 \rceil$ \fi new random samples 
-                $\{\bm{\xi}_k\}_{k=1}^{n_r}$ $\in$ [-1,1] \iffalse $\beta = 2,\ldots $ $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. \fi
+		\State Draw $n_r =  \beta n_{r-1}$  new random samples 
+		$\{\bm{\xi}_k\}_{k=1}^{n_r}$ $\in$ [-1,1], $\beta =??$ \iffalse $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. \fi
         \State $N_\text{total}$ = $N_\text{total}$ + $n_r$   
-        \State Repeat steps 5-9  
+        \State Repeat steps 4-9  
 		\iffalse \State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
 		 
 		\State Compute $G(\bm\theta_k)$, $k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
@@ -236,7 +237,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 %\renewcommand{\algorithmicensure}{\textbf{Output:}}
   \caption{Algorithm for constructing the matrix, $\mat{C}$}
   \begin{algorithmic}[1]
-	\Procedure{Local Linear Approximation}{}
+	\Procedure{Local Linear Approximation}{} \hayleynote{We could get rid of this algorithm completely by putting it in with algorithm 2?}
 	\State Draw $N$ random samples, $\{\bm{\xi}_k\}_{k=1}^{N}$ $\in$ [-1,1]
 	according to $\bm{f(\xi)}$.
 	\State Project to the physical space:

@@ -197,8 +197,22 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
      \State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
         according to $\bm{f(\xi)}$.
 	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N_\text{total}$.
-	\State Construct the matrix $\mat{C}$.
-	\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
+	\State Choose an integer $p \leq N$ 
+	\State For each $i=1, \ldots, M$, compute 
+	\[
+	\begin{aligned}
+	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_k\}_{k=1}^{N} \text{ to } \bm{\nu}_i\}\\
+	\vspace{-2mm}
+	\Psi_i &= \text{subset of } G(\bm\theta_k) \text{ corresponding to the points in } \Phi_i
+	\end{aligned}
+	\]
+	\State Compute linear least square fits 
+	$G(\bm\theta_k) \approx c_i + b_i^T\bm{\xi}_k$, \  $\bm{\xi}_k \in \Phi_i, \ G(\bm\theta_k) \in \Psi_i$
+	\State Compute the matrix 
+	\[
+	\mat{C} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = {W}{\Lambda}{W}^T
+	\]
+	%\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
 	\State Partition the Eigenpairs: $\Lambda^{(r)}~=~ 
         \begin{bmatrix} \Lambda_1^{(r)} & \\ & \Lambda_2^{(r)} \end{bmatrix}$, 
         $W^{(r)}~=~\begin{bmatrix} W_1^{(r)} & W_2^{(r)} \end{bmatrix}$, 
@@ -208,7 +222,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 		\State Draw $n_r =  \beta n_{r-1}$  new random samples 
 		$\{\bm{\xi}_k\}_{k=1}^{n_r}$ $\in$ [-1,1], $\beta =??$ \iffalse $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. \fi
         \State $N_\text{total}$ = $N_\text{total}$ + $n_r$   
-        \State Repeat steps 4-9  
+        \State Repeat steps 4-11  
 		\iffalse \State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.
 		 
 		\State Compute $G(\bm\theta_k)$, $k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
@@ -231,7 +245,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 \end{breakablealgorithm}
 \bigskip
 
-\bigskip
+\iffalse \bigskip
 \begin{breakablealgorithm}
 %\renewcommand{\algorithmicrequire}{\textbf{Input:}}
 %\renewcommand{\algorithmicensure}{\textbf{Output:}}
@@ -265,7 +279,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
   \label{alg:free2}
 \end{breakablealgorithm}
 \bigskip
-
+ \fi
 
 
 The grad-free approach when implemented to the 19-dimensional H$_2$/O$_2$ reaction kinetics problem

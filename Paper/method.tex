@@ -50,13 +50,13 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 \Require $\theta_l$, $\theta_u$, $\tau$. 
 \Ensure $\Lambda$, $W$, $\alpha$ %$\eta$. %
     \Procedure{Gradient-based}{}
-    \State Set $r$ = 0
-	\State Draw $n_r$ random samples, $\{\bm{\xi}_k\}_{k=1}^{n_1}$ $\in$ [-1,1]
-         according to $\bm{f(\xi)}$. 
-    \State Set $N_\text{total}$ = $n_r$ 
-	\State Project to the physical space:
-        $\{\bm{\theta}_k\}_{k=1}^{n_r}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_r}$
-	\State For each $k=1, \ldots, N_\text{total}$, compute $G(\bm\theta_k)$ and the gradient $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$
+    \State Set $k$ = 0
+	\State Draw $n_k$ random samples, $\{\bm{\xi}_i\}_{i=1}^{n_k}$ 
+         according to $\pi$. 
+    \State Set $N_\text{total}$ = $n_k$ 
+	\iffalse \State Project to the physical space:
+        $\{\bm{\theta}_k\}_{k=1}^{n_r}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_r}$ \fi
+	\State For each $i=1, \ldots, N_\text{total}$, compute $f(\bm{\xi}_i)$ and the gradient $\bm{g}^i = \nabla_{\bm{\xi}}f(\bm{\xi}_i)$
     \iffalse  
 	\Statex\hspace{5mm} Using Finite Difference: 
 	\Statex\hspace{5mm} i. Assign a small increment, $d\xi$.
@@ -67,31 +67,27 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 	\Statex\hspace{5mm} iii. Project to the physical space:
         $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\Xi}_k\}_{k=1}^{n_1(N_p+1)}$
 	\Statex\hspace{5mm} iv. Using the augmented set, $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}$
-         compute $\bm{g}^k$.
+         compute $\bm{g}^i$.
          \fi 
 	\State Compute $\mat{C}$ and its eigenvalue decomposition 
-		$\mat{C}$= $\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top = W^{(r)}\Lambda^{(r)} W^{(r)\top}$
+		$\mat{C}$= $\frac{1}{N_\text{total}}\sum\limits_{i=1}^{N_\text{total}}[\bm{g}^i][\bm{g}^i]^\top = W^{(k)}\Lambda^{(k)} W^{(k)\top}$
 	%\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$%
-	\State Partition the eigenpairs: $\Lambda^{(r)}~=~ 
-        \begin{bmatrix} \Lambda_1^{(r)} & \\ & \Lambda_2^{(r)} \end{bmatrix}$, 
-        $W^{(r)}~=~\begin{bmatrix} W_1^{(r)} & W_2^{(r)} \end{bmatrix}$, 
-        $\Lambda_1^{(r)}\in \mathbb{R}^{N_p\times\mathcal{S}}$ \hayleynote{What is S?}
-        
-	
+	\State Partition: $\Lambda^{(k)}=
+        \begin{bmatrix} \Lambda_1^{(k)} & \\ & \Lambda_2^{(k)} \end{bmatrix}$, 
+        $W^{(k)}=\begin{bmatrix} W_1^{(k)} & W_2^{(k)} \end{bmatrix}$, 
+        $\Lambda_1^{(k)}\in \mathbb{R}^{N_p\times\mathcal{S}}$
 	\Loop
-		\State Set $r$ = $r$ + 1
-		\State Draw $n_r =  \beta n_{r-1}$  new random samples 
-                $\{\bm{\xi}_k\}_{k=1}^{n_r}$ $\in$ [-1,1], $\beta =??$ \iffalse $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$. \fi
+		\State Set $k$ = $k$ + 1
+		\State Draw $n_k =  \beta n_{k-1}$  new random samples 
+                $\{\bm{\xi}_i\}_{i=1}^{n_k}$  $\beta =??$  $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$.
                 
 	%	\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.%
-		\State Set $N_\text{total}$ = $N_\text{total}$ + $n_r$ 
-		\iffalse
-		\State Compute $\bm{g}^k = \nabla_{\bm{\theta}}G(\bm\theta_k)$, 
+		\State Set $N_\text{total}$ = $N_\text{total}$ + $n_k$ 
+		\State Compute $\bm{g}^k = \nabla_{\bm{\xi}_i}f(\bm{\xi}_i)$, 
              	$k=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
 		\State Compute $\mat{C}$ = 
         	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^k][\bm{g}^k]^\top$
 		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
-		\fi
 		\State Repeat steps 5-8 above
 		\State Compute $\delta W_{1,j}^{(r)}$ = 
                        \scalebox{1.25}{$\frac{\|(W_{1,j}^{r})^2 - 
@@ -245,31 +241,31 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 \end{breakablealgorithm}
 \bigskip
 
-\iffalse \bigskip
+\bigskip
 \begin{breakablealgorithm}
 %\renewcommand{\algorithmicrequire}{\textbf{Input:}}
 %\renewcommand{\algorithmicensure}{\textbf{Output:}}
   \caption{Algorithm for constructing the matrix, $\mat{C}$}
   \begin{algorithmic}[1]
-	\Procedure{Local Linear Approximation}{} \hayleynote{We could get rid of this algorithm completely by putting it in with algorithm 2?}
-	\State Draw $N$ random samples, $\{\bm{\xi}_k\}_{k=1}^{N}$ $\in$ [-1,1]
-	according to $\bm{f(\xi)}$.
-	\State Project to the physical space:
-	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{N}$
-	\State Compute $G(\bm\theta_k)$, $k=1, \ldots, N$.
-	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ $\in$ [-1,1]
-	according to $\bm{f(\xi)}$.
+	\Procedure{Local Linear Approximation}{} 
+	\State Draw $N$ random samples, $\{\bm{\xi}_j\}_{j=1}^{N}$ 
+	according to $\pi$.
+	\iffalse \State Project to the physical space:
+	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{N}$ \fi
+	\State Compute $f(\bm\xi_j)$, $j=1, \ldots, N$.
+	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$
+	according to $\pi$.
 	\State Choose an integer $p \leq N$ 
 	\State For each $i=1, \ldots, M$, compute 
 	\[
 	\begin{aligned}
-	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_k\}_{k=1}^{N} \text{ to } \bm{\nu}_i\}\\
+	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_j\}_{j=1}^{N} \text{ to } \bm{\nu}_i\}\\
 	\vspace{-2mm}
-	\Psi_i &= \text{subset of } G(\bm\theta_k) \text{ corresponding to the points in } \Phi_i
+	\Psi_i &= \text{subset of } f(\bm\xi_j) \text{ corresponding to the points in } \Phi_i
 	\end{aligned}
 	\]
 	\State Compute linear least square fits 
-	 $G(\bm\theta_k) \approx c_i + b_i^T\bm{\xi}_k$, \  $\bm{\xi}_k \in \Phi_i, \ G(\bm\theta_k) \in \Psi_i$
+	 $f(\bm\xi_j) \approx c_i + b_i^T\bm{\xi}_j$, \  $\bm{\xi}_j \in \Phi_i, \ f(\bm\xi_j) \in \Psi_i$
 	\State Compute the matrix 
 	\[
 	\mat{C} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = {W}{\Lambda}{W}^T
@@ -279,7 +275,6 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
   \label{alg:free2}
 \end{breakablealgorithm}
 \bigskip
- \fi
 
 
 The grad-free approach when implemented to the 19-dimensional H$_2$/O$_2$ reaction kinetics problem

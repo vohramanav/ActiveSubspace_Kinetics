@@ -235,16 +235,31 @@ metric reduces to
       = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
-\newcommand{\I}{\mathcal{I}}
+
+We can also bound the normalized DGSMs using activity scores; it is easy to see  
+\[
+\tilde{\nu}_i(f) \leq 
+\frac{ C_i \big(\act{f}{i}{r} + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}
+=\frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}} + \kappa_i \lambda_{r+1}, 
+\]
+with $\kappa_i = C_i / (\sum_i C_i \act{f}{i}{r})$. 
+In the case where where $\lambda_{r+1} \approx 0$, 
+this motivates definition of
+normalized activity scores
+\[
+   \actt{f}{i}{r} =  \frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}.
+\] 
+
 Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
 an interesting link between the activity scores and total Sobol' indices.
 Specifically, by computing the activity scores, we can indetify unimportant
 parameters.  
-
-
 One can attempt to reduce parameter dimension by fixing
-unimportant parameters at nominal values. 
-
+unimportant parameters at nominal values. Suppose $\xi_i$ is
+deemed unimportant as a result of a global sensitivity analysis
+based on computing the activity scores. We want to understand
+what is the approximation error that occurs once we fix $\xi_i$ 
+at a nominal value.
 %Let $\I \subset \{1, \ldots,
 %Np\}$ be an index set that indexes the unimportant parameters in the parameter
 %vector $\vec{\xi}$.  Letting $|\I|$ denote the number of elements of $\I$, 
@@ -252,27 +267,26 @@ unimportant parameters at nominal values.
 %the unimportant parameters $\vec\xi_\I$, and let $\vec{y}$ be a generic vector of
 %important variables, $\vec\xi_{\I^c}$,
 %where $\I^c$ denotes the complement of $\I$ in $\{1, \ldots, \Np\}$. 
-Consider the reduced model
-The \emph{reduced} model, obtained by fixing unimportant variables is given by
-\newcommand{\xin}{\vec{\xi}^{(\sim i)}}
+%For a vector $\xi$, we let $\xin$ denote the vector obtained by removing
+%$\xi_i$. 
+
+Let $\vec\xi$ be given and let $z$ be a nominal value for $\xi_i$;  we define 
+$\vec{y}^z(\vec\xi)$ as the vector with entries $y^z_j = \xi_j$ for $j \neq i$
+and $y^z_i = z_i$.
+We consider the \emph{reduced} model, 
+obtained by fixing $\xi_i$ at a nominal value $z \in \R$: 
 \[
-f_{z}(\vec\xi) = f(\xin, z)
+f^{z}(\vec\xi) = f(\vec{y}^z(\vec\xi))
 \] 
-where $(\vec{y}, \vec{z})$ should be understood as a vector $\vec\xi$ with
-$\vec\xi_{I^c}$ set to $\vec{y}$ and $\vec\xi_{\I}$ set to $\vec{z}$.
-The following result quantifies the approximation error when using $f_\vec{z}$
-in place of $f$:
-\begin{theorem}
-Consider the relative error
+We consider the following error indicator.
 \[
 \delta(z) =
-\frac{ \int_\Omega \big( f(\vec\xi) - f_{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) }
-          {\int_\Omega \big( f(\vec\xi) )^2 \, \mu(d\vec\xi)}.
+\frac{ \int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) }
+          {\int_\Omega f(\vec\xi)^2 \, \mu(d\vec\xi)}.
 \] 
-We have
-\[
-          \Ez{ \delta(z)} \leq \frac{2 C_i}{\V(f)}\big(\act{f}{i}{r} + \lambda_{r+1}\big).
-\]
+
+\begin{theorem}
+We have $\Ez{ \delta(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)} $.
 \end{theorem}
 %
 %\[
@@ -288,17 +302,4 @@ We have
 %iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
 
 
-We can also bound the normalized DGSMs using activity scores; it is easy to see  
-\[
-\tilde{\nu}_i(f) \leq 
-\frac{ C_i \big(\act{f}{i}{r} + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}
-=\frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}} + \kappa_i \lambda_{r+1}, 
-\]
-with $\kappa_i = C_i / (\sum_i C_i \act{f}{i}{r})$. 
-In the case where where $\lambda_{r+1} \approx 0$, 
-this motivates definition of
-normalized activity scores
-\[
-   \actt{f}{i}{r} =  \frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}.
-\] 
 

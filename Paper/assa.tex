@@ -90,11 +90,23 @@ summation as follows:
   
 
 \subsection{Global sensitivity measures}
+
 \label{sub:gsa}
-The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\theta)$ 
-quantifies the total contribution of the
-input, $\theta_i$ to the variance of the output.\alennote{references} 
-Mathematically, this can be expressed as follows:
+Consider a function $f(\xi_1, \xi_2, \ldots, \xi_\Np)$. 
+Whereas the active subspace framework described above not make any assumptions
+about statistical independence of the input parameters $\xi_i$, $i = 1, \ldots, \Np$, 
+the classical 
+framework of variance based sensitivity analysis~\cite{MMM} assumes the input
+parameters are statistically independent. While extensions to the cases 
+of correlated inputs exist, we limit the discussion in this section to the
+case of random inputs that are statistically independent and are 
+either uniformly distributed or
+distributed according to a Boltzmann probability distribution~\alennote{Explain what this
+is, and give a reference}.  
+
+The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\theta)$ quantifies
+the total contribution of the input, $\theta_i$ to the variance of the
+output.\alennote{references} Mathematically, this can be expressed as follows:
 %
 \be
 T_i(f) = 1 - 
@@ -202,10 +214,7 @@ such cases, this result implies that  $\nu_i(f) \approx \act{f}{i}{r}$,
 where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
 effective if there is a large gap in the eigenvalues.  
 
-Consider a function $y = f(\xi_1, \xi_2, \ldots, \xi_\Np)$ where
-$\xi_i$ are independent are either uniformly distributed or
-distributed according to a Boltzmann probability distribution~\alennote{Explain what this
-is}.  
+
 It was shown in~\cite{Lamboni:2013} that the total Sobol' 
 index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
 \begin{equation}\label{equ:sobol_bound}
@@ -226,15 +235,58 @@ metric reduces to
       = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
-Using Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, 
-we obtain the following useful inequality, which
-links activity scores and Sobol' indices:
-for $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
+\newcommand{\I}{\mathcal{I}}
+Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
+an interesting link between the activity scores and total Sobol' indices.
+Specifically, by computing the activity scores, we can indetify unimportant
+parameters.  
+
+
+One can attempt to reduce parameter dimension by fixing
+unimportant parameters at nominal values. 
+
+%Let $\I \subset \{1, \ldots,
+%Np\}$ be an index set that indexes the unimportant parameters in the parameter
+%vector $\vec{\xi}$.  Letting $|\I|$ denote the number of elements of $\I$, 
+%we denote by $\vec{z} \in \R^{|\I|}$ a generic vector of nominal values for
+%the unimportant parameters $\vec\xi_\I$, and let $\vec{y}$ be a generic vector of
+%important variables, $\vec\xi_{\I^c}$,
+%where $\I^c$ denotes the complement of $\I$ in $\{1, \ldots, \Np\}$. 
+Consider the reduced model
+The \emph{reduced} model, obtained by fixing unimportant variables is given by
+\newcommand{\xin}{\vec{\xi}^{(\sim i)}}
 \[
-       T_i(f) \leq \frac{C_i}{\V(f)}(\act{f}{i}{r} + \lambda_{r+1}).
+f_{z}(\vec\xi) = f(\xin, z)
+\] 
+where $(\vec{y}, \vec{z})$ should be understood as a vector $\vec\xi$ with
+$\vec\xi_{I^c}$ set to $\vec{y}$ and $\vec\xi_{\I}$ set to $\vec{z}$.
+The following result quantifies the approximation error when using $f_\vec{z}$
+in place of $f$:
+\begin{theorem}
+Consider the relative error
+\[
+\delta(z) =
+\frac{ \int_\Omega \big( f(\vec\xi) - f_{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) }
+          {\int_\Omega \big( f(\vec\xi) )^2 \, \mu(d\vec\xi)}.
+\] 
+We have
+\[
+          \Ez{ \delta(z)} \leq \frac{2 C_i}{\V(f)}\big(\act{f}{i}{r} + \lambda_{r+1}\big).
 \]
-This was noted in~\cite{Diaz:2016} for the specific case of all $\xi_i$'s being
-iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
+\end{theorem}
+%
+%\[
+%       T_i(f) \leq \frac{C_i}{\V(f)}(\act{f}{i}{r} + \lambda_{r+1}).
+%\]
+%we obtain the following useful inequality, which
+%links activity scores and Sobol' indices:
+%for $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
+%\[
+%       T_i(f) \leq \frac{C_i}{\V(f)}(\act{f}{i}{r} + \lambda_{r+1}).
+%\]
+%This was noted in~\cite{Diaz:2016} for the specific case of all $\xi_i$'s being
+%iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
+
 
 We can also bound the normalized DGSMs using activity scores; it is easy to see  
 \[

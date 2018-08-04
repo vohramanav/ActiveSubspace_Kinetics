@@ -6,7 +6,7 @@
 %be exploited to perform GSA with reduced effort.
 %-Iterative implementation yields advantage
 %-Consistency between the two approaches with DGSM as well as among themselves
-%encourages the use of grad-free.
+%encourages the use of gradient-free.
 %-Grad-free was found to be suitable for a high-dimensional problem.
 %-Based on the results presented, the following parameter were found to be 
 %significant.
@@ -37,14 +37,14 @@
  associated with global sensitivity analysis. 
  
 Two computational strategies were explored to compute the active subspace for the H$_2$/O$_2$
-kinetics application in this work. The first strategy referred to as grad-based requires computation of gradient of the 
-model output with respect to the input, whereas, the second strategy, referred to as grad-free implements a local
+kinetics application in this work. The first strategy referred to as gradient-based requires computation of gradient of the 
+model output with respect to the input, whereas, the second strategy, referred to as gradient-free implements a local
 linear approximation to the model output in order to estimate the gradient. The two strategies are shown to yield
 consistent results for the 19-dimensional problem whereby only the pre-exponents are considered to be uncertain.
 Additionally, the activity scores are also shown to be consistent with the screening metric estimates based on
 DGSMs in~\cite{Vohra:2018}. Note that an iterative procedure is adopted for implementing the two strategies
 for enhancing computational efficiency. 
-Motivated by these findings, the grad-free approach is used for computing the active subspace in the high-dimensional
+Motivated by these findings, the gradient-free approach is used for computing the active subspace in the high-dimensional
 case involving 33 uncertain parameters. Based on the prior marginals of the uncertain parameters, our results
 indicate that the uncertainty in the ignition delay is largely dependent on $A_1$, $A_9$, and $E_{a,1}$, although
  contributions from $A_{15}$ and $A_{17}$ are also found to be significant. 

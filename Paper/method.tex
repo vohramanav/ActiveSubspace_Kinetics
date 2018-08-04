@@ -4,20 +4,20 @@
 In this section, we present the computational strategy used for computing the active subspace in the case of
 H$_2$/O$_2$ reaction kinetics with uncertain pre-exponent of individual reaction rates provided in
 Table~\ref{tab:kinetics}. Specifically, we employ two strategies: One that involves computation of model
-gradients in order to construct the matrix (grad-based), $\hat{\mat{C}}$ in~\eqref{eq:chat}, and the other that involves a local 
+gradients in order to construct the matrix (gradient-based), $\hat{\mat{C}}$ in~\eqref{eq:chat}, and the other that involves a local 
 linear approximation of the model output to circumvent the computational cost associated with gradient
-computation (grad-free). The grad-based approach is based on Algorithm 1.1, and the grad-free approach is
+computation (gradient-free). The gradient-based approach is based on Algorithm 1.1, and the gradient-free approach is
 based on Algorithm 1.2 in~\cite{Constantine:2015}. However, in this work, we have implemented the
 two strategies in an iterative manner and have demonstrated potential for additional savings in both cases.
 Additionally, for the present application, our findings based on the two strategies are observed to be consistent.
-Since, the grad-free approach is relatively more efficient, this observation encourages its use for high-dimensional
+Since, the gradient-free approach is relatively more efficient, this observation encourages its use for high-dimensional
 applications as discussed later in Section~\ref{sec:app}. Note however, that the model output is required to be
 differentiable throughout the input domain in both cases.
 
-\subsection{Grad-based approach} (\hayleynote{Better to use gradient rather than grad})
+\subsection{Gradient-based approach}
 \label{sub:grad}
 
-As discussed earlier, in the grad-based approach, the elements of $\hat{\mat{C}}$ are estimated using model gradients.
+As discussed earlier, in the gradient-based approach, the elements of $\hat{\mat{C}}$ are estimated using model gradients.
  In situations where the gradient is not available analytically, one could consider using
 finite difference and other relatively more efficient techniques such as automatic differentiation~\cite{Kiparissides:2009} 
 and adjoint-based gradient computation~\cite{Jameson:1988,Gunzburger:2003,Borzi:2011,Alexanderian:2017}.
@@ -27,17 +27,19 @@ $N$ samples in a $d$-dimensional parameter space, $N(d+1)$ model evaluations are
 We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$, at an initial set of $n_1$ samples. 
 For this purpose, $\bm{\xi}_i$'s are projected to the physical space as $\bm{\theta}_i$'s. Using the gradient
 evaluations, the matrix, $\hat{\mat{C}}$ is computed. Eigenvalue decomposition of $\hat{\mat{C}}$ yields an initial
-estimate of the dominant eigenspace, $\hat{\bm{w}_1}$ and corresponding set of eigenvalues, $\hat{\bm{\Lambda}_1}$.
+estimate of the dominant eigenspace, $\hat{\mat{W}}_1$ and corresponding set of eigenvalues, $\hat{\mat{\Lambda}}_1$.
 At each subsequent iteration, model evaluations are generated at a new set of $n_s$ samples. The new set
 of gradient evaluations are augmented with the available set to re-construct $\hat{\mat{C}}$ followed by its eigenvalue
 decomposition. The relative
 change in the norm of the difference in squared value of individual components of the dominant eigenvectors between subsequent 
 iterations is evaluated. The process is terminated and the resulting eigenspace is considered to be converged once
-highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a given tolerance, $\tau$. A regression fit to
- $G(\bm{w}_1^\top\bm{\xi})$ is used as a surrogate to characterize and quantify the uncertainty in the model
- output. Moreover, the components of the dominant eigenvectors are used to compute the activity scores which
- provide an insight into the relative importance of the uncertain parameters. The sequence of steps for the grad-based
- approach are provided in Algorithm~\ref{alg:grad}.
+highest relative change at iteration $k$, $\delta \hat{\mat{W}}_{1,j}^{(k)}$, is smaller a given tolerance, $\tau$. 
+A regression fit to
+ $G(\hat{\mat{W}}_1^\top\bm{\xi})$ is used as a surrogate to characterize and quantify the uncertainty in the model
+ output. Moreover, the components of the dominant eigenvectors are used to compute the activity scores,
+ $\bm{\nu}_r(f)$, which provide an insight into the relative importance of the uncertain inputs. Note that the
+ index, $r$, corresponds to the number of dominant eigenvectors in $\hat{\mat{W}}_1$. The sequence of 
+ steps for the gradient-based approach are provided in Algorithm~\ref{alg:grad}.
 
 %% Grad-based algorithm
 
@@ -48,7 +50,7 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
   \caption{An iterative gradient-based approach for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $\tau$. 
-\Ensure $\Lambda$, $W$, $\alpha$ %$\eta$. %
+\Ensure $\hat{\mat{\Lambda}}$, $\hat{\mat{W}}$, $\bm{\nu}_r(f)$ %$\eta$. %
     \Procedure{Gradient-based}{}
     \State Set $k$ = 0
 	\State Draw $n_k$ random samples, $\{\bm{\xi}_i\}_{i=1}^{n_k}$ 
@@ -69,35 +71,37 @@ highest relative change at iteration $r$, $\delta w_{1,j}^{(r)}$, is smaller a g
 	\Statex\hspace{5mm} iv. Using the augmented set, $\{\bm{\theta}_k\}_{k=1}^{n_1(N_p+1)}$
          compute $\bm{g}^i$.
          \fi 
-	\State Compute $\mat{C}$ and its eigenvalue decomposition 
-		$\mat{C}$= $\frac{1}{N_\text{total}}\sum\limits_{i=1}^{N_\text{total}}[\bm{g}^i][\bm{g}^i]^\top = W^{(k)}\Lambda^{(k)} W^{(k)\top}$
+	\State Compute $\hat{\mat{C}}$ and its eigenvalue decomposition 
+		$\hat{\mat{C}}$= $\frac{1}{N_\text{total}}\sum\limits_{i=1}^{N_\text{total}}[\bm{g}^i][\bm{g}^i]^\top$ = 
+		$\hat{\mat{W}}^{(k)}\hat{\mat{\Lambda}}^{(k)} \hat{\mat{W}}^{(k)\top}$
 	%\State Eigenvalue decomposition, $\mat{C}$ = $W^{(0)}\Lambda^{(0)} W^{(0)\top}$%
-	\State Partition: $\Lambda^{(k)}=
-        \begin{bmatrix} \Lambda_1^{(k)} & \\ & \Lambda_2^{(k)} \end{bmatrix}$, 
-        $W^{(k)}=\begin{bmatrix} W_1^{(k)} & W_2^{(k)} \end{bmatrix}$, 
-        $\Lambda_1^{(k)}\in \mathbb{R}^{N_p\times\mathcal{S}}$
+	\State Partition: $\hat{\mat{\Lambda}}^{(k)}=
+        \begin{bmatrix} \hat{\mat{\Lambda}}_1^{(k)} & \\ & \hat{\mat{\Lambda}}_2^{(k)} \end{bmatrix}$, 
+        $\hat{\mat{W}}^{(k)}=\begin{bmatrix} \hat{\mat{W}}_1^{(k)} & \hat{\mat{W}}_2^{(k)} \end{bmatrix}$, 
+        $\hat{\mat{\Lambda}}_1^{(k)}\in \mathbb{R}^{N_p\times r}$
 	\Loop
 		\State Set $k$ = $k$ + 1
-		\State Draw $n_k =  \beta n_{k-1}$  new random samples 
-                $\{\bm{\xi}_i\}_{i=1}^{n_k}$  $\beta =??$  $k = n_{r-1}+1,\ldots,n_{r-1}+n_r$.
+		\State Draw $n_k =  \lceil\beta n_{k-1}\rceil$  new random samples 
+                $\{\bm{\xi}_i\}_{i=1}^{n_k}$  $\beta\in[0,1]$  $k = n_{k-1}+1,\ldots,n_{k-1}+n_k$.
                 
 	%	\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.%
 		\State Set $N_\text{total}$ = $N_\text{total}$ + $n_k$ 
 		\State Compute $\bm{g}^i = \nabla_{\bm{\xi}_i}f(\bm{\xi}_i)$, 
-             	$i=n_{r-1}+1, \ldots, n_{r-1}+n_r$.  
-		\State Compute $\mat{C}$ = 
+             	$i=n_{k-1}+1, \ldots, n_{k-1}+n_k$.  
+		\State Compute $\hat{\mat{C}}$ = 
         	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^i][\bm{g}^i]^\top$
-		\State Eigenvalue decomposition, $\mat{C}$ = $W^{(k)}\Lambda^{(k)} W^{(k)\top}$
-		\State Compute $\delta W_{1,j}^{(k)}$ = 
-                       \scalebox{1.25}{$\frac{\|(W_{1,j}^{k})^2 - 
-                       (W_{1,j}^{k-1})^2\|}{\|(W_{1,j}^{k-1})^2\|}$}, 
-                       $j = 1,\ldots,\mathcal{S}$.
-		\If {$\max\left(\delta W_{1,j}^{(k)}\right)<\tau$}
+		\State Eigenvalue decomposition, $\hat{\mat{C}}$ = $\hat{\mat{W}}^{(k)}\hat{\mat{\Lambda}}^{(k)}
+		 \hat{\mat{W}}^{(k)\top}$
+		\State Compute $\delta \hat{\mat{W}}_{1,j}^{(k)}$ = 
+                       \scalebox{1.25}{$\frac{\|(\hat{\mat{W}}_{1,j}^{k})^2 - 
+                       (\hat{\mat{W}}_{1,j}^{k-1})^2\|}{\|(\hat{\mat{W}}_{1,j}^{k-1})^2\|}$}, 
+                       $j = 1,\ldots,r$.
+		\If {$\max\left(\delta \hat{\mat{W}}_{1,j}^{(k)}\right)<\tau$}
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}W_{1_{i,j}}^2$,
-	$i=1,\ldots,d$.
+	\State Compute $\nu_{i,r}(f) = \sum\limits_{j=1}^{r} \hat{\mat{\Lambda}}_{i,j}\hat{\mat{W}}_{i,j}^2$,
+	$i=1,\ldots,N_p$.
 	
     \EndProcedure
   \end{algorithmic}
@@ -137,26 +141,26 @@ However, estimating the gradient of the model output imposes a significant compu
 Hence, we explore the applicability of a so-called gradient-free approach as mentioned earlier, in the
 following section.  
 
-\subsection{Grad-free approach}
+\subsection{Gradient-free approach}
 \label{sub:gradfree}
 
-As mentioned earlier, the grad-free approach does not involve computation of the gradient of the model
+As mentioned earlier, the gradient-free approach does not involve computation of the gradient of the model
 output. Instead, a least-squares fit is performed to the local linear regression-based approximation
-to the model output. While the grad-free approach offers a significant potential for additional 
+to the model output. While the gradient-free approach offers a significant potential for additional 
 computational savings, its ability to reasonably approximate the active subspace 
 has not been investigated for a wide variety of problems~\cite{Constantine:2015}. Nevertheless, we are motivated by the
 underlying potential of this approach in reducing the computational effort associated with the
 active subspace computation. Moreover, this effort could help advance this approach and further motivate
 its usage for a wide variety of high-dimensional applications in the future. 
 
-First, we implement the grad-free approach to the 19-dimensional problem and compare our findings with
-those obtained using the grad-based approach. Later, in
-Section~\ref{sec:app}, we compute the active subspace for a 33-dimensional application using the grad-free
+First, we implement the gradient-free approach to the 19-dimensional problem and compare our findings with
+those obtained using the gradient-based approach. Later, in
+Section~\ref{sec:app}, we compute the active subspace for a 33-dimensional application using the gradient-free
 approach. Once again, the strategy is implemented in an iterative manner as shown in~\ref{sub:grad}. 
-It is observed that the results from the grad-free approach are consistent with the grad-based approach
+It is observed that the results from the gradient-free approach are consistent with the gradient-based approach
 as discussed further below.
 
-In the grad-free approach, the model output is first computed at an initial set of $n_1$ samples. An independent
+In the gradient-free approach, the model output is first computed at an initial set of $n_1$ samples. An independent
 set of $M$ samples is also drawn according to the joint probability distribution of the inputs. For each sample
 in $M$, $p$ nearest neighbours in the $n_1$ set are identified. A least-squares fit to model evaluations at
 the $p$ samples is performed. The slope vector ($\bm{b}_i$) of the regression-fit is stored separately and the process is
@@ -169,7 +173,7 @@ using the slope vectors as follows:
 %
 Eigenvalue decomposition of $\hat{\mat{C}}$ yields an initial approximation to the
 active subspace. The aforementioned sequence of steps is repeated until $\delta w_{1,j}^{(r)}$ as mentioned
-earlier in~\ref{sub:grad} is found to be smaller than $\tau$. An outline of the grad-free approach is
+earlier in~\ref{sub:grad} is found to be smaller than $\tau$. An outline of the gradient-free approach is
 provided in Algorithm~\ref{alg:free1}, and the specific sequence of steps pertaining to the construction of
 $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
  
@@ -259,11 +263,11 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 \bigskip
 
 
-The grad-free approach when implemented to the 19-dimensional H$_2$/O$_2$ reaction kinetics problem
+The gradient-free approach when implemented to the 19-dimensional H$_2$/O$_2$ reaction kinetics problem
 with uncertain pre-exponents ($A_i$'s) also yielded a 1-dimensional active subspace. In Figure~\ref{fig:comp} (left),
 we provide a comparison of the components of the dominant eigenvector, obtained using the two approaches.
 Additionally, the quantity, $\delta w_{1,j}^{(r)}$ is also plotted in
-Figure~\ref{fig:comp} (right) to illustrate convergence characteristics for the grad-free approach.
+Figure~\ref{fig:comp} (right) to illustrate convergence characteristics for the gradient-free approach.
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -288,7 +292,7 @@ compared for the two approaches in Figure~\ref{fig:comp_ssp}.
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.48\textwidth]{./Figures/comp_ssp}
-\caption{An illustrative comparison of the SSPs generated using the grad-based and the grad-free approaches.}
+\caption{An illustrative comparison of the SSPs generated using the gradient-based and the gradient-free approaches.}
 \label{fig:comp_ssp}
 \end{center}
 \end{figure}
@@ -328,7 +332,7 @@ associated with the ignition delay is largely due to the uncertainty in $A_9$ an
 $A_{15}$ and $A_{17}$ is also found to be significant. 
 
 The above comparisons establish consistency between the two approaches. Note that the computational
-effort in the case of grad-free approach is significantly smaller. Hence, we are encouraged to use the
-grad-free approach for the 33-dimensional application in the next section. 
+effort in the case of gradient-free approach is significantly smaller. Hence, we are encouraged to use the
+gradient-free approach for the 33-dimensional application in the next section. 
 
 

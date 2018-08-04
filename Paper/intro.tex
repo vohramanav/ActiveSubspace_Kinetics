@@ -124,66 +124,55 @@ rate-controlling parameters, pre-exponent~($A_i$) and the activation
 energy~($E_{a,i}$) on ignition delay. The $A_i$'s are considered to be
 uniformly distributed about their nominal estimates provided
 in~\cite{Yetter:1991}.  The total number of uncertain inputs is 33 which makes
-the present problem computationally challenging. 
-To reduce the effort, we explore two
-strategies: 
-a gradient-based approach and  
-a gradient-free approach.
-%involving local linear approximation which does notrequire gradient computation
-%(grad-free).  
-\alennote{Thorough the paper 
-change grad-based to gradient-based, and similarly for grad-free}. 
-%
-These strategies are based on algorithms 1.1 and 1.2 
-in~\cite{Constantine:2015}. In this work, an
-iterative approach is adopted for implementing the two strategies.
-Consequently, the amount of computational effort appears to have decreased
-\alennote{This will be unclear to readers}, and
-is found to be relatively less in the case of grad-free approach as discussed
-later in section~\ref{sec:method}.
+the present problem high-dimensional and computationally challenging. 
+For the purpose of dimension reduction, the active subspace is evaluated using
+two computational strategies: a gradient-based approach and  
+a gradient-free approach. These strategies are based on algorithms 1.1 and 1.2 
+in~\cite{Constantine:2015}. As mentioned earlier, the gradient information of the model
+output is needed in both cases. However, in the case of gradient-free approach,
+the gradient is approximated using a linear regression-fit to the model output.
+Hence, the amount of computational effort is reduced in this case. Both strategies
+are implemented in an iterative manner i.e. a new set of model evaluations are
+generated at each iteration until convergence is accomplished as discussed
+later in Section~\ref{sec:method}. 
 
-\alennote{This paragraph will not be meaningful to readers, especially those not familiar
-with active subspaces; Need to explain DGSMs, their importance, 
-and say something general about our
-approach for approximating them.}
-Components of the dominant eigenvectors can be used to estimate the so-called
-activity scores~\cite{Diaz:2016,Constantine:2017} which provide an insight into
-the relative importance of the uncertain parameters. In section~\ref{sub:gsa},
-we demonstrate that the activity scores could be used to approximate the
-derivative-based global sensitivity measures (DGSMs)~\cite{Sobol:2009}, and
-establish a relationship between the Sobol' total effect index, the DGSMs, and
-the activity scores. 
+An alternate approach to dimension reduction involves computing the global sensitivity
+measures associated with uncertain inputs of a model. Uncertainty along the inputs with
+a relatively small estimate of the sensitivity measure can be ignored for the purpose of
+reducing the computational effort associated with uncertainty quantification (UQ). The
+Sobol' indices are commonly used for this purpose~\cite{Sobol:2001}. However, obtaining
+converged estimates of the Sobol' indices typically requires tens of thousands of model
+runs and is therefore impractical in situations involving intensive model simulations.
+Recently, the derivative-based global sensitivity measures~(DGSMs) have been 
+developed to approximate the upper bound on the Sobol' indies with much fewer
+computations~\cite{Sobol:2009, Lamboni:2013}. In Section~\ref{sec:assa}, we show
+that the DGSMs can in fact be approximated using the components of the eigenvectors
+in the active subspace. 
 
-%Below, we summarize key contributions of the paper and its
-%organization. 
-
-\paragraph{Contributions}
-Main contributions of this paper are as follows: (1) A perspective on activity
-scores as means for approximating the DGSMs is provided. (2) A general
-relationship between DGSMs, activity scores, and the total Sobol' index is
-established. (3) Iterative gradient-based and gradient-free approaches for
-computing the active subspace are demonstrated. The two approaches are shown to
-be consistent and yield greater computational gains compared to the
-conventional approach. As mentioned above, the gains are greater in the case of
-grad-free approach. (4) The grad-free approach is implemented for discovering
-an active subspace in a 33-dimensional parameter space for the H$_2$/O$_2$
-reaction kinetics application. 
-\alennote{This says too much. Focus on the actual novel 
-contributions; also, the application should be made more prominent.}
+Main contributions of this paper are as follows: (1) Mathematical linkages between the
+global sensitivity measures: Total Sobol index, DGSMs, and the activity scores are
+established; (2) An efficient gradient-free iterative approach based on local linear
+approximation of the model output is shown to yield consistent results with the
+gradient-based approach. The two approaches were implemented to compute
+the active subspace for a 19-dimensional H$_2$/O$_2$ kinetics problem with 
+uncertain pre-exponents in the rate law for individual reactions. (3) The gradient-free
+approach is finally implemented to discover an active subspace for the 33-dimensional
+H$_2$/O$_2$ reaction kinetics application in which case the pre-exponents as well
+as the activation energies are considered to be uncertain. 
  
-
- \paragraph{Organization}
- The paper is organized as follows. In Section~\ref{sub:ac}, a brief theoretical background on
+ The remaining of this paper is organized as follows. In Section~\ref{sub:ac}, a brief theoretical background on
  the active subspace methodology is provided. In Section~\ref{sub:gsa}, it is shown that the activity
  scores provide a reasonable approximation to the DGSMs especially in a high-dimensional setting. 
  Additionally, a relationship between the three global sensitivity measures, namely, the activity scores,
  DGSMs, and the total Sobol' indices is established. In Section~\ref{sec:method}, a systematic framework
- for computing the active subspace using the grad-based, and the grad-free approaches is presented. 
+ for computing the active subspace using the gradient-based, and the gradient-free approaches is presented. 
 The two approaches are implemented to the H$_2$/O$_2$ reaction kinetics problem whereby only
 the $A_i$'s are considered as uncertain. Our findings illustrate the consistency in the results based on
-the two approaches thereby encouraging the use of the grad-free approach. In Section~\ref{sec:app},
-we further explore the suitability of the grad-free approach by implementing it to a higher-dimensional
-H$_2$/O$_2$ reaction kinetics problem by accounting for the uncertainty in $E_{a,i}$'s as well. 
+the two approaches thereby encouraging the use of the gradient-free approach. In Section~\ref{sec:app},
+the gradient-free approach is implemented to the 33-dimensional
+H$_2$/O$_2$ reaction kinetics application by accounting for the uncertainty in $E_{a,i}$'s as well. The
+resulting active subspace is found to be 1-dimensional indicating enormous potential for reduction in
+computational effort pertaining to UQ, in this case. 
 Finally, we draw important conclusions based on the various aspects of this work in Section~\ref{sec:conc}.
 
 

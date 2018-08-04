@@ -10,17 +10,17 @@ As mentioned in the introduction, the active subspace is low-dimensional subspac
 that constitutes important directions in a model's input
 space~\cite{Constantine:2015}. The effective variability in the model output
 due to uncertain inputs is predominantly captured along these directions.
-Mathematically, these directions are the eigenvectors of a positive
-semi-definite matrix, $\mat{C}$, defined as follows: (\alennote{Need to 
-say what is the function $f$, first})
+Mathematically, for a given model output, $f(\bm{\xi})$, and a set of inputs, $\bm{\xi}$,
+these directions are the eigenvectors of a positive
+semi-definite matrix, $\mat{C}$, defined as follows: 
 %
 \be
 \mat{C} = \int_\Omega (\nabla_{\bm{\xi}}f)(\nabla_{\bm{\xi}}f)^\top dP_{\bm{\xi}}
 \label{eq:C}
 \ee
 %
-where $\Omega$:~$[-1,1]^{N_p}$ is the domain of $\bm{\xi}$, and $N_p$ is the
-number of uncertain inputs. \alennote{Why do we limit to $[-1, 1]^\Np$?} 
+where $\Omega\in\mathbb{R}^{N_p}$ is the domain of $\bm{\xi}$, and $N_p$ is the
+number of uncertain inputs. 
 $dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
 distribution of $\bm{\xi}$. Note that the function, $f$ is considered to be continuous 
 and differentiable in the considered parameter domain. 
@@ -36,10 +36,10 @@ Since $\mat{C}$ is symmetric and
 positive semi-definite, it admits a spectral decomposition:
 %
 \be
-\mat{C} = \bm{W}\bm{\Lambda}\bm{W}^\top
+\mat{C} = \mat{W}\mat{\Lambda}\mat{W}^\top
 \ee
 %
-where $\bm{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with
+where $\mat{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with
 $\lambda_i$'s sorted in descending order
 \[
      \lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_\Np \geq 0.
@@ -47,25 +47,22 @@ $\lambda_i$'s sorted in descending order
 The eigenpairs are partitioned about the $i^{\text{th}}$ eigenvalue such that
 the ratio, $\left(\frac{\lambda_i}{\lambda_{i+1}}\right)$ $\gg$ 1 as follows:
 \be
- \bm{W} = [\bm{w}_1~\bm{w}_2],~~\bm{\Lambda} = \begin{bmatrix}\bm{\Lambda}_1 & \\  &
-  \bm{\Lambda}_2 \\
+ \mat{W} = [\mat{W}_1~\mat{W}_2],~~\mat{\Lambda} = \begin{bmatrix}\mat{\Lambda}_1 & \\  &
+  \mat{\Lambda}_2 \\
 \end{bmatrix}
 \ee
  %
- where $\bm{w}_1$ comprises the dominant eigenspace of $\mat{C}$ regarded as
-the active subspace, and $\bm{\Lambda}_1$ is the corresponding set of
+ where $\mat{W}_1$ comprises the dominant eigenspace of $\mat{C}$ regarded as
+the active subspace, and $\mat{\Lambda}_1$ is the corresponding set of
 eigenvalues. 
-\alennote{$\vec{w}_1$ is a supposedly the matrix whose columns are 
-the dominant eigenvectors. Denoting a matrix by a notation typically 
-used for a vector is confusing. Use $\mat{W}_1$ instead?}
 
 \alennote{The rest of this paragraph needs to be rewritten, as it is hard to 
 see what is going on; what is $\theta$? I suggest, mentioning $\vec\theta$ 
 and $\vec\xi$ earlier, and from then on make everything function of $\vec\xi$.
 Explain the remaining ideas more clearly.}
 The active subspace is used to construct the so-called active
-variables, $\bm{w}_1^\top \bm{\xi}$ and $f(\bm{\xi}(\theta))$ is transformed as
-$G(\bm{w}_1^\top \bm{\xi})$. In practice, the set of samples, $\bm{\xi}_i$'s
+variables, $\mat{W}_1^\top \bm{\xi}$ and $f(\bm{\xi}(\theta))$ is transformed as
+$G(\mat{W}_1^\top \bm{\xi})$. In practice, the set of samples, $\bm{\xi}_i$'s
 are projected to the physical space as $\bm{\theta}_i$'s at which the model
 output, $f(\bm{\xi}(\theta))$ is computed.  The matrix, $\mat{C}$ is typically
 approximated using pseudo-random sampling techniques such as Monte Carlo and
@@ -75,7 +72,7 @@ summation as follows:
  \be
  \mat{C}\approx \hat{\mat{C}} = \frac{1}{N}\sum\limits_{i=1}^{N} 
  (\nabla_{\bm{\xi}}f(\bm{\xi}_i))(\nabla_{\bm{\xi}}f(\bm{\xi}_i))^\top
- = \hat{\bm{W}}\hat{\bm{\Lambda}}\hat{\bm{W}}^\top
+ = \hat{\mat{W}}\hat{\mat{\Lambda}}\hat{\mat{W}}^\top
 \label{eq:chat}
  \ee
  %

@@ -12,7 +12,7 @@ corresponding to the different reaction rates are provided in~\cite{Yetter:1991}
 
 The gradient-free approach discussed earlier in~\ref{sub:gradfree} was used to compute the
 active subspace. Using the iterative procedure, the convergence of the eigenvectors
-was examined by tracking $\delta w_{1,j}^{(i)}$. In Figure~\ref{fig:conv_app} (left),
+was examined by tracking $\delta \hat{\mat{W}}_{1,j}^{(i)}$. In Figure~\ref{fig:conv_app} (left),
 components of the converged eigenvector based on 50 samples using $\tau$ = 0.2 are plotted.
 To illustrate convergence, we compare them with components of the eigenvector obtained
 using 100 samples (twice as many). The variation of maximum $\delta w_{1,j}^{(i)}$ between
@@ -23,7 +23,7 @@ Figure~\ref{fig:conv_app} (right).
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv10}
 \caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector obtained
-using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  $\delta w_{1,j}^{(r)}$
+using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  $\delta \hat{\mat{W}}_{1,j}^{(i)}$
 is plotted for successive iterations to illustrate the convergence behavior.}
 \label{fig:conv_app}
 \end{center}
@@ -47,12 +47,10 @@ existence of a potential 1-dimensional active subspace.}
 The second eigenvalue is observed to be roughly four orders of magnitude smaller than the first 
 indicating the existence of a 1-dimensional active subspace. This is further confirmed by the sufficient
 summary plot which shows that the variability in $G$ can be approximated using a 1-dimensional regression
-fit which could be used its a surrogate. We will verify the accuracy of the surrogate later in~\ref{sub:verify}.
+fit which could be used as a surrogate. We will verify the accuracy of the surrogate later in~\ref{sub:verify}.
 
-Components of the dominant eigenvector in Figure~\ref{fig:conv_app} (left) are utilized for estimating the
-activity scores, defined earlier in~\ref{eq:as}. As discussed earlier, the activity scores can be regarded as a 
-measure for global sensitivity of the uncertain parameters. The sensitivity of ignition delay towards the 
-33 uncertain parameters considered in this problem is plotted below in Figure~\ref{fig:as_33D}.
+Components of the dominant eigenvector in Figure~\ref{fig:conv_app} (left) are used for estimating the
+activity scores, plotted below in Figure~\ref{fig:as_33D}.
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -71,7 +69,7 @@ dimensionality of the problem from 33 to 3-5 depending upon the required level o
 the uncertainty in the model output. The sensitivity-driven dimension reduction for uncertainty quantification has been
 discussed in our earlier effort~\cite{Vohra:2018}. In this work, however, we focus on dimension reduction using the active 
 subspace approach which is shown to yield even greater scope for dimension reduction i.e. from 33 to 1. We verify
-the accuracy of the 1-d regression fit to $G(\bm{w}_1^\top\bm{\xi})$ in the following section.
+the accuracy of the 1-d regression fit to $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in the following section.
 
 \subsection{Surrogate Verification}
 \label{sub:verify}
@@ -83,7 +81,7 @@ between estimates of ignition delay in the case of H$_2$/O$_2$ reaction, obtaine
 model output and the surrogate in the following equation:
 %
 \be
-\varepsilon_d = \frac{\|f(\bm{\theta}) - \mathcal{Y}(\bm{\xi})\|}{\|f(\bm{\theta})\|}
+\varepsilon_d = \frac{\|f(\bm{\theta}) - \mathcal{Y}(\bm{\xi})\|_2}{\|f(\bm{\theta})\|_2}
 \ee
 %
 The relative norm, $\varepsilon_d$ was estimated to be 8.92$\times10^{-2}$ based on a validation test data

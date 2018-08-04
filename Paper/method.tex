@@ -54,7 +54,7 @@ A regression fit to
     \Procedure{Gradient-based}{}
     \State Set $k$ = 0
 	\State Draw $n_k$ random samples, $\{\bm{\xi}_i\}_{i=1}^{n_k}$ 
-         according to $\pi$. 
+         according to $\pi_{\bm{\xi}}$. 
     \State Set $N_\text{total}$ = $n_k$ 
 	\iffalse \State Project to the physical space:
         $\{\bm{\theta}_k\}_{k=1}^{n_r}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_r}$ \fi
@@ -171,81 +171,78 @@ using the slope vectors as follows:
 \hat{\mat{C}} = \frac{1}{M}\sum\limits_{i=1}^{M}\bm{b}_i\bm{b}_i^\top = \hat{\bm{W}}\hat{\bm{\Lambda}}\hat{\bm{W}}^\top
 \ee
 %
-Eigenvalue decomposition of $\hat{\mat{C}}$ yields an initial approximation to the
-active subspace. The aforementioned sequence of steps is repeated until $\delta w_{1,j}^{(r)}$ as mentioned
-earlier in~\ref{sub:grad} is found to be smaller than $\tau$. An outline of the gradient-free approach is
-provided in Algorithm~\ref{alg:free1}, and the specific sequence of steps pertaining to the construction of
-$\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
- 
+Hence, the gradient-free approach essentially differs in the procedure for constructing the matrix, $\hat{\mat{C}}$.
+The active subspace computation involves the same sequence of steps as outlined previously for the gradient-based 
+approach in Algorithm~\ref{alg:grad}. The procedure for constructing $\hat{\mat{C}}$ using local linear approximation
+of the model output is provided in Algorithm~\ref{alg:free2}.
 
-
+%\bigskip
+%\begin{breakablealgorithm}
+%\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+%\renewcommand{\algorithmicensure}{\textbf{Output:}}
+%  \caption{An iterative gradient-free approach for discovering the active subspace}
+%  \begin{algorithmic}[1]
+%\Require $\theta_l$, $\theta_u$, $M$, $\tau$. 
+%\Ensure $\Lambda$, $W$, $\alpha$ %$\eta$. 
+%    \Procedure{Gradient-free}{}
+%    \State Set $k$ = 0
+%	\State Draw $n_k$ random samples, $\{\bm{\xi}_j\}_{j=1}^{n_k}$
+%	\State Set $N_\text{total}$ = $n_k$ 
+%	\iffalse \State Project to the physical space:
+%        $\{\bm{\theta}_k\}_{i=1}^{n_k}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_r}$
+%        \fi
+%     \State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ 
+%	\State Compute $f(\bm\xi_j)$, $j=1, \ldots, N_\text{total}$.
+%	\State Compute the matrix $\mathbb{C}$ and its eigenvalue decomposition using Algorithm 3
+%	%\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
+%	\State Partition: $\Lambda^{(k)}~=~ 
+%        \begin{bmatrix} \Lambda_1^{(k)} & \\ & \Lambda_2^{(k)} \end{bmatrix}$, 
+%        $W^{(k)}~=~\begin{bmatrix} W_1^{(k)} & W_2^{(k)} \end{bmatrix}$, 
+%        $\Lambda_1^{(k)}\in \mathbb{R}^{d\times\mathcal{S}}$
+%	\Loop
+%		\State Set $k$ = $k$ + 1
+%		\State Draw $n_k =  \beta n_{k-1}$  new random samples 
+%		$\{\bm{\xi}_j\}_{j=1}^{n_k}$  $\beta =??$  $j = n_{k-1}+1,\ldots,n_{k-1}+n_k$. 
+%        \State $N_\text{total}$ = $N_\text{total}$ + $n_k$    
+%	\iffalse	\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$. \fi
+%		 
+%		\State Compute $f(\bm\xi_j)$, $j=n_{k-1}+1, \ldots, n_{k-1}+n_k$.  
+%		\State Construct the matrix, $\mat{C}$ and its eigenvalue decomposition
+%		\State Compute $\delta W_{1,j}^{(k)}$ = 
+%                       \scalebox{1.25}{$\frac{\|(W_{1,j}^{k})^2 - 
+%                       (W_{1,j}^{k-1})^2\|}{\|(W_{1,j}^{k-1})^2\|}$}, 
+%                       $j = 1,\ldots,\mathcal{S}$.
+%		\If {$\max\left(\delta W_{1,j}^{(k)}\right)<\tau$}
+%			\State break
+%		\EndIf
+%	\EndLoop
+%	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}W_{1_{i,j}}^2$,
+%	$i=1,\ldots,d$.
+%    \EndProcedure
+%  \end{algorithmic}
+%  \label{alg:free1}
+%\end{breakablealgorithm}
+%\bigskip
+%
 \bigskip
 \begin{breakablealgorithm}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
-  \caption{An iterative gradient-free approach for discovering the active subspace}
-  \begin{algorithmic}[1]
-\Require $\theta_l$, $\theta_u$, $M$, $\tau$. 
-\Ensure $\Lambda$, $W$, $\alpha$ %$\eta$. 
-    \Procedure{Gradient-free}{}
-    \State Set $k$ = 0
-	\State Draw $n_k$ random samples, $\{\bm{\xi}_j\}_{j=1}^{n_k}$
-	\State Set $N_\text{total}$ = $n_k$ 
-	\iffalse \State Project to the physical space:
-        $\{\bm{\theta}_k\}_{i=1}^{n_k}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{n_r}$
-        \fi
-     \State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$ 
-	\State Compute $f(\bm\xi_j)$, $j=1, \ldots, N_\text{total}$.
-	\State Compute the matrix $\mathbb{C}$ and its eigenvalue decomposition using Algorithm 3
-	%\State Eigenvalue decomposition, $\mat{C}$ = $W^{(r)}\Lambda^{(r)} W^{(r)\top}$
-	\State Partition: $\Lambda^{(k)}~=~ 
-        \begin{bmatrix} \Lambda_1^{(k)} & \\ & \Lambda_2^{(k)} \end{bmatrix}$, 
-        $W^{(k)}~=~\begin{bmatrix} W_1^{(k)} & W_2^{(k)} \end{bmatrix}$, 
-        $\Lambda_1^{(k)}\in \mathbb{R}^{d\times\mathcal{S}}$
-	\Loop
-		\State Set $k$ = $k$ + 1
-		\State Draw $n_k =  \beta n_{k-1}$  new random samples 
-		$\{\bm{\xi}_j\}_{j=1}^{n_k}$  $\beta =??$  $j = n_{k-1}+1,\ldots,n_{k-1}+n_k$. 
-        \State $N_\text{total}$ = $N_\text{total}$ + $n_k$    
-	\iffalse	\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$. \fi
-		 
-		\State Compute $f(\bm\xi_j)$, $j=n_{k-1}+1, \ldots, n_{k-1}+n_k$.  
-		\State Construct the matrix, $\mat{C}$ and its eigenvalue decomposition
-		\State Compute $\delta W_{1,j}^{(k)}$ = 
-                       \scalebox{1.25}{$\frac{\|(W_{1,j}^{k})^2 - 
-                       (W_{1,j}^{k-1})^2\|}{\|(W_{1,j}^{k-1})^2\|}$}, 
-                       $j = 1,\ldots,\mathcal{S}$.
-		\If {$\max\left(\delta W_{1,j}^{(k)}\right)<\tau$}
-			\State break
-		\EndIf
-	\EndLoop
-	\State Compute $\alpha_i(N_\text{total}) = \sum\limits_{j=1}^{\mathcal{S}} \Lambda_{1_{i,j}}W_{1_{i,j}}^2$,
-	$i=1,\ldots,d$.
-    \EndProcedure
-  \end{algorithmic}
-  \label{alg:free1}
-\end{breakablealgorithm}
-\bigskip
-
-\bigskip
-\begin{breakablealgorithm}
-%\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-%\renewcommand{\algorithmicensure}{\textbf{Output:}}
   \caption{Algorithm for constructing the matrix, $\mat{C}$}
   \begin{algorithmic}[1]
 	\Procedure{Local Linear Approximation}{} 
 	\State Draw $N$ random samples, $\{\bm{\xi}_j\}_{j=1}^{N}$ 
-	according to $\pi$.
+	according to $\pi_{\bm{\xi}}$.
 	\iffalse \State Project to the physical space:
 	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{N}$ \fi
 	\State Compute $f(\bm\xi_j)$, $j=1, \ldots, N$.
-	\State Draw $M$ random samples, $\{\bm{\nu}_i\}_{i=1}^{M}$
-	according to $\pi$.
+	\State Draw $M$ random samples, $\{\bm{\zeta}_i\}_{i=1}^{M}$
+	according to $\pi_{\bm{\xi}}$.
 	\State Choose an integer $p \leq N$ 
 	\State For each $i=1, \ldots, M$, compute 
 	\[
 	\begin{aligned}
-	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_j\}_{j=1}^{N} \text{ to } \bm{\nu}_i\}\\
+	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_j\}_{j=1}^{N} \text{ to } \bm{\zeta}_i\}\\
 	\vspace{-2mm}
 	\Psi_i &= \text{subset of } f(\bm\xi_j) \text{ corresponding to the points in } \Phi_i
 	\end{aligned}
@@ -254,7 +251,7 @@ $\hat{\mat{C}}$ is provided in Algorithm~\ref{alg:free2}.
 	 $f(\bm\xi_j) \approx c_i + b_i^T\bm{\xi}_j$, \  $\bm{\xi}_j \in \Phi_i, \ f(\bm\xi_j) \in \Psi_i$
 	\State Compute the matrix 
 	\[
-	\mat{C} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = {W}{\Lambda}{W}^T
+	\hat{\mat{C}} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = \hat{\mat{W}}\hat{\mat{\Lambda}}\hat{\mat{W}}^\top
 	\]
 	\EndProcedure
   \end{algorithmic}
@@ -284,9 +281,9 @@ agreement with each other. Moreover, as expected,  $\delta w_{1,j}^{(r)}$ is obs
 the eigenvector is considered to have converged if its value is found to be smaller than 0.1. Note that only 30 samples
 were found to be sufficient for approximating the active subspace in the 19-dimensional input domain. 
 
-As mentioned earlier, the model output $f(\bm{\xi}(\bm{\theta}))$ predominantly varies in the active subspace. Hence, 
-$f(\bm{\xi}(\bm{\theta}))$ can be transformed as a function of the active variable as $G(\bm{w}_1^\top\bm{\xi})$ in
-the subspace. The plot of $G$ versus $\bm{w}_1^\top\bm{\xi}$, regarded as the \textit{sufficient summary plot} (SSP) is 
+As mentioned earlier, the model output $f(\bm{\xi})$ predominantly varies in the active subspace. Hence, 
+$f(\bm{\xi})$ can be transformed as a function of the active variable as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
+the subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, regarded as the \textit{sufficient summary plot} (SSP) is 
 compared for the two approaches in Figure~\ref{fig:comp_ssp}.
 %
 \begin{figure}[htbp]
@@ -304,13 +301,8 @@ active subspace; consistent with the fact the it is 1-dimensional.
 
 We extend the comparative assessment of the two approaches by estimating the activity score for individual
 uncertain parameters ($\alpha_i$) using
-the components of the dominant eigenvector in the following equation:
-%
-\be
-\alpha_i(n) = \sum\limits_{j=1}^{\mathcal{S}}\Lambda_{1_{i,j}}w_{1_{i,j}}^2,~i = 1,\ldots,N_p
-\ee
-%
-where $n$ is the sample size. The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated using
+the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}. The activity scores for the 19 
+uncertain pre-exponents ($A_i$'s), estimated using
 the two approaches are plotted in Figure~\ref{fig:comp_as} (left). Additionally, for the purpose of verification, we 
 compare these estimates with those obtained using the DGSMs~\cite{Vohra:2018} in 
 Figure~\ref{fig:comp_as} (right). 

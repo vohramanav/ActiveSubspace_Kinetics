@@ -8,9 +8,13 @@
 \label{sub:ac}
 As mentioned in the introduction, the active subspace is low-dimensional subspace
 that constitutes important directions in a model's input
-space~\cite{Constantine:2015}. The effective variability in the model output
-due to uncertain inputs is predominantly captured along these directions.
-Mathematically, for a given model output, $f(\bm{\xi})$, and a set of inputs, $\bm{\xi}$,
+space~\cite{Constantine:2015}. The effective variability in the model output, $f$
+due to uncertain inputs, $\bm{\theta}$ in the physical space, is predominantly captured
+along these directions. Each component of $\bm{\theta}$
+can be mapped to a corresponding component of $\bm{\xi}$ in $\Omega\in\mathbb{R}^{N_p}$
+($N_p$: number of uncertain inputs)
+using a linear transformation.  Hence, from this point onwards, we denote $f$ as $f(\bm{\xi})$.
+Mathematically, for a given $f$, and a set of inputs, $\bm{\xi}$,
 these directions are the eigenvectors of a positive
 semi-definite matrix, $\mat{C}$, defined as follows: 
 %
@@ -19,12 +23,10 @@ semi-definite matrix, $\mat{C}$, defined as follows:
 \label{eq:C}
 \ee
 %
-where $\Omega\in\mathbb{R}^{N_p}$ is the domain of $\bm{\xi}$, and $N_p$ is the
-number of uncertain inputs. 
+where 
 $dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
 distribution of $\bm{\xi}$. Note that the function, $f$ is considered to be continuous 
-and differentiable in the considered parameter domain. 
-%Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
+and differentiable in the physical space, $\bm{\theta}$. %Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
 %subspace. However, it is of remarkable interest to investigate if one exists
 %since the subspace could be exploited to reduce the dimensionality of the
 %problem and hence the associated computational effort.

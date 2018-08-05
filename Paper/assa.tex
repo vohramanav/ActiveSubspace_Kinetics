@@ -64,6 +64,11 @@ into a reduced set, $\mat{W}_1^\top \bm{\xi}$, referred to as the set of active
 variables. The number of active variables is thus equal to the number
 of dominant eigenvectors. The model output in the original space, $f(\bm{\xi}(\theta))$,
 is expressed in terms of the active variables as $G(\mat{W}_1^\top \bm{\xi})$.
+\alennote{This is too fast, explain a bit more, and refer to 
+Paul Constantine's book. I think we should follow the explanations
+in Chapter 4 of Paul's book; see equations (4.1)--(4.3) and algorithm 4.1
+for surrogate model construction on active subspace; these should be
+mentioned here.}
 In practice, the matrix, $\mat{C}$ is typically
 approximated using pseudo-random sampling techniques such as Monte Carlo and
 Latin hypercube sampling. The integral in~\eqref{eq:C} is replaced with a

@@ -1,45 +1,67 @@
 \section{Methodology}
 \label{sec:method}
 
-In this section, we present the computational strategy used for computing the active subspace in the case of
-H$_2$/O$_2$ reaction kinetics with uncertain pre-exponent of individual reaction rates provided in
-Table~\ref{tab:kinetics}. Specifically, we employ two strategies: One that involves computation of model
-gradients in order to construct the matrix (gradient-based), $\hat{\mat{C}}$ in~\eqref{eq:chat}, and the other that involves a local 
-linear approximation of the model output to circumvent the computational cost associated with gradient
-computation (gradient-free). The gradient-based approach is based on Algorithm 1.1, and the gradient-free approach is
-based on Algorithm 1.2 in~\cite{Constantine:2015}. However, in this work, we have implemented the
-two strategies in an iterative manner and have demonstrated potential for additional savings in both cases.
-Additionally, for the present application, our findings based on the two strategies are observed to be consistent.
-Since, the gradient-free approach is relatively more efficient, this observation encourages its use for high-dimensional
-applications as discussed later in Section~\ref{sec:app}. Note however, that the model output is required to be
-differentiable throughout the input domain in both cases.
+In this section, we present the computational strategy used for computing the
+active subspace in the case of H$_2$/O$_2$ reaction kinetics with uncertain
+pre-exponent of individual reaction rates provided in Table~\ref{tab:kinetics}.
+Specifically, we employ two strategies: 
+A gradient-based strategy that involves computation of model
+gradients in order to construct the matrix $\hat{\mat{C}}$
+in~\eqref{eq:chat}, and a gradient-free approach 
+that involves a (\alennote{should we say 
+regression-based?}) local linear approximation of
+the model output to circumvent the computational cost associated with gradient
+computation. The gradient-based approach is based on Algorithm
+1.1, and the gradient-free approach is based on Algorithm 1.2
+in~\cite{Constantine:2015}. In this work, we implement the two
+strategies in an iterative manner and demonstrate potential for
+additional savings in both cases.  For the present application,
+our findings based on the two strategies are observed to be consistent.  
+Since,
+the gradient-free approach is more efficient, this observation
+encourages its use for high-dimensional applications as discussed later in
+Section~\ref{sec:app}. 
+%Note however, that the model output is required to be
+%differentiable throughout the input domain in both cases.
 
 \subsection{Gradient-based approach}
 \label{sub:grad}
 
-As discussed earlier, in the gradient-based approach, the elements of $\hat{\mat{C}}$ are estimated using model gradients.
- In situations where the gradient is not available analytically, one could consider using
-finite difference and other relatively more efficient techniques such as automatic differentiation~\cite{Kiparissides:2009} 
-and adjoint-based gradient computation~\cite{Jameson:1988,Gunzburger:2003,Borzi:2011,Alexanderian:2017}.
-Model evaluations at neighbouring points are required if finite difference is used. Hence, for 
-$N$ samples in a $d$-dimensional parameter space, $N(d+1)$ model evaluations are needed. 
+As discussed earlier, in the gradient-based approach, the elements of
+$\hat{\mat{C}}$ are estimated using model gradients.  In situations where the
+gradient is not available analytically, one could consider using finite
+difference and other relatively more efficient techniques such as automatic
+differentiation~\cite{Kiparissides:2009} and adjoint-based gradient
+computation~\cite{Jameson:1988,Gunzburger:2003,Borzi:2011,Alexanderian:2017}.
+Model evaluations at neighbouring points are required if finite difference is
+used. Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
+model evaluations are needed. 
 
-We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$, at an initial set of $n_1$ samples. 
-For this purpose, $\bm{\xi}_i$'s are projected to the physical space as $\bm{\theta}_i$'s. Using the gradient
-evaluations, the matrix, $\hat{\mat{C}}$ is computed. Eigenvalue decomposition of $\hat{\mat{C}}$ yields an initial
-estimate of the dominant eigenspace, $\hat{\mat{W}}_1$ and corresponding set of eigenvalues, $\hat{\mat{\Lambda}}_1$.
-At each subsequent iteration, model evaluations are generated at a new set of $n_s$ samples. The new set
-of gradient evaluations are augmented with the available set to re-construct $\hat{\mat{C}}$ followed by its eigenvalue
-decomposition. The relative
-change in the norm of the difference in squared value of individual components of the dominant eigenvectors between subsequent 
-iterations is evaluated. The process is terminated and the resulting eigenspace is considered to be converged once
-highest relative change at iteration $k$, $\delta \hat{\mat{W}}_{1,j}^{(k)}$, is smaller a given tolerance, $\tau$. 
-A regression fit to
- $G(\hat{\mat{W}}_1^\top\bm{\xi})$ is used as a surrogate to characterize and quantify the uncertainty in the model
- output. Moreover, the components of the dominant eigenvectors are used to compute the activity scores,
- $\bm{\nu}_r(f)$, which provide an insight into the relative importance of the uncertain inputs. Note that the
- index, $r$, corresponds to the number of dominant eigenvectors in $\hat{\mat{W}}_1$. The sequence of 
- steps for the gradient-based approach are provided in Algorithm~\ref{alg:grad}.
+We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$,
+at an initial set of $n_1$ samples.  For this purpose, $\bm{\xi}_i$'s are
+projected to the physical space as $\bm{\theta}_i$'s. 
+\alennote{The mention of $\bm{\theta}$ is redundant. 
+Say what $\bm{\xi}_i$, $i = 1, \ldots, n_1$ are before using them.} 
+Using the gradient
+evaluations, the matrix, $\hat{\mat{C}}$ is computed. Eigenvalue decomposition
+of $\hat{\mat{C}}$ yields an initial estimate of the dominant eigenspace,
+$\hat{\mat{W}}_1$ and corresponding set of eigenvalues,
+$\hat{\mat{\Lambda}}_1$.  At each subsequent iteration, model evaluations are
+generated at a new set of $n_s$ samples. The new set of gradient evaluations
+are augmented with the available set to re-construct $\hat{\mat{C}}$ followed
+by its eigenvalue decomposition. The relative change in the norm of the
+difference in squared value of individual components of the dominant
+eigenvectors between subsequent iterations is evaluated. The process is
+terminated and the resulting eigenspace is considered to be converged once
+highest relative change at iteration $k$, $\delta \hat{\mat{W}}_{1,j}^{(k)}$,
+is smaller than a given tolerance, $\tau$.  A regression fit to
+$G(\hat{\mat{W}}_1^\top\bm{\xi})$ is used as a surrogate to characterize and
+quantify the uncertainty in the model output. Moreover, the components of the
+dominant eigenvectors are used to compute the activity scores, $\bm{\nu}_r(f)$,
+which provide insight into the relative importance of the uncertain inputs.
+Note that the index, $r$, corresponds to the number of dominant eigenvectors in
+$\hat{\mat{W}}_1$. The sequence of steps for the gradient-based approach are
+provided in Algorithm~\ref{alg:grad}.
 
 %% Grad-based algorithm
 
@@ -109,49 +131,67 @@ A regression fit to
 \end{breakablealgorithm}
 \bigskip
 
-In order to motivate the iterative strategy used in this work, we implement Algorithm~\ref{alg:grad} to the
-19-dimensional H$_2$/O$_2$ reaction kinetics problem with uncertain $A_i$'s. For the purpose of
-verification, $\hat{\mat{C}}$ is initially constructed using a large set of samples ($N$~=~1000) in the input
-domain and the corresponding active subspace is computed. In Figure~\ref{fig:eig_comp} (left), we illustrate
-the comparison of the resulting normalized eigenvalue spectrum ($\lambda_1 - \lambda_{19}$) with the same using a much 
-smaller set of samples, $n$~=~$\{20,40,80,120\}$. Additionally, in Figure~\ref{fig:eig_comp} (right), we compare
-relative L-2 norm of the difference between the first five eigenvectors of $\hat{\mat{C}}$.
+To motivate our iterative strategy, we implement
+Algorithm~\ref{alg:grad} to the 19-dimensional H$_2$/O$_2$ reaction kinetics
+problem with uncertain $A_i$'s. For the purpose of verification,
+$\hat{\mat{C}}$ is initially constructed using a large set of samples
+($N$~=~1000) in the input domain and the corresponding active subspace is
+computed. In Figure~\ref{fig:eig_comp}~(left), we illustrate the comparison of
+the resulting normalized eigenvalue spectrum ($\lambda_1, \ldots, 
+\lambda_{19}$) with the same using a much 
+smaller set of samples, $n$~=~$\{20,40,80,120\}$.
+Additionally, in Figure~\ref{fig:eig_comp} (right), we compare relative $L_2$
+norm of the difference between the first five eigenvectors of $\hat{\mat{C}}$.
+\alennote{This last sentence is unclear.}
+
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/eig_comp}
    \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1_5}
 \caption{Left: A comparison of the normalized eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
-obtained using a much larger sample size, $N$~=~1000. Right: Relative L-2 norm of the difference between
+obtained using a much larger sample size, $N$~=~1000. Right: Relative $L_2$ 
+norm of the difference between
 the square of individual components of the first five eigenvectors of $\mat{C}$, constructed using 
 $N$~=~1000 samples ($w_{i,N}$), and using a smaller sample size, $n$ ranging from 20 to 240 ($w_{i,n}$).} 
 \label{fig:eig_comp}
 \end{center}
 \end{figure}
 %
-Interestingly, we observe that the dominant eigenvalues ($\lambda_1 - \lambda_4$) are approximated 
+We observe that the dominant eigenvalues, $\lambda_1, \ldots, \lambda_4$, 
+are approximated 
 reasonably well with just 20 samples. As expected, the accuracy of higher-order eigenvalues is observed
 to improve with the sample size. Similarly, the relative error associated with the dominant eigenvectors
 ($i$ = 1,2) is found to range from $\mathcal{O}(10^{-2} - 10^{-1})$ and is relatively much smaller than 
-the higher-order eigenvectors. In this case, since $\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we have
-a 1-dimensional active subspace. Hence, the first eigenvector sufficiently captures the uncertainty in
+the higher-order eigenvectors. In this case, since 
+$\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we expect 
+a 1-dimensional active subspace. Hence, the first eigenvector 
+sufficiently captures the uncertainty in
 the  model output. Therefore, a sample size of 20 is adequate for computing the active subspace in this
 case. The iterative strategy therefore offers a significant potential for computational advantage. 
 However, estimating the gradient of the model output imposes a significant computational burden.
-Hence, we explore the applicability of a so-called gradient-free approach as mentioned earlier, in the
-following section.  
+Hence, we next explore the applicability of a so-called gradient-free approach
+as mentioned earlier.
 
 \subsection{Gradient-free approach}
 \label{sub:gradfree}
 
-As mentioned earlier, the gradient-free approach does not involve computation of the gradient of the model
-output. Instead, a least-squares fit is performed to the local linear regression-based approximation
-to the model output. While the gradient-free approach offers a significant potential for additional 
-computational savings, its ability to reasonably approximate the active subspace 
-has not been investigated for a wide variety of problems~\cite{Constantine:2015}. Nevertheless, we are motivated by the
-underlying potential of this approach in reducing the computational effort associated with the
-active subspace computation. Moreover, this effort could help advance this approach and further motivate
-its usage for a wide variety of high-dimensional applications in the future. 
+\alennote{I don't see the point of this paragraph; part of it that 
+explains the gradient-free approach is unclear, and the part 
+that seems to motivate its use is something to mention in the introduction.
+Just say what the gradient-free approach is about, and say that we 
+follow an iterative strategies as before.}
+As mentioned earlier, the gradient-free approach does not involve computation
+of the gradient of the model output. Instead, a least-squares fit is performed
+to the local linear regression-based approximation to the model output. While
+the gradient-free approach offers a significant potential for additional
+computational savings, its ability to reasonably approximate the active
+subspace has not been investigated for a wide variety of
+problems~\cite{Constantine:2015}. We are motivated by the
+potential of this approach in reducing the computational effort
+associated with the active subspace computation. Moreover, this effort could
+help advance this approach and further motivate its usage for a wide variety of
+high-dimensional applications in the future. 
 
 First, we implement the gradient-free approach to the 19-dimensional problem and compare our findings with
 those obtained using the gradient-based approach. Later, in
@@ -298,14 +338,19 @@ The two SSPs are observed to be in excellent agreement with each other. Moreover
 that the variability in ignition
 delay based on the considered prior marginals for $A_i$'s is observed to be approximately linear in the
 active subspace; consistent with the fact the it is 1-dimensional.
+\alennote{The last sentence is incomplete; also clarify that ``it'' refers to 
+the active subspace.} 
 
-We extend the comparative assessment of the two approaches by estimating the activity score for individual
-uncertain parameters ($\alpha_i$) using
-the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}. The activity scores for the 19 
-uncertain pre-exponents ($A_i$'s), estimated using
-the two approaches are plotted in Figure~\ref{fig:comp_as} (left). Additionally, for the purpose of verification, we 
-compare these estimates with those obtained using the DGSMs~\cite{Vohra:2018} in 
+We complement the comparative assessment of the two approaches by estimating
+the activity scores for individual uncertain parameters ($\alpha_i$) using the
+components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}.
+The activity scores (\alennote{relative activity scores?}) for the 19 uncertain pre-exponents ($A_i$'s), estimated
+using the gradient-based and gradient-free approaches are plotted in
+Figure~\ref{fig:comp_as} (left).  Additionally, for the purpose of
+verification, we compare these estimates with those obtained using the
+corresponding DGSMs, as reported in~\cite{Vohra:2018}, in
 Figure~\ref{fig:comp_as} (right). 
+
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -323,8 +368,9 @@ based on the screening metric involving the DGSMs from~\cite{Vohra:2018}. It is 
 associated with the ignition delay is largely due to the uncertainty in $A_9$ and $A_1$. Sensitivity towards
 $A_{15}$ and $A_{17}$ is also found to be significant. 
 
-The above comparisons establish consistency between the two approaches. Note that the computational
-effort in the case of gradient-free approach is significantly smaller. Hence, we are encouraged to use the
-gradient-free approach for the 33-dimensional application in the next section. 
+The above comparisons establish consistency between gradient-based and
+gradient-free approaches. Due to its reduced computational overhead, the
+gradient-free approach is our method of choice for the 33-dimensional problem
+in the next section. 
 
 

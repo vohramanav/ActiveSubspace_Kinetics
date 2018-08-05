@@ -31,23 +31,26 @@ is plotted for successive iterations to illustrate the convergence behavior.}
 %
 The dominant eigenvector is observed to converge with only 50 samples in the 33-dimensional space which is remarkably efficient. 
 
-In Figure~\ref{fig:hd}, we illustrate the resulting eigenvalue spectrum and the sufficient summary 
-plot.
+In Figure~\ref{fig:hd}, we illustrate the resulting eigenvalue spectrum and the SSP.
 %
 \begin{figure}[htbp]
  \begin{center}
    \includegraphics[width=0.45\textwidth]{./Figures/eig_33D}
    \includegraphics[width=0.45\textwidth]{./Figures/ssp_33D}
-\caption{Left: Eigenvalue spectrum of $\hat{\mat{C}}$. Right: Sufficient summary plot indicating the
-existence of a potential 1-dimensional active subspace.} 
+\caption{Left: Eigenvalue spectrum of $\hat{\mat{C}}$. Right: SSP of the computed active subspace, and the
+corresponding 1-D linear fit.} 
 \label{fig:hd}
 \end{center}
 \end{figure}
 %
 The second eigenvalue is observed to be roughly four orders of magnitude smaller than the first 
-indicating the existence of a 1-dimensional active subspace. This is further confirmed by the sufficient
-summary plot which shows that the variability in $G$ can be approximated using a 1-dimensional regression
-fit which could be used as a surrogate. We will verify the accuracy of the surrogate later in~\ref{sub:verify}.
+indicating the existence of a 1-dimensional active subspace. This is further confirmed by the SSP
+ which shows that the variability in $G$ can be approximated using a 1-dimensional regression
+fit ($\tilde{G}$) which could be used as a surrogate. A linear, quadratic, and a cubic fit to the SSP was performed.
+The linear fit illustrated in Figure~\ref{fig:hd} (right) was found to be the most accurate. In~\ref{sub:verify},
+we investigate the accuracy of the 1D surrogate based on the linear fit by estimating the relative L-2
+norm of its discrepancy with model evaluations at an independent set of samples, and by comparing the
+respective probability distributions.
 
 Components of the dominant eigenvector in Figure~\ref{fig:conv_app} (left) are used for estimating the
 activity scores, plotted below in Figure~\ref{fig:as_33D}.
@@ -74,14 +77,14 @@ the accuracy of the 1-d regression fit to $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in t
 \subsection{Surrogate Verification}
 \label{sub:verify}
 
-The 1-dimensional surrogate ($\mathcal{Y}$) is investigated for its accuracy as well as the ability to capture the 
+The 1-dimensional surrogate ($\tilde{G}$) is investigated for its accuracy as well as the ability to capture the 
 uncertainty in the
 model output in two ways. Firstly, we estimate the relative L-2 norm of the discrepancy~($\varepsilon_d$)
 between estimates of ignition delay in the case of H$_2$/O$_2$ reaction, obtained using the 
 model output and the surrogate in the following equation:
 %
 \be
-\varepsilon_d = \frac{\|G(\bm{\xi}) - \sim{G}(\bm{\xi})\|_2}{\|G(\bm{\xi})\|_2}
+\varepsilon_d = \frac{\|G(\bm{\xi}) - \tilde{G}(\bm{\xi})\|_2}{\|G(\bm{\xi})\|_2}
 \ee
 %
 The relative norm, $\varepsilon_d$ was estimated to be 8.50$\times10^{-2}$ based on a validation test data

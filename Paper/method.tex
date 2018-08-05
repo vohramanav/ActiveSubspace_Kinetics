@@ -303,21 +303,21 @@ of the model output is provided in Algorithm~\ref{alg:free2}.
 The gradient-free approach when implemented to the 19-dimensional H$_2$/O$_2$ reaction kinetics problem
 with uncertain pre-exponents ($A_i$'s) also yielded a 1-dimensional active subspace. In Figure~\ref{fig:comp} (left),
 we provide a comparison of the components of the dominant eigenvector, obtained using the two approaches.
-Additionally, the quantity, $\delta w_{1,j}^{(r)}$ is also plotted in
+Additionally, the quantity, $\delta \hat{\mat{W}}_{1,j}^{(r)}$ is also plotted in
 Figure~\ref{fig:comp} (right) to illustrate convergence characteristics for the gradient-free approach.
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv6}
 \caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector obtained
-using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  $\delta w_{1,j}^{(r)}$
+using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  $\delta \hat{\mat{W}}_{1,j}^{(r)}$
 is plotted for successive iterations to illustrate the convergence behavior.}
 \label{fig:comp}
 \end{center}
 \end{figure}
 %
 Individual components of the dominant eigenvector from the two approaches are observed to be in excellent
-agreement with each other. Moreover, as expected,  $\delta w_{1,j}^{(r)}$ is observed to decrease with iterations, and
+agreement with each other. Moreover, as expected,  $\delta \hat{\mat{W}}_{1,j}^{(r)}$ is observed to decrease with iterations, and
 the eigenvector is considered to have converged if its value is found to be smaller than 0.1. Note that only 30 samples
 were found to be sufficient for approximating the active subspace in the 19-dimensional input domain. 
 

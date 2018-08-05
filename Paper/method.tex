@@ -8,10 +8,15 @@ Specifically, we employ two strategies:
 A gradient-based strategy that involves computation of model
 gradients in order to construct the matrix $\hat{\mat{C}}$
 in~\eqref{eq:chat}, and a gradient-free approach 
-that involves a (\alennote{should we say 
-regression-based?}) local linear approximation of
+that involves a 
+local linear approximation of
 the model output to circumvent the computational cost associated with gradient
-computation. The gradient-based approach is based on Algorithm
+computation. 
+(\alennote{should we say regression-based local linear approximation? 
+When I hear local linear approximation I think of Taylor expansion, and
+probably many readers will do the same; so saying gradient-free
+local linear approximation might be confusing to some people.}) 
+The gradient-based approach is based on Algorithm
 1.1, and the gradient-free approach is based on Algorithm 1.2
 in~\cite{Constantine:2015}. In this work, we implement the two
 strategies in an iterative manner and demonstrate potential for
@@ -187,7 +192,12 @@ to the local linear regression-based approximation to the model output. While
 the gradient-free approach offers a significant potential for additional
 computational savings, its ability to reasonably approximate the active
 subspace has not been investigated for a wide variety of
-problems~\cite{Constantine:2015}. We are motivated by the
+problems~\cite{Constantine:2015}.~\alennote{I would not say this. 
+If Paul (or a student of his) 
+reviews this article, he will probably disagree. Remember that 
+book was from several years ago. Instead, say that we 
+demonstrate its utility for efficient response surface construction in 
+chemical kinetics modeling.} We are motivated by the
 potential of this approach in reducing the computational effort
 associated with the active subspace computation. Moreover, this effort could
 help advance this approach and further motivate its usage for a wide variety of

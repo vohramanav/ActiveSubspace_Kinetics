@@ -123,8 +123,8 @@ relative L-2 norm of the difference between the first five eigenvectors of $\hat
    \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1_5}
 \caption{Left: A comparison of the eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
 obtained using a much larger sample size, $N$~=~1000. Right: Relative L-2 norm of the difference between
-individual components of the first five eigenvectors of $\mat{C}$, constructed using $N$~=~1000 samples,
-and using a smaller sample size, $n$ ranging from 20 to 240.} 
+the square of individual components of the first five eigenvectors of $\mat{C}$, constructed using 
+$N$~=~1000 samples ($w_{i,N}$), and using a smaller sample size, $n$ ranging from 20 to 240 ($w_{i,n}$).} 
 \label{fig:eig_comp}
 \end{center}
 \end{figure}
@@ -133,7 +133,7 @@ Interestingly, we observe that the dominant eigenvalues ($\lambda_1 - \lambda_4$
 reasonably well with just 20 samples. As expected, the accuracy of higher-order eigenvalues is observed
 to improve with the sample size. Similarly, the relative error associated with the dominant eigenvectors
 ($i$ = 1,2) is found to range from $\mathcal{O}(10^{-2} - 10^{-1})$ and is relatively much smaller than 
-the higher-order eigenvalues. In this case, since $\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we have
+the higher-order eigenvectors. In this case, since $\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we have
 a 1-dimensional active subspace. Hence, the first eigenvector sufficiently captures the uncertainty in
 the  model output. Therefore, a sample size of 20 is adequate for computing the active subspace in this
 case. The iterative strategy therefore offers a significant potential for computational advantage. 

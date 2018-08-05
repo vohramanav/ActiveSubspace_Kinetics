@@ -58,17 +58,13 @@ the ratio, $\left(\frac{\lambda_i}{\lambda_{i+1}}\right)$ $\gg$ 1 as follows:
  %
  where $\mat{W}_1$ comprises the dominant eigenspace of $\mat{C}$ regarded as
 the active subspace, and $\mat{\Lambda}_1$ is the corresponding set of
-eigenvalues. 
-
-\alennote{The rest of this paragraph needs to be rewritten, as it is hard to 
-see what is going on; what is $\theta$? I suggest, mentioning $\vec\theta$ 
-and $\vec\xi$ earlier, and from then on make everything function of $\vec\xi$.
-Explain the remaining ideas more clearly.}
-The active subspace is used to construct the so-called active
-variables, $\mat{W}_1^\top \bm{\xi}$ and $f(\bm{\xi}(\theta))$ is transformed as
-$G(\mat{W}_1^\top \bm{\xi})$. In practice, the set of samples, $\bm{\xi}_i$'s
-are projected to the physical space as $\bm{\theta}_i$'s at which the model
-output, $f(\bm{\xi}(\theta))$ is computed.  The matrix, $\mat{C}$ is typically
+eigenvalues. Once the active subspace is computed, dimension reduction is
+accomplished by transforming the set of canonical random variables, $\bm{\xi}$
+into a reduced set, $\mat{W}_1^\top \bm{\xi}$, referred to as the set of active
+variables. The number of active variables is thus equal to the number
+of dominant eigenvectors. The model output in the original space, $f(\bm{\xi}(\theta))$,
+is expressed in terms of the active variables as $G(\mat{W}_1^\top \bm{\xi})$.
+In practice, the matrix, $\mat{C}$ is typically
 approximated using pseudo-random sampling techniques such as Monte Carlo and
 Latin hypercube sampling. The integral in~\eqref{eq:C} is replaced with a
 summation as follows:
@@ -80,6 +76,12 @@ summation as follows:
 \label{eq:chat}
  \ee
  %
+Clearly, the amount of computational effort associated with constructing the matrix,
+$\hat{\mat{C}}$ scales with the number of samples, $N$. Hence, an iterative
+computational approach is adopted in this work to ensure that $N$ is sufficiently
+large so that the dominant eigenvectors in $\hat{\mat{W}}_1$ are approximated
+with reasonable accuracy as discussed later in Section~\ref{sec:method}. 
+
 %%It has been shown that the accuracy of approximated dominant eigenspace,
 %%$\hat{\bm{w}}_1$ is inversely proportional to the difference between the
 %%smallest eigenvalue in $\hat{\bm{\Lambda}}_1$ and the largest eigenvalue in
@@ -97,7 +99,7 @@ Consider a function $f(\xi_1, \xi_2, \ldots, \xi_\Np)$.
 Whereas the active subspace framework described above not make any assumptions
 about statistical independence of the input parameters $\xi_i$, $i = 1, \ldots, \Np$, 
 the classical 
-framework of variance based sensitivity analysis~\cite{MMM} assumes the input
+framework of variance based sensitivity analysis~\cite{Sobol:2001, Saltelli:2010} assumes the input
 parameters are statistically independent. While extensions to the cases 
 of correlated inputs exist, we limit the discussion in this section to the
 case of random inputs that are statistically independent and are 
@@ -107,7 +109,7 @@ is, and give a reference}.
 
 The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\theta)$ quantifies
 the total contribution of the input, $\theta_i$ to the variance of the
-output.\alennote{references} Mathematically, this can be expressed as follows:
+output~\cite{Sobol:2001}. Mathematically, this can be expressed as follows:
 %
 \be
 T_i(f) = 1 - 
@@ -116,7 +118,9 @@ T_i(f) = 1 -
 \ee
 %
 where $\bm{\theta}_{\sim i}$ is a vector of all but $i^\text{th}$ uncertain
-input, and $\V$ denotes the variance (~\alennote{Explain this more clearly.}).
+input, and $\V$ denotes the variance. The total Sobol' index thus accounts
+for the contribution of a given input to the variability in the output by itself
+as well as due to its interaction or coupling with other inputs. 
 Determining accurate estimates of $T_i(f)$ typically involves tens of
 thousands of model runs and is therefore prohibitive in the case of
 compute-intensive applications. The DGSMs~\cite{Sobol:2009} provide a means for

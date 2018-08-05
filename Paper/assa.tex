@@ -109,8 +109,14 @@ parameters are statistically independent. While extensions to the cases
 of correlated inputs exist, we limit the discussion in this section to the
 case of random inputs that are statistically independent and are 
 either uniformly distributed or
-distributed according to a Boltzmann probability distribution~\alennote{Explain what this
-is, and give a reference}.  
+distributed according to a Boltzmann probability distribution.
+Note that a measure $\mu$
+on $\R$ is referred to as a Boltzmann measure if it is 
+absolutely continuous with respect to the Lebesgue measure  
+and admits a density  of the form $\pi(x) = C \exp\{-V(x)\}$,
+where $V$ is a continuous function and $C$ a normalization 
+constant~\cite{Lamboni:2013}.
+
 
 The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\theta)$ quantifies
 the total contribution of the input, $\theta_i$ to the variance of the
@@ -230,7 +236,8 @@ index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
 \begin{equation}\label{equ:sobol_bound}
 T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
 \end{equation}
-where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant.
+where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant
+that depends on the distribution of $\xi_i$.
 This provides a strong theoretical basis for using DGSMs to identify 
 unimportant inputs. Moreover, 
 in~\cite{Vohra:2018} we introduced the normalized screening metric

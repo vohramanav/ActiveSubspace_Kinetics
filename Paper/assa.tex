@@ -330,6 +330,42 @@ We have $\Ez{ \delta(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)
 %\]
 %This was noted in~\cite{Diaz:2016} for the specific case of all $\xi_i$'s being
 %iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
-
+\begin{proof} \hayleynote{(NOT FINISHED YET, NEED TO SORT OUT INDEXING TO BE IN LINE WITH THE PAPER)}
+First we show the numerator 
+\[\int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) = 2\V_{i}(f)  \]
+Using the ANOVA decomposition we can write:
+\[ f(\vec\xi) = f_0 + f_1(\vec\xi_j) + f_2(\vec\xi_{i}) + f_{12}(\vec\xi_j,\vec\xi_{i}), \ j \neq i\]
+Then we can simplify the numerator as follows:
+\[ \int_{\Omega} \big( f_2(\vec\xi_{i}) + f_{12}(\vec\xi_{j},\vec\xi_{i}) - f_2(z) -f_{12}(\vec\xi_{j},z)\big)^2\mu(d\vec\xi), \ j \neq i \]
+Using the properties of ANOVA:
+\[
+\int_{\Omega_{i}} f_2(\vec\xi_{i}) \,\mu(d\vec\xi_{i}) 
+= \int_{\Omega_{i}} f_{12}(\vec\xi_j, \vec\xi_{i})\,\mu(d\vec\xi_{i}) 
+= \int_{\Omega_j} f_{12}(\vec\xi_j, \vec\xi_{i})\,\mu(d\vec\xi_j) = 0, \ j \neq i
+\]
+For a fixed $z \in \Omega_{i}$ we can simplify the numerator further:
+\[ \int_{\Omega}  f_2^2(\vec\xi_{i}) + f_{12}^2(\vec\xi_{j},\vec\xi_{i}) - f_2^2(z) -f_{12}^2(\vec\xi_{j},z) \mu(d\vec\xi) = \]
+\[ \V_{i}(f) + \V_{i,j}(f) + f_2^2(z) + \int_{\Omega_j} f_{12}^2(\vec\xi_j, z) \mu(d\vec\xi_j), \ j \neq i\]
+Taking the expectation of the above expression over $\Omega_{i}$ gives 
+desired result:
+\[\V_{i}(f) + \V_{i,j}(f) + \int_{\Omega_{i}} f_2^2(z) \, \mu(dz)
++ \int_{\Omega_{i}}\int_{\Omega_j} f_{12}^2(\vec\xi_j,z)\,\mu (d\vec\xi_j)
+\mu (dz), \ j \neq i \]
+\[= \V_{i}(f) + \V_{j,i}(f) + \V_{i}(f) + \V_{j,i}(f) 
+= 2 \V_{i}^\text{tot}(f), \ j \neq i \]
+Using the definition of variance we rewrite the the denominator as:
+\[
+ \int_\Omega f(\vec\xi)^2\, \mu(d\vec\xi) 
+=  \V(f) + 
+\Big(\int_\Omega f(\vec\xi)\mu(d\vec\xi)\Big)^2 
+\geq   \V(f) 
+\]	
+Combining the two parts we have:
+\[ \Ez{ \delta(z)} = 2T_{i}(f) \]
+Using (10) above yields:
+\[2T_{i}(f) \leq 2\frac{C_{i}}{\V(f)}\nu_{i}(f) \]
+Finally using Proposition 2.1 gives us the result:
+\[2T_{i}(f) \leq 2\frac{C_{i}}{\V(f)}\nu_{i}(f) \leq 2\frac{C_{i}}{\V(f)}(\nu_{{i},r}(f) + \lambda_{r+1} ) \]
+\end{proof}
 
 

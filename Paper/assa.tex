@@ -328,6 +328,42 @@ We have $\Ez{ \delta(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)
 %\]
 %This was noted in~\cite{Diaz:2016} for the specific case of all $\xi_i$'s being
 %iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
-
+\begin{proof} \hayleynote{(NOT FINISHED YET, NEED TO SORT OUT INDEXING TO BE IN LINE WITH THE PAPER)}
+First we show the numerator 
+\[\int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) = 2\V_{U^c}(f) \]
+Using the ANOVA decomposition we write:
+\[ f(\vec\xi) = f_0 + f_1(\vec\xi_{U}) + f_2(\vec\xi_{U^C}) + f_{12}(\vec\xi_U,\vec\xi_{U^C})\]
+Then we can simplify the numerator as follows:
+\[ \int_{\Omega} \big( f_2(\vec\xi_{U^C}) + f_{12}(\vec\xi_{U},\vec\xi_{U^C}) - f_2(z) -f_{12}(\vec\xi_{U},z)\big)^2\mu(d\vec\xi) \]
+Using the properties of ANOVA:
+\[
+\int_{\Omega_{U^c}} f_2(\vec\xi_{{U^C}}) \,\mu(d\vec\xi_{U^C}) 
+= \int_{\Omega_{U^C}} f_{12}(\vec\xi_U, \vec\xi_{U^C})\,\mu(d\vec\xi_{U^C}) 
+= \int_{\Omega_U} f_{12}(\vec\xi_U, \vec\xi_{U^C})\,\mu(d\vec\xi_U) = 0,
+\]
+For a fixed $z \in \Omega_{U^C}$ we can simplify the numerator further:
+\[ \int_{\Omega}  f_2^2(\vec\xi_{U^C}) + f_{12}^2(\vec\xi_{U},\vec\xi_{U^C}) - f_2^2(z) -f_{12}^2(\vec\xi_{U},z) \mu(d\vec\xi) = \]
+\[ \V_{U^C}(f) + \V_{U^C,U}(f) + f_2^2(z) + \int_{\Omega_U} f_{12}^2(\vec\xi_U, z) \mu(d\vec\xi_U),\]
+Taking the expectation of the above expression over $\Omega_{U^c}$ gives 
+desired result:
+\[\V_{U^C}(f) + \V_{U^C,U}(f) + \int_{\Omega_{U^C}} f_2^2(z) \, \mu(dz)
++ \int_{\Omega_{U^C}}\int_{\Omega_U} f_{12}^2(\vec\xi_U,z)\,\mu (d\vec\xi_U)
+\mu (dz) \]
+\[= \V_{U^C}(f) + \V_{U,U^C}(f) + \V_{U^C}(f) + \V_{U,U^c}(f) 
+= 2 \V_{U^c}^\text{tot}(f) \]
+Using the definition of variance we rewrite the the denominator as:
+\[
+ \int_\Omega f(\vec\xi)^2\, \mu(d\vec\xi) 
+=  \V(f) + 
+\Big(\int_\Omega f(\vec\xi)\mu(d\vec\xi)\Big)^2 
+\geq   \V(f) 
+\]	
+Combining by parts we have:
+\[ \Ez{ \delta(z)} = 2T_{U^C}(f) \]
+Using (10) above yields:
+\[2T_{U^C}(f) \leq \frac{C_{U^C}}{\V(f)}\nu_{U^C}(f) \]
+Finally using Proposition 2.1 gives us the result:
+\[2T_{U^C}(f) \leq 2\frac{C_{U^C}}{\V(f)}\nu_{U^C}(f) \leq 2\frac{C_{U^C}}{\V(f)}(\nu_{{U^C},r}(f) + \lambda_{r+1} ) \]
+\end{proof}
 
 

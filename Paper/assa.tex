@@ -111,13 +111,15 @@ with reasonable accuracy as discussed later in Section~\ref{sec:method}.
 \subsection{Global sensitivity measures}
 
 \label{sub:gsa}
-Consider a function $f(\xi_1, \xi_2, \ldots, \xi_\Np)$. 
-Whereas the active subspace framework described above not make any assumptions
-about statistical independence of the input parameters $\xi_i$, $i = 1, \ldots, \Np$, 
+Consider a function: $f(\xi_1, \xi_2, \ldots, \xi_\Np)$. 
+While the active subspace framework described above does not make any assumptions
+about statistical independence of the inputs $\xi_i$, $i = 1, \ldots, \Np$, 
 the classical 
-framework of variance based sensitivity analysis~\cite{Sobol:2001, Saltelli:2010} assumes the input
-parameters are statistically independent. While extensions to the cases 
-of correlated inputs exist, we limit the discussion in this section to the
+framework of variance based sensitivity analysis~\cite{Sobol:2001, Saltelli:2010} 
+assumes that the inputs
+are statistically independent. While extensions to the cases 
+of correlated inputs exist~\cite{Borgonovo:2007,Li:2010,Jacques:2006,Xu:2007},
+ we limit the discussion in this section to the
 case of random inputs that are statistically independent and are 
 either uniformly distributed or
 distributed according to a Boltzmann probability distribution.
@@ -255,7 +257,7 @@ in~\cite{Vohra:2018} we introduced the normalized screening metric
 \[
    \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
 \]
-for detecting unimportant input parameters. 
+for detecting unimportant inputs. 
 Note that if $\xi_i$ are iid, the $C_i$'s will cancel and the normalized screening
 metric reduces to 
 \[
@@ -280,14 +282,14 @@ normalized activity scores
 
 Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
 an interesting link between the activity scores and total Sobol' indices.
-Specifically, by computing the activity scores, we can identify unimportant
-parameters.  
+Specifically, by computing the activity scores, we can identify the unimportant
+inputs.  
 One can attempt to reduce parameter dimension by fixing
-unimportant parameters at nominal values. Suppose $\xi_i$ is
+unimportant inputs at nominal values. Suppose $\xi_i$ is
 deemed unimportant as a result of a global sensitivity analysis
-based on computing the activity scores. We want to understand
-what is the approximation error that occurs once we fix $\xi_i$ 
-at a nominal value.
+based on the activity scores; we want to estimate
+the approximation error that occurs once $\xi_i$ 
+is fixed at its nominal value.
 %Let $\I \subset \{1, \ldots,
 %Np\}$ be an index set that indexes the unimportant parameters in the parameter
 %vector $\vec{\xi}$.  Letting $|\I|$ denote the number of elements of $\I$, 

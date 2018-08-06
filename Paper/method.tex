@@ -42,8 +42,8 @@ at an initial set of $n_0$ samples denoted by $\bm{\xi}_i$, $i$ = $1,\ldots,n_0$
 Using the gradient
 evaluations, the matrix, $\hat{\mat{C}}$ is computed. Eigenvalue decomposition
 of $\hat{\mat{C}}$ yields an initial estimate of the dominant eigenspace,
-$\hat{\mat{W}}_1$ and a diagonal matrix, 
-$\hat{\mat{\Lambda}}_1$ that comprises the eigenvalues along the diagonal.
+$\hat{\mat{W}}_1$ and the set of corresponding eigenvalues, 
+$\hat{\mat{\Lambda}}_1$.
  At each subsequent iteration, model evaluations are
 generated at a new set of $n_k$ samples. The new set of gradient evaluations
 are augmented with the available set to re-construct $\hat{\mat{C}}$ followed
@@ -330,7 +330,7 @@ delay based on the considered prior marginals for $A_i$'s is observed to be appr
 active subspace. This observation indicates the the active subspace is 1-dimensional in this case.
 
 We complement the comparative assessment of the two approaches by estimating
-the activity scores for individual uncertain parameters ($\nu_{i,r}$; $r$=1 since the
+the activity scores for individual uncertain inputs ($\nu_{i,r}$; $r$=1 since the
 active subspace is 1-dimensional)
 using the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}.
 The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated

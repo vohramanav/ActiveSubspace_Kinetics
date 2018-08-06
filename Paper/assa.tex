@@ -6,7 +6,7 @@
 
 \subsection{Active subspaces}
 \label{sub:ac}
-As mentioned in the introduction, the active subspace is low-dimensional subspace
+As mentioned in the introduction, the active subspace is a low-dimensional subspace
 that constitutes important directions in a model's input
 space~\cite{Constantine:2015}. The effective variability in the model output, $f$
 due to uncertain inputs, $\bm{\theta}$ in the physical space, is predominantly captured
@@ -27,13 +27,13 @@ semi-definite matrix, $\mat{C}$, defined as follows:
 %
 where 
 $dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
-distribution of $\bm{\xi}$. Note that the function, $f$ is considered to be continuous 
-and differentiable in the physical space, $\bm{\theta}$. 
+distribution of $\bm{\xi}$. Hence, $f$ is considered to be continuous 
+and differentiable in the input domain. 
 %Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
 %subspace. However, it is of remarkable interest to investigate if one exists
 %since the subspace could be exploited to reduce the dimensionality of the
 %problem and hence the associated computational effort.
-Here 
+Here,
 $\nabla_{\bm{\xi}}f$ denotes the gradient vector. 
 %with individual components
 %being partial derivatives of $f$ with respect to the $i^\text{th}$ input, $\xi_i$. 
@@ -64,11 +64,11 @@ accomplished by transforming the set of canonical random variables, $\bm{\xi}$
 into a reduced set, $\mat{W}_1^\top \bm{\xi}$, referred to as the set of active
 variables. The number of active variables is thus equal to the number
 of dominant eigenvectors. The model output in the original space, $f(\bm{\xi})$,
-is expressed in terms of the active variables as $G(\mat{W}_1^\top \bm{\xi})$.
+is approximated  as $G(\mat{W}_1^\top \bm{\xi})$ in the active subspace.
 Hence, $f$ is essentially evaluated at the projection of $\bm{\xi}$ on the
 column space of $\mat{W}_1$. We could thus confine UQ to the inputs in the
 active subspace whose dimension is typically much smaller (in applications that
-admit such a subspace) than the dimension of the original input space. To 
+admit such a subspace) than the dimension of the original input space. To further
 expedite UQ, one could easily fit a regression-surface to $G$ using the 
 following sequence of steps outlined in~\cite{Constantine:2015} (see chapter 4).
 \begin{enumerate}

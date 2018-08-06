@@ -28,7 +28,8 @@ semi-definite matrix, $\mat{C}$, defined as follows:
 where 
 $dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
 distribution of $\bm{\xi}$. Note that the function, $f$ is considered to be continuous 
-and differentiable in the physical space, $\bm{\theta}$. %Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
+and differentiable in the physical space, $\bm{\theta}$. 
+%Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
 %subspace. However, it is of remarkable interest to investigate if one exists
 %since the subspace could be exploited to reduce the dimensionality of the
 %problem and hence the associated computational effort.
@@ -62,13 +63,23 @@ eigenvalues. Once the active subspace is computed, dimension reduction is
 accomplished by transforming the set of canonical random variables, $\bm{\xi}$
 into a reduced set, $\mat{W}_1^\top \bm{\xi}$, referred to as the set of active
 variables. The number of active variables is thus equal to the number
-of dominant eigenvectors. The model output in the original space, $f(\bm{\xi}(\theta))$,
+of dominant eigenvectors. The model output in the original space, $f(\bm{\xi})$,
 is expressed in terms of the active variables as $G(\mat{W}_1^\top \bm{\xi})$.
-\alennote{This is too fast, explain a bit more, and refer to 
-Paul Constantine's book. I think we should follow the explanations
-in Chapter 4 of Paul's book; see equations (4.1)--(4.3) and algorithm 4.1
-for surrogate model construction on active subspace; these should be
-mentioned here.}
+Hence, $f$ is essentially evaluated at the projection of $\bm{\xi}$ on the
+column space of $\mat{W}_1$. We could thus confine UQ to the inputs in the
+active subspace whose dimension is typically much smaller (in applications that
+admit such a subspace) than the dimension of the original input space. To 
+expedite UQ, one could easily fit a regression-surface to $G$ using the 
+following sequence of steps outlined in~\cite{Constantine:2015} (see chapter 4).
+\begin{enumerate}
+\item Consider a set of input-output pairs, $\{\bm{\xi}_i, f(\bm{\xi}_i)\}$.
+\item For each $\bm{\xi}_i$, compute $\mat{W}_1^\top\bm{\xi}_i$. Note that
+ $G(\mat{W}_1^\top \bm{\xi})$ $\approx$ $f(\bm{\xi}_i)$.
+\item Fit a regression surface, $\tilde{G}(\mat{W}_1^\top\bm{\xi}_i)$ $\approx$ 
+$G(\mat{W}_1^\top \bm{\xi})$.
+\item Overall approximation, $f(\bm{\xi})$ $\approx$ $\tilde{G}(\mat{W}_1^\top\bm{\xi})$.
+\end{enumerate}
+
 In practice, the matrix, $\mat{C}$ is typically
 approximated using pseudo-random sampling techniques such as Monte Carlo and
 Latin hypercube sampling. The integral in~\eqref{eq:C} is replaced with a
@@ -269,7 +280,7 @@ normalized activity scores
 
 Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
 an interesting link between the activity scores and total Sobol' indices.
-Specifically, by computing the activity scores, we can indetify unimportant
+Specifically, by computing the activity scores, we can identify unimportant
 parameters.  
 One can attempt to reduce parameter dimension by fixing
 unimportant parameters at nominal values. Suppose $\xi_i$ is

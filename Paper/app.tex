@@ -23,13 +23,15 @@ Figure~\ref{fig:conv_app} (right).
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv10}
 \caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector obtained
-using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  $\delta \hat{\mat{W}}_{1,j}^{(i)}$
+using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  
+$\delta \hat{\mat{W}}_{1,j}^{(i)}$
 is plotted for successive iterations to illustrate the convergence behavior.}
 \label{fig:conv_app}
 \end{center}
 \end{figure}
 %
-The dominant eigenvector is observed to converge with only 50 samples in the 33-dimensional space which is remarkably efficient. 
+The dominant eigenvector is observed to converge with only 50 samples in the 33-dimensional space which
+is remarkably efficient. 
 
 In Figure~\ref{fig:hd}, we illustrate the resulting eigenvalue spectrum and the SSP.
 %
@@ -87,13 +89,14 @@ model output and the surrogate in the following equation:
 \varepsilon_d = \frac{\|G(\bm{\xi}) - \tilde{G}(\bm{\xi})\|_2}{\|G(\bm{\xi})\|_2}
 \ee
 %
-The relative norm, $\varepsilon_d$ was estimated to be 8.50$\times10^{-2}$ based on a validation test data
-comprising 1000 model evaluations. Hence, in the norm-sense, it can be said that the 1-dimensional surrogate is 
+The relative norm, $\varepsilon_d$ was estimated to be 8.50$\times10^{-2}$ based on a cross-validation test data
+comprising 10$^{4}$ model evaluations. Hence, in the norm-sense, it can be said that the 1-dimensional surrogate is 
 reasonably accurate. 
 
 Secondly, we verify the accuracy of the surrogate in a probabilistic setting. In particular, we compare a histogram
-plot of the model evaluations for ignition delay in the validation set with a PDF of the same using the 1-dimensional
-surrogate as shown in Figure~\ref{fig:pdf_33D}.
+plot of the model evaluations (in the cross-validation set) with a PDF evaluated on the same set of samples
+using the surrogate, $\tilde{G}$ in Figure~\ref{fig:pdf_33D}. The PDF is evaluated using surrogates constructed for
+a 1-dimensional as well as a 2-dimensional active subspace. 
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -104,9 +107,14 @@ predictions for ignition delay. The two plots are based on samples in the valida
 \end{center}
 \end{figure}
 %
-In the above comparison, it is observed that the peak of the PDF generated using the 1-dimensional surrogate in the
-active subspace is consistent with the modal estimate based on the histogram. Moreover, the spread in the ignition
- delay is reasonably captured by the PDF. Hence, the surrogate is also verified in a probabilistic sense. 
+In the above comparison, it is observed that the two PDFs are almost identical, thereby confirming a 1-dimensional
+active subspace. The modal estimate from either PDF is found to be in agreement with that
+based on the histogram plot. Moreover, the spread in the ignition
+delay is reasonably captured by the PDFs. 
+
+Based on these observations, it can be said that a 1-dimensional surrogate can be used to reasonably approximate the
+uncertainty in the ignition delay due to uncertain rate-controlling parameters used in the H$_2$/O$_2$ reaction
+mechanism. 
  
 
 

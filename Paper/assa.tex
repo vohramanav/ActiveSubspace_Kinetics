@@ -332,7 +332,8 @@ We have $\Ez{ \delta(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)
 %iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
 \begin{proof} \hayleynote{(NOT FINISHED YET, NEED TO SORT OUT INDEXING TO BE IN LINE WITH THE PAPER)}
 First we show the numerator 
-\[\int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) = 2\V_{i}(f)  \]
+\[\int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) = 2\V_{i}^{tot}(f)  \] where 
+\[\V{i}^{tot}(f) = \V_i(f) + \V_{i,j}(f) \]
 Using the ANOVA decomposition we can write:
 \[ f(\vec\xi) = f_0 + f_1(\vec\xi_j) + f_2(\vec\xi_{i}) + f_{12}(\vec\xi_j,\vec\xi_{i}), \ j \neq i\]
 Then we can simplify the numerator as follows:

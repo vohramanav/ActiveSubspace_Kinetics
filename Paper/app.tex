@@ -108,14 +108,18 @@ predictions for ignition delay. The two plots are based on samples in the valida
 \end{figure}
 %
 In the above comparison, it is observed that the two PDFs are almost identical, thereby confirming a 1-dimensional
-active subspace. The modal estimate from either PDF is found to be in agreement with that
-based on the histogram plot. Moreover, the spread in the ignition
-delay is reasonably captured by the PDFs. 
-
-Based on these observations, it can be said that a 1-dimensional surrogate can be used to reasonably approximate the
-uncertainty in the ignition delay due to uncertain rate-controlling parameters used in the H$_2$/O$_2$ reaction
-mechanism. 
+active subspace. The modal estimate from either PDF is observed to be in agreement with that
+based on the histogram plot. The mean value based on the set of model evaluations used for verification as well
+as the 1-dimensional surrogate was found to be 0.133, whereas, the standard deviations were found to be 0.0198 and 0.0160
+respectively. Hence, while the surrogate yields an accurate estimation of the mean, the standard deviation is
+under-estimated. This can be understood from the SSP in Figure~\ref{fig:hd} (right) which shows that the model
+evaluations do not exactly lie on the linear 1-dimensional surrogate used to capture them. Therefore, the
+1-dimensional surrogate can be used to estimate the mean as well as the modal estimate of the ignition delay in
+the presence of uncertainty in the 33 parameter considered in this application. The uncertainty associated with the
+ignition delay though reasonably close to the true value, is under-estimated.
  
+
+%\subsection{Surrogate-induced risk analysis}
 
 
 

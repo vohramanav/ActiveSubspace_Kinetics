@@ -21,12 +21,12 @@ these directions are the eigenvectors of a positive
 semi-definite matrix, $\mat{C}$, defined as follows: 
 %
 \be
-\mat{C} = \int_\Omega (\nabla_{\bm{\xi}}f)(\nabla_{\bm{\xi}}f)^\top dP_{\bm{\xi}}
+\mat{C} = \int_\Omega (\nabla_{\bm{\xi}}f)(\nabla_{\bm{\xi}}f)^\top d\Pi_{\bm{\xi}}
 \label{eq:C}
 \ee
 %
 where 
-$dP_{\bm{\xi}}$ = $p(\bm{\xi})d\bm{\xi}$, where $p(\bm{\xi})$ is the joint probability
+$d\Pi_{\bm{\xi}}$ = $\pi(\bm{\xi})d\bm{\xi}$, where $\pi(\bm{\xi})$ is the joint probability
 distribution of $\bm{\xi}$. Hence, $f$ is considered to be continuous 
 and differentiable in the input domain. 
 %Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
@@ -62,11 +62,11 @@ the active subspace, and $\mat{\Lambda}_1$ is the corresponding set of
 eigenvalues. Once the active subspace is computed, dimension reduction is
 accomplished by transforming the set of canonical random variables, $\bm{\xi}$
 into a reduced set, $\mat{W}_1^\top \bm{\xi}$, referred to as the set of active
-variables. The number of active variables is thus equal to the number
+variables. The number of active variables is equal to the number
 of dominant eigenvectors. The model output in the original space, $f(\bm{\xi})$,
 is approximated  as $G(\mat{W}_1^\top \bm{\xi})$ in the active subspace.
 Hence, $f$ is essentially evaluated at the projection of $\bm{\xi}$ on the
-column space of $\mat{W}_1$. We could thus confine UQ to the inputs in the
+column space of $\mat{W}_1$. We could confine UQ to the inputs in the
 active subspace whose dimension is typically much smaller (in applications that
 admit such a subspace) than the dimension of the original input space. To further
 expedite UQ, one could easily fit a regression-surface to $G$ using the 
@@ -131,18 +131,17 @@ where $V$ is a continuous function and $C$ a normalization
 constant~\cite{Lamboni:2013}.
 
 
-The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\theta)$ quantifies
-the total contribution of the input, $\theta_i$ to the variance of the
+The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\xi)$ quantifies
+the total contribution of the input, $\xi_i$ to the variance of the
 output~\cite{Sobol:2001}. Mathematically, this can be expressed as follows:
 %
 \be
 T_i(f) = 1 - 
-\frac{\V[\mathbb{E}(f|\bm{\theta}_{\sim i})]}{\V(f)},
+\frac{\V[\mathbb{E}(f|\bm{\xi}_{\sim i})]}{\V(f)},
 \label{eq:total}
 \ee
 %
-where $\bm{\theta}_{\sim i}$ is a vector of all but $i^\text{th}$ uncertain
-input, and $\V$ denotes the variance. The total Sobol' index thus accounts
+where $\bm{\xi}_{\sim i}$ is a vector of all the inputs $\xi_i$ except the  $i^\text{th}$ entry, and $\V$ denotes the variance. The total Sobol' index accounts
 for the contribution of a given input to the variability in the output by itself
 as well as due to its interaction or coupling with other inputs. 
 Determining accurate estimates of $T_i(f)$ typically involves tens of
@@ -176,7 +175,7 @@ We note that,
  = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2, 
 \end{equation}
 which gives a spectral representation for the DGSMs. 
-In the case the eigenvalues decay rapidly to zero, we can obtain
+In the case where the eigenvalues decay rapidly to zero, we can obtain
 accurate approximations of $\nu_i(f)$ by Truncating the summation: 
 \newcommand{\act}[3]{\nu_{{#2},{#3}}({#1})}
 \newcommand{\actt}[3]{\tilde{\nu}_{{#2},{#3}}({#1})}

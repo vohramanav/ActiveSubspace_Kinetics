@@ -191,7 +191,7 @@ The following result, which
 can also be found in~\cite{Diaz:2016,Constantine:2017}, quantifies the error in this
 approximation. We provide a short proof for completeness. 
 \begin{proposition}\label{prp:dgsm_bound} 
-For $1 \leq r \leq \Np$,
+For $1 \leq r < \Np$,
 \[
 0 \leq \nu_i(f) - \act{f}{i}{r} \leq \lambda_{r+1}, \quad i = 1, \ldots, \Np.
 \] 
@@ -314,7 +314,8 @@ We consider the following error indicator.
           {\int_\Omega f(\vec\xi)^2 \, \mu(d\vec\xi)}.
 \] 
 \begin{theorem}
-We have $\Ez{ \mathcal{E}(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)} $.
+We have $\Ez{ \mathcal{E}(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)}$, 
+for $1 \leq r < \Np$.
 \end{theorem}
 %
 %\[

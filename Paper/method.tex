@@ -3,7 +3,8 @@
 
 In this section, we present the computational strategy used for computing the
 active subspace in the case of H$_2$/O$_2$ reaction kinetics with uncertain
-pre-exponent of individual reaction rates provided in Table~\ref{tab:kinetics}.
+pre-exponent of the rate law associated with individual reactions provided in
+Table~\ref{tab:kinetics}.
 Specifically, we employ two strategies: 
 A gradient-based strategy that involves computation of model
 gradients in order to construct the matrix $\hat{\mat{C}}$
@@ -13,16 +14,10 @@ the model output to circumvent the computational cost associated with gradient
 computation. 
 The gradient-based approach is based on Algorithm
 1.1, and the gradient-free approach is based on Algorithm 1.2
-in~\cite{Constantine:2015}. In this work, we implement the two
-strategies in an iterative manner and demonstrate potential for
-additional savings in both cases.  For the present application,
-our findings based on the two strategies are observed to be consistent.  
-Since,
-the gradient-free approach is more efficient, this observation
-encourages its use for high-dimensional applications as discussed later in
-Section~\ref{sec:app}. 
-%Note however, that the model output is required to be
-%differentiable throughout the input domain in both cases.
+in~\cite{Constantine:2015}. The two strategies are implemented in an
+iterative manner to ensure computational efficiency by avoiding 
+extraneous model evaluations once a converged active subspace
+is achieved. 
 
 \subsection{Gradient-based approach}
 \label{sub:grad}
@@ -50,14 +45,14 @@ are augmented with the available set to re-construct $\hat{\mat{C}}$ followed
 by its eigenvalue decomposition. The relative change in the norm of the
 difference in squared value of individual components of the dominant
 eigenvectors between subsequent iterations is evaluated. The process is
-terminated and the resulting eigenspace is considered to be converged once
+terminated and the resulting eigenspace is considered to have converged once
 the maximum relative change at iteration $k$, $\delta \hat{\mat{W}}_{1,j}^{(k)}$
 ($j$ is used as an index for the eigenvectors),
 is smaller than a given tolerance, $\tau$.  A regression fit to
 $G(\hat{\mat{W}}_1^\top\bm{\xi})$ is used as a surrogate to characterize and
 quantify the uncertainty in the model output. Moreover, the components of the
 dominant eigenvectors are used to compute the activity scores, $\bm{\nu}_r(f)$,
-which provide insight into the relative importance of the uncertain inputs.
+which provide an insight into the relative importance of the uncertain inputs.
 Note that the index, $r$, corresponds to the number of dominant eigenvectors in
 $\hat{\mat{W}}_1$. The sequence of steps for the gradient-based approach are
 provided in Algorithm~\ref{alg:grad}.
@@ -123,6 +118,7 @@ provided in Algorithm~\ref{alg:grad}.
 	\EndLoop
 	\State Compute $\nu_{i,r}(f) = \sum\limits_{j=1}^{r} \hat{\mat{\Lambda}}_{i,j}\hat{\mat{W}}_{i,j}^2$,
 	$i=1,\ldots,N_p$.
+	\State Normalize $\nu_{i,r}(f)$ as $\tilde{\nu_{i,r}}(f)$ = \scalebox{1.25}{$\frac{\nu_{i,r}(f)}{\sum_i\nu_{i,r}(f)}$}.
 	
     \EndProcedure
   \end{algorithmic}
@@ -139,22 +135,23 @@ computed. In Figure~\ref{fig:eig_comp}~(left), we illustrate the comparison of
 the resulting normalized eigenvalue spectrum ($\lambda_1, \ldots, 
 \lambda_{19}$) with the same using a much 
 smaller set of samples, $n$~=~$\{20,40,80,120\}$.
-Additionally, we compare relative L-2
-norm of the difference between the squared value of corresponding components
-of the eigenvectors, obtained using the large set, $N$, and the smaller sets, $n$.
-In  Figure~\ref{fig:eig_comp} (right), we plot the relative L-2 error norm for the
-first five eigenvectors. 
+
+
+%Additionally, we compare relative L-2
+%norm of the difference between the squared value of corresponding components
+%of the eigenvectors, obtained using the large set, $N$, and the smaller sets, $n$.
+%In  Figure~\ref{fig:eig_comp} (right), the relative L-2 error norm for the
+%first five eigenvectors is plotted. 
 
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/eig_comp}
-   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1_5}
+   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1}
 \caption{Left: A comparison of the normalized eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
 obtained using a much larger sample size, $N$~=~1000. Right: Relative $L_2$ 
 norm of the difference between
-the square of individual components of the eigenvector evaluated using $N$=1000 and $n$ = $\{20,40,80,120\}$ samples.
-The comparison is illustrated for the first five eigenvectors.} 
+the square of individual components ($w_i$'s) of the dominant eigenvector evaluated using $N$=1000 and $n$ = $\{20,40,80,120\}$ samples.} 
 \label{fig:eig_comp}
 \end{center}
 \end{figure}
@@ -162,17 +159,19 @@ The comparison is illustrated for the first five eigenvectors.}
 We observe that the dominant eigenvalues, $\lambda_1, \ldots, \lambda_4$, 
 are approximated 
 reasonably well with just 20 samples. As expected, the accuracy of higher-order eigenvalues is observed
-to improve with the sample size. Similarly, the relative error associated with the dominant eigenvectors
-($i$ = 1,2) is found to range from $\mathcal{O}(10^{-2} - 10^{-1})$ and is relatively much smaller than 
-the higher-order eigenvectors. In this case, since 
+to improve with the sample size. Since 
 $\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we expect 
 a 1-dimensional active subspace. Hence, the first eigenvector 
 sufficiently captures the uncertainty in
-the  model output. Therefore, a sample size of 20 is adequate for computing the active subspace in this
+the  model output. To confirm this, we plot a relative L-2 norm of the difference between the 
+squared value of corresponding components of the dominant eigenvector, computed using $N$ = 1000
+and $n$ = $\{20,40,80,120\}$ samples in Figure~\ref{fig:eig_comp} (right). 
+The relative L-2 error norm is found to be $\mathcal{O}(10^{-2})$ even for the case, $n$ = 20.
+Hence, a sample size of 20 is adequate for computing the active subspace in this
 case. The iterative strategy therefore offers a significant potential for computational advantage. 
-However, estimating the gradient of the model output imposes a significant computational burden.
-Hence, we next explore the applicability of a so-called gradient-free approach
-as mentioned earlier.
+In the following section, we provide a brief description of the gradient-free approach and compare
+numerical results for the active subspace and the global sensitivity measures based on the two
+approaches. 
 
 \subsection{Gradient-free approach}
 \label{sub:gradfree}
@@ -180,14 +179,11 @@ as mentioned earlier.
 The gradient-free approach exploits a regression-based local linear
 approximation to the model output for estimating the gradients, $\bm{g}^i$
 in Algorithm~\ref{alg:grad}. Once again, we use an iterative strategy for
-computing the active subspace. The utility of this approach is demonstrated
-by constructing an efficient response surface for the 19-dimensional 
+computing the active subspace for the 19-dimensional 
 H$_2$/O$_2$ reaction kinetics problem considered in~\ref{sub:grad}.
 Moreover, we compare our findings with
 those obtained using the gradient-based approach to assess consistency
-between the two approaches. Motivated by our findings, we compute the active 
-subspace for a 33-dimensional H$_2$/O$_2$ reaction kinetics application using the gradient-free
-approach in Section~\ref{sec:app}. 
+between the two approaches. 
 
 In the gradient-free approach, the model output is first computed at an initial set of $n_0$ samples. 
 An independent set of $M$ samples is also drawn according to the joint probability distribution of the inputs.
@@ -201,6 +197,8 @@ $\hat{\mat{C}}$ is constructed using the slope vectors as follows:
 \ee
 %
 Hence, the gradient-free approach essentially differs in the procedure for constructing the matrix, $\hat{\mat{C}}$.
+Instead of the model evaluations, a linear regression-based approximation is used to estimate the gradient of
+the model output. The suitability of this approach thus depends upon the accuracy of this approximation. 
 The active subspace computation involves the same sequence of steps as outlined previously for the gradient-based 
 approach in Algorithm~\ref{alg:grad}. The procedure for constructing $\hat{\mat{C}}$ using a regression-based
 local linear approximation
@@ -312,7 +310,7 @@ the eigenvector is considered to have converged if its value is found to be smal
 were found to be sufficient for approximating the active subspace in the 19-dimensional input domain. 
 
 As mentioned earlier, the model output $f(\bm{\xi})$ predominantly varies in the active subspace. Hence, 
-$f(\bm{\xi})$ can be transformed as a function of the active variable as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
+$f(\bm{\xi})$ can be approximated as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
 the subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, regarded as the \textit{sufficient summary plot} (SSP) is 
 compared for the two approaches in Figure~\ref{fig:comp_ssp}.
 %
@@ -325,12 +323,12 @@ compared for the two approaches in Figure~\ref{fig:comp_ssp}.
 \end{figure}
 %
 The two SSPs are observed to be in excellent agreement with each other. Moreover, it is interesting to note
-that the variability in ignition
+that the response in ignition
 delay based on the considered prior marginals for $A_i$'s is observed to be approximately linear in the
-active subspace. This observation indicates the the active subspace is 1-dimensional in this case.
+active subspace. This observation further indicates that the active subspace is 1-dimensional in this case.
 
-We complement the comparative assessment of the two approaches by estimating
-the activity scores for individual uncertain inputs ($\nu_{i,r}$; $r$=1 since the
+We extend the comparative assessment of the two approaches by estimating
+the normalized activity scores for individual uncertain inputs ($\tilde{\nu_{i,r}}$; $r$=1 since the
 active subspace is 1-dimensional)
 using the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}.
 The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated

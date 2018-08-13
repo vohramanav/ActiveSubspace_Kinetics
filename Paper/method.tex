@@ -343,7 +343,7 @@ Figure~\ref{fig:comp_as} (right).
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
   \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
-\caption{Left: A bar-graph of activity scores ($\nu_{i,r}$'s) for the 19 uncertain pre-exponents ($A_i$'s); $r$
+\caption{Left: A bar-graph of normalized activity scores ($\tilde{\nu_{i,r}}$'s) for the 19 uncertain pre-exponents ($A_i$'s); $r$
 denotes the number of eigenvectors in the active subspace.
 Right: A plot of the screening metric ($\widehat{\mathcal{C}_i\mu_i}$), defined as a normalized product of the
 Poincare constant and the DGSM ($\mu_i$) (adapted from~\cite{Vohra:2018}).}
@@ -357,8 +357,9 @@ associated with the ignition delay is largely due to the uncertainty in $A_9$ an
 $A_{15}$ and $A_{17}$ is also found to be significant. 
 
 The above comparisons establish consistency between gradient-based and
-gradient-free approaches. Due to its reduced computational overhead, the
-gradient-free approach is our method of choice for the 33-dimensional problem
-in the next section. 
-
+gradient-free approaches. This indicates that the local linear approximation
+of the model output resulted in a reasonably accurate estimation of the
+gradients in this case. In the following section, we will once again use both
+approaches to discover an active subspace in the high-dimensional 
+problem involving 33 uncertain inputs. 
 

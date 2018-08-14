@@ -25,29 +25,46 @@
  the H$_2$/O$_2$ reaction mechanism and its impact on ignition delay predictions. The mechanism
  involves 19 different reactions and in each case, the reaction rate depends upon the choice of
  a pre-exponent and an activation energy. Hence, in theory, the evolution of the chemical system
- depends upon 38 inputs which is reasonably high-dimensional. In such case, conventional means
+ depends upon 38 inputs which is reasonably high-dimensional. Conventional means
  for uncertainty quantification such as those involving a surrogate model construction as well as
- sensitivity analysis would be computationally challenging and even prohibitive in some cases. 
+ sensitivity analysis would thus be computationally challenging and even prohibitive in some cases. 
  Hence, we focused our efforts on reducing the dimensionality of the problem by identifying important
  directions (active subspaces) in the parameter space such that the variability in the model output is 
- predominantly captured along these directions. Additionally, we demonstrate that the activity scores,
+ predominantly captured along these directions. Additionally, we demonstrated that the activity scores,
  computed using the components of the dominant eigenvectors can be used to approximate the
- DGSMs. Furthermore, we establish mathematical linkages between the different global sensitivity measures:
+ DGSMs. Furthermore, we established generalized mathematical linkages between the different global sensitivity measures:
  activity scores, DGSMs, and total Sobol' index which could be exploited to reduce computational effort 
  associated with global sensitivity analysis. 
  
 Two computational strategies were explored to compute the active subspace for the H$_2$/O$_2$
 kinetics application in this work. The first strategy referred to as gradient-based requires computation of gradient of the 
 model output with respect to the input, whereas, the second strategy, referred to as gradient-free implements a local
-linear approximation to the model output in order to estimate the gradient. The two strategies are shown to yield
-consistent results for the 19-dimensional problem whereby only the pre-exponents are considered to be uncertain.
-Additionally, the activity scores are also shown to be consistent with the screening metric estimates based on
-DGSMs in~\cite{Vohra:2018}. Note that an iterative procedure is adopted for implementing the two strategies
-for enhancing computational efficiency. 
-Motivated by these findings, the gradient-free approach is used for computing the active subspace in the high-dimensional
-case involving 33 uncertain inputs. Based on the prior marginals of the uncertain inputs, our results
-indicate that the uncertainty in the ignition delay is largely dependent on $A_1$, $A_9$, and $E_{a,1}$, although
- contributions from $A_{15}$ and $A_{17}$ are also found to be significant. 
+linear approximation to the model output in order to estimate the gradient using a regression-based fit.
+The two strategies were shown to yield
+consistent results for the 19-dimensional problem whereby only the pre-exponents were considered to be uncertain.
+Additionally, the activity scores were also shown to be consistent with the screening metric estimates based on
+DGSMs in~\cite{Vohra:2018}. Note that an iterative procedure was adopted to enhance the computational efficiency
+associated with both strategies. 
+
+Both strategies were further implemented to discover and compute the active
+subspace for the 33-dimensional problem. The gradient-based approach yielded a 1-dimensional active subspace
+and the activity scores which revealed that the uncertainty in the ignition delay is largely dependent on $A_1$, $A_9$, 
+$E_{a,1}$ and $E_{a,15}$, although contributions from $A_{15}$ and $A_{17}$ were also found to be significant. The activity
+scores were verified against the total Sobol' indices, computed using the 1-dimensional surrogate fit to the model response in
+the subspace. The 1-dimensional surrogate was verified for accuracy by evaluating the relative L-2
+norm of the error between its predictions and model evaluations at $10^4$ samples in the 33-dimensional input domain.
+Additionally, the surrogate was verified by comparing probability distributions (based on kernel density estimation) for
+the ignition delay based on its predictions and model evaluations. The two PDFs were observed to be nearly identical
+and consequently, their mean and standard deviations were found to be in excellent agreement. On the other hand,
+the gradient-free approach failed to capture the sensitivity towards the most important parameter, $E_{a,15}$. 
+We attribute this discrepancy to two potential sources of numerical errors: (1) Local linear approximation of the
+gradient of the model output, and (2) Scatter in the corresponding SSP (see Figure~\ref{fig:hd}) leading to numerical
+error incurred by the linear regression-fit in this case. The PDF was observed to be consistent with the true PDF in its
+estimate for the mode and the mean value of the ignition delay. However, it was observed to underestimate the uncertainty 
+associated with the ignition delay. Hence, the gradient-free approach might prove to be valuable in applications 
+involving intensive simulations (rendering the gradient-based approach prohibitive), and focused on a reasonable 
+approximation of the mean value and the uncertainty associated with the quantity of interest. Based on our findings, the 
+estimate for the mean is expected to be relatively more accurate. 
  
  The authors would like to highlight that the computational strategy presented in this work is agnostic to the choice
  of the chemical system and could thus be easily adapted for other systems. However, it is important to note that
@@ -57,8 +74,8 @@ indicate that the uncertainty in the ignition delay is largely dependent on $A_1
  exist for a given input-output relationship. While the active subspace could be exploited for a forward propagation of
  the uncertainty from inputs to the output, the low-dimensional surrogate could further be used to accelerate 
  calibration of the rate-controlling parameters in a Bayesian setting. Moreover, the activity scores could help
- identify important stages in a complex reaction mechanism and thereby guide development of a reduced-order
- surrogate. Furthermore, dimension reduction using active subspaces could be useful in studies aimed at
+ identify important stages in a complex reaction mechanism and thereby guide development of a simplified
+ mechanism. Furthermore, dimension reduction using active subspaces could be useful in studies aimed at
  investigating the inadequacy or model error associated with the reaction rate laws for such systems.  
  
  

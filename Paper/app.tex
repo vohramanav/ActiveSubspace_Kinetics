@@ -69,12 +69,12 @@ with the normalized activity scores evaluated uing the gradient-based approach. 
 approach yields consistent results for the $A_i$'s, it does not capture the sensitivity associated with
 $E_{a,15}$. While this observation bolsters our confidence in the gradient-based approach, it clearly
 underscores the shortcoming of the gradient-free approach. Numerical errors are incurred when approximating
-the model gradients using the local linear approximation in this case. In~\ref{sub:verify}, we assess the
+the model gradients using the local linear approximation in this case. In~\ref{sub:verify}, we further assess the
 suitability of the gradient-free approach in quantifying the uncertainty in the ignition delay. 
-Secondly, our findings indicate that the  
-the ignition delay is predominantly sensitivity towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 
-moderately sensitivity towards $A_{15}$ and $A_{17}$. Sensitivity towards the remaining uncertain inputs is
-found to be low or negligible. Note that his observation can also be exploited for reducing the 
+Secondly, our findings indicate that   
+the ignition delay is predominantly sensitive towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 
+moderately sensitive towards $A_{15}$ and $A_{17}$. Sensitivity towards the remaining uncertain inputs is
+found to be low or negligible. Note that this observation can also be exploited for reducing the 
 dimensionality of the problem from 33 inputs to 4-6 inputs depending upon the required level of accuracy.
 The sensitivity-driven dimension reduction for uncertainty quantification has been
 discussed in our earlier effort~\cite{Vohra:2018}. In this work, however, we focus on dimension reduction using the active 
@@ -95,35 +95,68 @@ model output and the surrogate in the following equation:
 \varepsilon_d = \frac{\|G(\bm{\xi}) - \tilde{G}(\bm{\xi})\|_2}{\|G(\bm{\xi})\|_2}
 \ee
 %
-The relative norm, $\varepsilon_d$ was estimated to be 8.50$\times10^{-2}$ based on a cross-validation test data
-comprising 10$^{4}$ model evaluations. Hence, in the norm-sense, it can be said that the 1-dimensional surrogate is 
-reasonably accurate. 
+The relative norm, $\varepsilon_d$ was estimated to be 1.35$\times10^{-2}$ and 1.02$\times10^{-1}$
+using $\tilde{G}$ from the gradient-based approach and the gradient-free approach respectively. Hence,
+an order of magnitude increase in $\varepsilon_d$ was estimated in the case of gradient-free approach.
+Model evaluations ($G$) at 10$^{4}$ samples in the input domain were used for this purpose. 
+Hence, in the norm-sense, it can be said that the 1-dimensional surrogate in the active subspace, obtained
+using the gradient-based approach is remarkably accurate with a relative error of less than 1.5$\%$.
 
-Secondly, we verify the accuracy of the surrogate in a probabilistic setting. In particular, we compare a histogram
-plot of the model evaluations (in the cross-validation set) with a PDF evaluated on the same set of samples
-using the surrogate, $\tilde{G}$ in Figure~\ref{fig:pdf_33D}. The PDF is evaluated using surrogates constructed for
-a 1-dimensional as well as a 2-dimensional active subspace. 
+Secondly, we verify the accuracy of the two surrogates in a probabilistic setting. In particular, we compare 
+probability density functions (PDFs) obtained using the true set of model evaluations, and 1-dimensional
+surrogates from the two approaches, in Figure~\ref{fig:pdf_33D}. Note that the three PDFs were evaluated 
+using the same set of 10$^4$ samples in the cross-validation set. 
 %
 \begin{figure}[htbp]
- \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/pdf_comp_id_1e4}
-\caption{A comparison of the histogram plot based on model evaluations and the PDF based on surrogate
-predictions for ignition delay. The two plots are based on samples in the validation set.}
+\begin{center}
+\begin{minipage}[htbp]{.25\linewidth}
+\vspace{0pt}
+%\centering
+\hspace{-25mm}
+\begin{tabular}{ccc}
+\toprule
+$\textbf{Distribution}$ & $\mu$ & $\sigma$ \\ 
+\bottomrule
+$G$~(Model) & 0.133 & 0.0198 \\
+$\tilde{G}$~(Gradient-based) & 0.133 & 0.0196 \\
+$\tilde{G}$~(Gradient-free) & 0.133 & 0.0167 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\hspace{5mm}
+\begin{minipage}[htbp]{.25\linewidth}
+\vspace{0pt}
+%\centering
+\includegraphics[width=3.0in]{./Figures/pdf_comp_id_1e4}
+\end{minipage}%
+\end{center} 
+\caption{Left: Table providing the mean ($\mu$) and the standard deviation ($\sigma$) corresponding to
+the three PDFs using evaluations
+at 10$^4$ samples in the cross-validation set. Right: A comparison of the PDFs of ignition delay, obtained using model 
+evaluations (solid line) and 1-dimensional surrogates using the gradient-free approach (dashed line) and the gradient-based
+approach (dashed-dotted line). The same set of 10$^4$ samples in the cross-validation set were used in each case.}
 \label{fig:pdf_33D}
-\end{center}
 \end{figure}
 %
-In the above comparison, it is observed that the two PDFs are almost identical, thereby confirming a 1-dimensional
-active subspace. The modal estimate from either PDF is observed to be in agreement with that
-based on the histogram plot. The mean value based on the set of model evaluations used for verification as well
-as the 1-dimensional surrogate was found to be 0.133, whereas, the standard deviations were found to be 0.0198 and 0.0160
-respectively. Hence, while the surrogate yields an accurate estimation of the mean, the standard deviation is
-under-estimated. This can be understood from the SSP in Figure~\ref{fig:hd} (right) which shows that the model
-evaluations do not exactly lie on the linear 1-dimensional surrogate used to capture them. Therefore, the
-1-dimensional surrogate can be used to estimate the mean as well as the modal estimate of the ignition delay in
-the presence of uncertainty in the 33 parameter considered in this application. The uncertainty associated with the
-ignition delay though reasonably close to the true value, is under-estimated.
- 
+%
+%\begin{figure}[htbp]
+% \begin{center}
+%  \includegraphics[width=0.45\textwidth]{./Figures/pdf_comp_id_1e4}
+%\caption{A comparison of the PDFs of ignition delay, obtained using model evaluations (solid line) and
+%1-dimensional surrogates using the gradient-free approach (dashed line) and the gradient-based approach
+%(dashed-dotted line). The same set of 10$^4$ samples in the cross-validation set were used in each case.}
+%\label{fig:pdf_33D}
+%\end{center}
+%\end{figure}
+%
+The PDFs based on the model evaluations and the gradient-based approach are nearly identical, confirming
+the existence of a 1-dimensional active subspace as well as the accuracy of the gradient-based approach. 
+Whereas, the PDF based on the gradient-free approach is observed to show consistency with the true PDF in the modal
+estimate; it underestimates the spread in the ignition delay. Specific values of the mean and the standard deviation
+in each case are provided in the table in Figure~\ref{fig:pdf_33D}. Hence, the three PDFs are found to be
+consistent in their prediction of mean value of the ignition delay.  The standard deviation estimates based on model
+evaluations and the gradient-based approach are found to be in close agreement, whereas, it  is accurately estimated
+by the gradient-free approach only upto the first significant figure. 
 
 %\subsection{Surrogate-induced risk analysis}
 

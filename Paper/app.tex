@@ -3,37 +3,41 @@
 
 For the high-dimensional case, we aim to investigate the impact of the uncertain
 pre-exponents ($A_i$'s) as well as the activation energies ($E_{a,i}$'s) on ignition 
-delay during the H$_2$/O$_2$ reaction. The $A_i$'s are considered to be uniformly
+delay during the H$_2$/O$_2$ reaction. The $A_i$'s were considered to be uniformly
 distributed in the interval, $[0.9A_i^\ast, 1.1A_i^\ast]$. The $E_{a,i}$'s for all
-reactions except $\mathcal{R}_6$ -- $\mathcal{R}_9$ and $\mathcal{R}_{13}$
-are considered to be uncertain and uniformly distributed in the interval: 
+reactions except $\mathcal{R}_6$ -- $\mathcal{R}_9$ and $\mathcal{R}_{13}$ (due to 
+zero nominal values for $E_a$)
+were considered to be uncertain and uniformly distributed in the interval: 
 $[0.99E_{a,i}^\ast, 1.01E_{a,i}^\ast]$. The nominal values, $A_i^\ast$ and $E_{a,i}^\ast$
 corresponding to the different reaction rates are provided in~\cite{Yetter:1991}. 
 
-The gradient-free approach discussed earlier in~\ref{sub:gradfree} was used to compute the
+The gradient-based approach discussed earlier in~\ref{sub:grad} was used to compute the
 active subspace. Using the iterative procedure, the convergence of the eigenvectors
-was examined by tracking $\delta \hat{\mat{W}}_{1,j}^{(i)}$. In Figure~\ref{fig:conv_app} (left),
-components of the converged eigenvector based on 50 samples using $\tau$ = 0.2 are plotted.
-To illustrate convergence, we compare them with components of the eigenvector obtained
-using 100 samples (twice as many). The variation of maximum $\delta w_{1,j}^{(i)}$ between
-successive iterations during the course of the iterative procedure is illustrated in 
-Figure~\ref{fig:conv_app} (right). 
+was examined by tracking $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$, plotted in 
+Figure~\ref{fig:conv_app} (right). In Figure~\ref{fig:conv_app} (left), individual
+components of the converged eigenvector are illustrated. The convergence was established using
+a $\tau$ value of 0.02. Finite difference was used to compute model gradients at 40 samples in
+the input domain. Hence, a total of 1360 model evaluations were required for this purpose.  
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv10}
 \caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector obtained
 using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  
-$\delta \hat{\mat{W}}_{1,j}^{(i)}$
+$\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$
 is plotted for successive iterations to illustrate the convergence behavior.}
 \label{fig:conv_app}
 \end{center}
 \end{figure}
 %
-The dominant eigenvector is observed to converge with only 50 samples in the 33-dimensional space which
-is remarkably efficient. 
-
-In Figure~\ref{fig:hd}, we illustrate the resulting eigenvalue spectrum and the SSP.
+ 
+In Figure~\ref{fig:hd} (left), we illustrate the resulting eigenvalue spectrum. The second eigenvalue is
+found to be roughly two orders of magnitude smaller than the first, indicating that the active subspace
+is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right). Specifically
+in the case of gradient-based approach, the SSP exhibits a linear variation that is reasonably
+captured by its linear fit, $\tilde{G}$. Whereas, the SSP based on the gradient-free approach
+is relatively more scattered. Consequently, the linear fit exhibits a discrepancy with the corresponding
+fit for the gradient-based SSP. 
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -45,36 +49,38 @@ corresponding 1-D linear fit.}
 \end{center}
 \end{figure}
 %
-The second eigenvalue is observed to be roughly four orders of magnitude smaller than the first 
-indicating the existence of a 1-dimensional active subspace. This is further confirmed by the SSP
- which shows that the variability in $G$ can be approximated using a 1-dimensional regression
-fit ($\tilde{G}$) which could be used as a surrogate. A linear, quadratic, and a cubic fit to the SSP was performed.
-The linear fit illustrated in Figure~\ref{fig:hd} (right) was found to be the most accurate. In~\ref{sub:verify},
-we investigate the accuracy of the 1D surrogate based on the linear fit by estimating the relative L-2
-norm of its discrepancy with model evaluations at an independent set of samples, and by comparing the
-respective probability distributions.
-
-Components of the dominant eigenvector in Figure~\ref{fig:conv_app} (left) are used for estimating the
-activity scores, plotted below in Figure~\ref{fig:as_33D}.
+We plot the normalized activity scores as well as the total Sobol' indices for the 33 uncertain 
+rate-controlling parameters in Figure~\ref{fig:as_33D}. Note that the normalized activity scores
+as well as the Sobol' indices
+were evaluated using respective 1-dimensional surrogates for the two approaches.
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/as_A_33D}
-    \includegraphics[width=0.45\textwidth]{./Figures/as_E_33D}
+  \includegraphics[width=0.8\textwidth]{./Figures/as_33D_new}
 \caption{A bar-graph illustrating individual activity scores for the uncertain $A_i$' (left) and $E_{a,i}$'s (right).}
 \label{fig:as_33D}
 \end{center}
 \end{figure}
 %
-From the above plot, it can be inferred that the ignition delay is predominantly sensitivity towards $A_1$, $A_9$, and
-$E_{a,1}$. Furthermore, it is moderately sensitivity towards $A_{15}$ and $A_{17}$ while sensitivity towards remaining
-inputs is found to be low or negligible. Note that the sensitivity results for the pre-exponents is found to be consistent
-with the 19-dimensional case presented in~\ref{sec:method}. This observation can also be exploited for reducing the 
-dimensionality of the problem from 33 to 3-5 depending upon the required level of accuracy in terms of characterizing 
-the uncertainty in the model output. The sensitivity-driven dimension reduction for uncertainty quantification has been
+
+Several useful inferences can be drawn from the above plot. Firstly, the total Sobol indices are found to be
+consistent
+with the normalized activity scores evaluated uing the gradient-based approach. Whereas, the gradient-free
+approach yields consistent results for the $A_i$'s, it does not capture the sensitivity associated with
+$E_{a,15}$. While this observation bolsters our confidence in the gradient-based approach, it clearly
+underscores the shortcoming of the gradient-free approach. Numerical errors are incurred when approximating
+the model gradients using the local linear approximation in this case. In~\ref{sub:verify}, we assess the
+suitability of the gradient-free approach in quantifying the uncertainty in the ignition delay. 
+Secondly, our findings indicate that the  
+the ignition delay is predominantly sensitivity towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 
+moderately sensitivity towards $A_{15}$ and $A_{17}$. Sensitivity towards the remaining uncertain inputs is
+found to be low or negligible. Note that his observation can also be exploited for reducing the 
+dimensionality of the problem from 33 inputs to 4-6 inputs depending upon the required level of accuracy.
+The sensitivity-driven dimension reduction for uncertainty quantification has been
 discussed in our earlier effort~\cite{Vohra:2018}. In this work, however, we focus on dimension reduction using the active 
-subspace approach which is shown to yield even greater scope for dimension reduction i.e. from 33 to 1. We verify
-the accuracy of the 1-d regression fit to $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in the following section.
+subspace approach which is shown to yield even greater scope for dimension reduction i.e. from 33 to 1. Furthermore, we have
+shown that the dominant eigenspace can be used to approximate global sensitivity measures with no additional effort.
+The accuracy of the 1-dimensional surrogate, $\tilde{G}$, obtained using the two approaches is assessed in the following section. 
 
 \subsection{Surrogate Verification}
 \label{sub:verify}

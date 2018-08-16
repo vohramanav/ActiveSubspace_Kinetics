@@ -2,60 +2,45 @@
 \label{sec:intro}
 
 %Constributions:
-%\begin{enumerate}
-%\item Iterative computation of active subspaces for efficient surrogate modeling 
-%\item Comparison of gradient-free and gradient based approaches.
-%\item Perspectives on activity scores as means of approximating DGSMs.
-%\item Application to challenging chemical kinetics problem. 
-%\end{enumerate}
-%Insert introduction here.
-
-% Outline
-%1. Significance of the H2/O2 reaction. Include the mechanism and a discussion on why
-%   is it important to study the kinetics? 
-%2. Literature survey of studies aimed at quantifying the uncertainty associated with
-%reaction kinetics (including my own work) and specifically for the H2/O2 reaction.
-%3. Focus of this work and associated challenges (include a table).
-%4. Key contributions.
-%5. Organization
 
 Time evolution of a chemically reacting system is largely dependent upon rate
 constants associated with individual reactions. The rate constants are
-typically assumed to exhibit a certain correlation with temperature (e.g.
+typically assumed to exhibit a certain correlation with temperature (e.g.,
 Arrhenius-type). Hence, accurate specification of the rate-controlling
 parameters is critical to the fidelity of simulations. However, in practical
-applications, the parameters are either specified using expert knowledge or
+applications, these parameters are either specified using expert knowledge or
 estimated based on a regression-fit to a set of sparse and noisy
 data~\cite{Burnham:1987, Burnham:1988, Vohra:2011, Sarathy:2012}.
-Consequently, the underlying uncertainty associated with the parameters and
-therefore the simulation is typically ignored. Nevertheless, the inclusion of
+%Consequently, the underlying uncertainty associated with the parameters and
+%therefore the simulation is typically ignored. 
+Consequently, the inclusion of
 uncertainty due to corrupted calibration data, parametric uncertainty,
 and the discrepancy between predictions and experiments
-due to model inadequacy has gained prominence in recent
-years~\cite{Vohra:2014, Vohra:2017, Morrison:2018, Hantouche:2018}. 
-However, in complex mechanisms involving a large number of reactions,
-characterizing the propagation of uncertainty from a large set of inputs to
-the model output becomes remarkably challenging due to associated
-computational effort. 
-A major focus of this paper pertains to the implementation of a robust
-framework that aims to identify `important' directions in the input space
-that predominantly captures the variability in the model output. These
-directions, referred to as the \textit{active subspaces}~\cite{Constantine:2015},
-constitute the dominant
-eigenspace of a matrix derived from the gradient information of the model
-output with respect to an input. The active subspace methodology thus
-focuses on reducing the dimensionality of the problem, and hence the 
-computational effort associated with uncertainty propagation. 
+due to model inadequacy has been subject of increased research efforts in recent
+years~\cite{Vohra:2014, Vohra:2017, Morrison:2018, Hantouche:2018}. \alennote{Need more references,
+acknowledging research by others.} 
+
+In complex mechanisms involving a large number of reactions, characterizing the
+propagation of uncertainty from a large set of inputs to the model output is
+challenging due to the associated computational effort.  A major focus of this
+article is the implementation of a robust framework that aims to identify
+\emph{important} directions in the input space that predominantly capture the
+variability in the model output. These directions, which span the so called
+\emph{active subspace}~\cite{Constantine:2015}, are the dominant eigenvectors
+of a matrix derived from the gradient information of the model output with
+respect to an input. The active subspace methodology thus focuses on reducing
+the dimensionality of the problem, and hence the computational effort
+associated with uncertainty propagation. 
 
 The application problem considered in this work is the
-H$_2$/O$_2$ reaction mechanism~\cite{Yetter:1991}. This mechanism has gained
+H$_2$/O$_2$ reaction mechanism from~\cite{Yetter:1991}. This mechanism has gained
 a lot of attention as a potential source of clean energy for
 locomotive applications~\cite{Das:1996}, and more recently in fuel
  cells~\cite{Loges:2008,Cosnier:2016}. 
 The mechanism involves 19
 reactions including chain reactions, dissociation/recombination reactions, and
-formation and consumption of intermediate species. For each reaction in
-table~\ref{tab:kinetics}, the reaction rate is assumed to show an Arrhenius
+formation and consumption of intermediate species; see Table~\ref{tab:kinetics}. 
+For each reaction, the reaction rate is assumed to follow an Arrhenius
 correlation with temperature:
 %
 \be
@@ -66,7 +51,7 @@ k_i(T) = A_iT^{n_i}\exp(-E_{a,i}/RT),
 where $A_i$ is the pre-exponent, $n_i$ is the index of $T$, $E_{a,i}$ is the
 activation energy corresponding to the $i^{th}$ reaction, and $R$ is the
 universal gas constant.  
-
+%
 \begin{table}[htbp]
 \renewcommand*{\arraystretch}{0.9}
 \begin{center}
@@ -99,7 +84,7 @@ $\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
 \caption{Reaction mechanism for H$_2$/O$_2$ from~\cite{Yetter:1991}}.
 \label{tab:kinetics}
 \end{table}
-
+%
 The global reaction associated with the H$_2$/O$_2$ mechanism can
 be considered as follows:
 \be
@@ -121,21 +106,25 @@ TChem software package~\cite{Safta:2011}, and the time required for the rate of
 temperature increase to exceed a given threshold, regarded as \emph{ignition delay}
 is recorded. 
 
-We are interested in investigating the impact of uncertainty in the
+We seek to understand the impact of uncertainty in the
 rate-controlling parameters, pre-exponent~($A_i$) and the activation
 energy~($E_{a,i}$) on the ignition delay. The $A_i$'s associated with all
 reactions and the $E_{a,i}$'s with non-zero nominal estimates
 are considered to be uniformly distributed about their nominal estimates provided
 in~\cite{Yetter:1991}.  The total number of uncertain inputs is 33 which makes
-the present problem high-dimensional and computationally challenging. 
-To address this challenge, we focus our efforts on reducing the dimensionality
-of the problem by computing the aforementioned active subspace using
-an approach that involves computation of gradients of a model output with
-respect to individual parameters. Estimating the
+the present problem computationally challenging due to the large number of 
+uncertain parameters.  
+To address this challenge, we focus on reducing the dimensionality
+of the problem by computing the aforementioned active subspace.
+This involves repeated evaluations of the gradient of a model output with
+respect to the input parameters. Estimating the
 gradients can however be computationally challenging in high-dimensional settings. 
 Hence, in this work, we further explore the suitability of a gradient-free
 approach that involves a regression-based local linear approximation of
-the model output. It must be noted that since the gradient-free approach
+the model output. \alennote{I don't understand what the next sentence is 
+really trying to say here; I mean whatever we do involves approximating the
+gradient, the question is how rough the approximation is, right?} 
+It must be noted that since the gradient-free approach
 relies on approximating the model gradients, it is expected to be less
 robust than the gradient-based approach. The two approaches are based on
 algorithms 1.1 and 1.2 in~\cite{Constantine:2015}. Both strategies
@@ -144,46 +133,83 @@ generated, and gradient evaluations are performed at each iteration until
 a reasonably accurate approximation to the active subspace is achieved, as
 discussed later in Section~\ref{sec:method}. 
 
-An alternate approach to dimension reduction involves computing the global sensitivity
-measures associated with uncertain inputs of a model. Depending upon the estimates of
-the sensitivity measures, only the important inputs are varied for the purpose of
-uncertainty quantification (UQ). The
-Sobol' index is a commonly used global sensitivity measure~\cite{Sobol:2001}. However, obtaining
-converged estimates of the Sobol' indices typically requires tens of thousands of model
-runs and is therefore impractical in situations involving intensive model simulations and/or a
-large number of inputs.
-Recently, the derivative-based global sensitivity measures~(DGSMs) were 
-developed to approximate the upper bound on the Sobol' indices with much fewer
-computations~\cite{Sobol:2009, Lamboni:2013}. In Section~\ref{sec:assa}, we show
-that the DGSMs can in fact be approximated using the components of the eigenvectors
-in the active subspace by estimating the so-called activity 
-scores~\cite{Diaz:2016,Constantine:2017}.
-
-Main contributions of this paper are as follows: (1) Mathematical linkages between the
-global sensitivity measures: Total Sobol' index, DGSMs, and the activity scores are
-established; (2) An initial comparison of the active subspace and the global sensitivity
-measures, computed using the gradient-based and the gradient-free approaches in
-a 19-dimensional H$_2$/O$_2$ kinetics problem is provided. In this case, only the $A_i$'s are
-considered to be uncertain. (3) Active subspace discovery in the high-dimensional
-H$_2$/O$_2$ kinetics problem involving 33 uncertain inputs. 
+An alternate approach to dimension reduction involves computing the global
+sensitivity measures associated with uncertain inputs of a model. Depending
+upon the estimates of the sensitivity measures, only the important inputs are
+varied for the purpose of uncertainty quantification (UQ). Sobol' indices are
+commonly used as global sensitivity measures~\cite{Sobol:2001}. However,
+obtaining converged estimates of the Sobol' indices typically requires tens of
+thousands of model runs and is therefore impractical in situations involving
+expensive model simulations and/or high-dimensional input parameter spaces.
+Recently, the derivative-based global sensitivity measures~(DGSMs) were
+developed to approximate upper bound on the Sobol' indices with much fewer
+computations~\cite{Sobol:2009, Lamboni:2013}. It was noted
+in~\cite{Diaz:2016,Constantine:2017} that DGSMs can be approximated by
+exploiting their links with active subspaces. This led to definition of the so
+called \emph{activity scores}. In Section~\ref{sec:assa}, we build on these
+ideas to provide a complete analysis of links between Sobol indices, DGSMs, and
+activity scores for functions of independent random inputs whos distribution
+law belongs to the class of Boltzmann probability measures. 
+It is worth mentioning that computing global sensitivity measures provides 
+important information about a model that go beyond dimension reduction. By 
+identifying parameters with significant impact on model uncertainty global 
+sensitivity analysis can guide model calibration and risk assessment. 
  
- The remaining of this paper is organized as follows. In section~\ref{sub:ac}, a brief theoretical background on
- the active subspace methodology is provided. In section~\ref{sub:gsa}, it is shown that the activity
- scores provide a reasonable approximation to the DGSMs especially in a high-dimensional setting. 
- Additionally, a relationship between the three global sensitivity measures, namely, the activity scores,
- DGSMs, and the total Sobol' indices is established. In section~\ref{sec:method}, a systematic framework
- for computing the active subspace using an iterative gradient-based approach is provided. Numerical results
- based on the gradient-free approach are compared with those obtained using the gradient-based approach.
- The active subspace is computed for the H$_2$/O$_2$ reaction kinetics problem whereby only
-the $A_i$'s are considered as uncertain. In this case, the two approaches are observed to yield consistent
-results. In section~\ref{sec:app}, the gradient-based approach is further implemented to compute the
-active subspace for the high-dimensional H$_2$/O$_2$ reaction kinetics problem. The resulting active
-subspace is found to be 1-dimensional thereby indicating enormous potential for computational savings
-in this application. The active subspace is also computed using the gradient-free approach. It is observed
-that although the uncertainty in the ignition delay is reasonably approximated, the gradient-free approach
-fails to capture the global sensitivity of all the uncertain inputs. Hence, a trade-off between efficiency and
-accuracy between the two approaches is observed in this case. 
-Finally, a summary and discussion based on our findings is included in section~\ref{sec:conc}.
+The main contributions of this paper are as follows: 
+\begin{itemize}
+\item 
+Active subspace
+discovery in the high-dimensional H$_2$/O$_2$ kinetics problem involving 33
+uncertain inputs: \alennote{Say some interesting conclusion of the analysis;
+e.g., we discover a 1D subspace for a 33-dimensional problem using a modest computational 
+budget ...} The presented
+analysis can also guide practitioners in area of chemical kinetics on using the
+method of active subspaces as an efficient means of uncertainty propagation in
+chemical systems.  
+\item Comprehensive numerical investigation of the gradient-based and gradient-free approach: 
+we investigate the suitability of both approach
+for computing active subspaces, surrogate modeling, and approximating global
+sensitivity measures through a comprehensive set of numerical experiments. Our
+results reveal insight into the merits of the methods approach as well as
+their shortcomings.  
+\item Analysis of the links between  
+global sensitivity measures: 
+By connecting the recent advances in theory of variance based and
+derivative based global sensitivity analysis to active subspaces, we provide a complete analysis
+of the links between total Sobol' indices, DGSMs, and activity scores for a broad
+class of probability distributions. Our analysis is concluded by a result quantifying
+approximation errors incurred due to fixing unimportant parameters, deemed so by 
+computing their activity scores.  
+
+\end{itemize}
+
+\alennote{The structure of the paper is mostly okay; I have one recommendation:
+(i) make section 2.1 a separate section called preliminaries on active subspaces (or 
+something like that); (ii) make section 2.2. a section of its own, with a more descriptive
+section heading. The way things stand, people might take our section 2.2. as just background materials}
+This article is organized as follows. In section~\ref{sub:ac}, a brief
+theoretical background on the active subspace methodology is provided. In
+section~\ref{sub:gsa}, it is shown that the activity scores provide a
+reasonable approximation to the DGSMs especially in a high-dimensional setting.
+Additionally, a relationship between the three global sensitivity measures,
+namely, the activity scores, DGSMs, and the total Sobol' indices is
+established. In section~\ref{sec:method}, a systematic framework for computing
+the active subspace using an iterative gradient-based approach is provided.
+Numerical results based on the gradient-free approach are compared with those
+obtained using the gradient-based approach.  The active subspace is computed
+for the H$_2$/O$_2$ reaction kinetics problem whereby only the $A_i$'s are
+considered as uncertain. In this case, the two approaches are observed to yield
+consistent results. In section~\ref{sec:app}, the gradient-based approach is
+further implemented to compute the active subspace for the high-dimensional
+H$_2$/O$_2$ reaction kinetics problem. The resulting active subspace is found
+to be 1-dimensional thereby indicating enormous potential for computational
+savings in this application. The active subspace is also computed using the
+gradient-free approach. It is observed that although the uncertainty in the
+ignition delay is reasonably approximated, the gradient-free approach fails to
+capture the global sensitivity of all the uncertain inputs. Hence, a trade-off
+between efficiency and accuracy between the two approaches is observed in this
+case.  Finally, a summary and discussion based on our findings is included in
+section~\ref{sec:conc}.
 
 
 

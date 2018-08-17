@@ -264,6 +264,25 @@ such cases, this result implies that  $\nu_i(f) \approx \act{f}{i}{r}$,
 where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
 effective if there is a large gap in the eigenvalues.  
 
+We also record the following useful relations:
+\begin{lemma}\label{lem:sum}
+We have
+\begin{enumerate}[label=(\alph*)]
+\item $\sum_{i = 1}^\Np \act{f}{i}{r} = \sum_{k = 1}^r \lambda_k$. 
+\item $\sum_{i = 1}^\Np \nu_i(f) = \sum_{k = 1}^\Np \lambda_k$. 
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The first statement of the lemma holds, because
+\[
+\sum_{i=1}^\Np \act{f}{i}{r}    
+= \sum_{i=1}^\Np \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2 
+= \sum_{k=1}^r \lambda_k \sum_{i=1}^\Np \ip{\vec{e}_i}{\vec{w}_k}^2 
+= \sum_{k=1}^r \lambda_k \| \vec{w}_k \|^2 = \sum_{k=1}^r \lambda_k.
+\]
+The statement (b) follows immediately from (a), because $\nu_i(f) = \act{f}{i}{\Np}$.
+%$\sum_{i=1}^\Np \nu_i(f) = \trace(\mat{C}) = \sum_{k = 1}^\Np \lambda_k$.
+\end{proof}
 
 It was shown in~\cite{Lamboni:2013} that the total Sobol' 
 index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
@@ -376,10 +395,13 @@ the $C_i$'s in the definition of the normalized screening metric will cancel and
   %    = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
-The expression for the denominator follows, since 
-$\sum_{i=1}^\Np \nu_i(f) = \trace(\mat{C}) = \sum_{k = 1}^\Np \lambda_k$.
+The expression for the denominator follows from Lemma~\ref{lem:sum}(b). 
 Also, in the case of iid inputs, the normalized activity scores reduce to
 \[
-   \actt{f}{i}{r} =  \frac{\act{f}{i}{r}}{\sum_{i=1}^\Np \act{f}{i}{r}}.
+   \actt{f}{i}{r} =  \frac{\act{f}{i}{r}}{\sum_{i=1}^\Np \act{f}{i}{r}} = 
+                     \frac{\sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2}
+                          {\sum_{k = 1}^r \lambda_k}.
 \]
+The expression for the denominator can be seen from Lemma~\ref{lem:sum}(a). 
+
 \end{remark}

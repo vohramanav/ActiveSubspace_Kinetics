@@ -1,10 +1,10 @@
-\section{Active subspaces and sensitivity analysis}
-\label{sec:assa}
+%\section{Active subspaces and sensitivity analysis}
+%\label{sec:assa}
 %In this section, we provide key elements of the active subspace methodology and
 %provide theoretical connections between the global sensitivity measures
 %(DGSMs), activity scores, and the total Sobol' indices.
 
-\subsection{Active subspaces}
+\section{Active subspaces}
 \label{sub:ac}
 As mentioned in the introduction, the active subspace is a low-dimensional subspace
 that constitutes important directions in a model's input
@@ -108,8 +108,7 @@ with reasonable accuracy as discussed later in Section~\ref{sec:method}.
 %%section.
   
 
-\subsection{Global sensitivity measures}
-
+\section{GSA measures and their links with active subspaces}
 \label{sub:gsa}
 Consider a function $f = f(\xi_1, \xi_2, \ldots, \xi_\Np)$. 
 While the active subspace framework described above does not make any assumptions
@@ -158,23 +157,26 @@ For $f: \Omega \to \R$, we consider the DGSMs,
                   \pi(\vec{\xi})d\vec{\xi}, \quad i = 1, \ldots, \Np.   
 \]
 Here $\pi$ is the joint PDF of $\xi$. 
-Let $\mat{C} = \E{\nabla f \nabla f^\top}$ and note that
-\[
-   \nu_i(f) = \vec{e}_i^\top \mat{C} \vec{e}_i, 
-\]
-where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$.
-This also shows that $\sum_{j=1}^\Np \nu_i(f) = \trace(\mat{C})$.
-We consider the spectral decomposition of $\mat{C}$, given by  
-$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top$, where 
+Let $\mat{C} = \E{\nabla f \nabla f^\top}$; consider the spectral decomposition,
+$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top$, where
 $\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$, in descending
 order, and
-$\vec{u}_k$ are the corresponding (orthonormal) eigenvectors.
-We note that,
+$\vec{u}_k$ are the corresponding (orthonormal) eigenvectors. The following
+result provides a representation of DGSMs in terms of the 
+spectral representation of $\mat{C}$: 
+\begin{lemma}
+We have
+$\nu_i(f) = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2$.
+\end{lemma}
+\begin{proof}
+Note that $\nu_i(f) = \vec{e}_i^\top \mat{C} \vec{e}_i$,  
+where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$, $i = 1, \ldots, \Np$.
+Therefore,
 \begin{equation}\label{equ:spectral_DGSM}
 \nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top\Big) \vec{e}_i
- = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2, 
+ = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2. 
 \end{equation}
-which gives a spectral representation for the DGSMs. 
+\end{proof}
 In the case where the eigenvalues decay rapidly to zero, we can obtain
 accurate approximations of $\nu_i(f)$ by Truncating the summation: 
 \newcommand{\act}[3]{\nu_{{#2},{#3}}({#1})}
@@ -249,35 +251,9 @@ index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
 T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
 \end{equation}
 where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant
-that depends on the distribution of $\xi_i$.
+that depends on the distribution of $\xi_i$; see~\cite{Lamboni:2013}.
 This provides a strong theoretical basis for using DGSMs to identify 
-unimportant inputs. Moreover, 
-in~\cite{Vohra:2018} we introduced the normalized screening metric
-\[
-   \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
-\]
-for detecting unimportant inputs. 
-Note that if $\xi_i$ are iid, the $C_i$'s will cancel and the normalized screening
-metric reduces to 
-\[
-    \tilde{\nu}_i(f) = \frac{\nu_i(f)}{\sum_{i=1}^\Np \nu_i(f)} 
-      = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
-      = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
-\]
-
-We can also bound the normalized DGSMs using activity scores; it is easy to see  
-\[
-\tilde{\nu}_i(f) \leq 
-\frac{ C_i \big(\act{f}{i}{r} + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}
-=\frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}} + \kappa_i \lambda_{r+1}, 
-\]
-with $\kappa_i = C_i / (\sum_i C_i \act{f}{i}{r})$. 
-In the case where where $\lambda_{r+1} \approx 0$, 
-this motivates definition of
-normalized activity scores
-\[
-   \actt{f}{i}{r} =  \frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}.
-\] 
+unimportant inputs. 
 
 Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
 an interesting link between the activity scores and total Sobol' indices.
@@ -285,7 +261,7 @@ Specifically, by computing the activity scores, we can identify the unimportant
 inputs.  
 One can attempt to reduce parameter dimension by fixing
 unimportant inputs at nominal values. Suppose $\xi_i$ is
-deemed unimportant as a result of a global sensitivity analysis
+deemed unimportant as a result of a global sensitivity analysis (GSA)
 based on the activity scores; we want to estimate
 the approximation error that occurs once $\xi_i$ 
 is fixed at its nominal value.
@@ -349,4 +325,32 @@ Proposition~\ref{prp:dgsm_bound}, we have
 \]
 \end{proof}
 
+In~\cite{Vohra:2018} the following normalized screening metric
+\[
+   \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
+\]
+was shown to be useful for detecting unimportant inputs. 
 
+We can also bound the normalized DGSMs using activity scores; it is easy to see  
+\[
+\tilde{\nu}_i(f) \leq 
+\frac{ C_i \big(\act{f}{i}{r} + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}
+=\frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}} + \kappa_i \lambda_{r+1}, 
+\]
+with $\kappa_i = C_i / (\sum_i C_i \act{f}{i}{r})$. 
+In the case where where $\lambda_{r+1} \approx 0$, 
+this motivates definition of
+normalized activity scores
+\[
+   \actt{f}{i}{r} =  \frac{C_i \act{f}{i}{r}}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}.
+\] 
+
+\begin{remark}
+Note that if $\xi_i$ are iid, the $C_i$'s in the definition of the 
+normalized screening metric will cancel and 
+\[
+    \tilde{\nu}_i(f) = \frac{\nu_i(f)}{\sum_{i=1}^\Np \nu_i(f)} 
+      = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
+      = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
+\]
+\end{remark}

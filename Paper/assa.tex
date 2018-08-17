@@ -1,107 +1,110 @@
-%\section{Active subspaces and sensitivity analysis}
-%\label{sec:assa}
-%In this section, we provide key elements of the active subspace methodology and
-%provide theoretical connections between the global sensitivity measures
-%(DGSMs), activity scores, and the total Sobol' indices.
-
 \section{Active subspaces}
 \label{sub:ac}
-As mentioned in the introduction, the active subspace is a low-dimensional subspace
+
+Herein, we use a random vector 
+$\vec\xi \in \Omega\in\mathbb{R}^{N_p}$ to parameterize model uncertainties, 
+where $N_p$ is number of uncertain inputs.
+In practical computations, the \emph{canonical} variables $\xi_i$ are  
+mapped to physical ranges meaningful in a given mathematical model. 
+As mentioned in the introduction, an active subspace is a low-dimensional subspace
 that constitutes important directions in a model's input
-space~\cite{Constantine:2015}. The effective variability in the model output, $f$
-due to uncertain inputs, $\bm{\theta}$ in the physical space, is predominantly captured
-along these directions. Each component of $\bm{\theta}$
-is mapped to a corresponding value in $\Omega\in\mathbb{R}^{N_p}$
-($N_p$: number of uncertain inputs)
-using a linear transformation.  The set of canonical random variables, corresponding
-to $\theta_i$'s, in $\Omega$ is referred to as $\bm{\xi}$.
-Hence, from this point onwards, we denote $f$ as $f(\bm{\xi})$.
-Mathematically, for a given $f$, and a set of inputs, $\bm{\xi}$,
-these directions are the eigenvectors of a positive
-semi-definite matrix, $\mat{C}$, defined as follows: 
+parameter space~\cite{Constantine:2015}. The effective variability in a model output $f$
+due to uncertain inputs is predominantly captured
+along these directions. 
+The directions spanning the active subspace are the eigenvectors of the positive
+semidefinite matrix 
 %
 \be
-\mat{C} = \int_\Omega (\nabla_{\bm{\xi}}f)(\nabla_{\bm{\xi}}f)^\top d\Pi_{\bm{\xi}}
+\mat{C} = \int_\Omega (\nabla_{\vec{\xi}}f)(\nabla_{\vec{\xi}}f)^\top \mu(d\vec\xi), 
 \label{eq:C}
 \ee
 %
-where 
-$d\Pi_{\bm{\xi}}$ = $\pi(\bm{\xi})d\bm{\xi}$, where $\pi(\bm{\xi})$ is the joint probability
-distribution of $\bm{\xi}$. Hence, $f$ is considered to be continuous 
-and differentiable in the input domain. 
-%Hence, it is possible that a given $f(\bm{\xi})$ might not admit an active
+with 
+$\mu(d\vec{\xi}) = \pi(\vec{\xi})d\vec{\xi}$, where $\pi(\vec{\xi})$ is the joint probability
+distribution of $\vec{\xi}$. Herein, $f$ is assumed to be a function with continuous partial 
+derivatives with respect to the input parameters. 
+%Hence, it is possible that a given $f(\vec{\xi})$ might not admit an active
 %subspace. However, it is of remarkable interest to investigate if one exists
 %since the subspace could be exploited to reduce the dimensionality of the
 %problem and hence the associated computational effort.
-Here,
-$\nabla_{\bm{\xi}}f$ denotes the gradient vector. 
+%Here,
+%$\nabla_{\vec{\xi}}f$ denotes the gradient vector. 
 %with individual components
 %being partial derivatives of $f$ with respect to the $i^\text{th}$ input, $\xi_i$. 
 Since $\mat{C}$ is symmetric and
-positive semi-definite, it admits a spectral decomposition:
+positive semidefinite, it admits a spectral decomposition:
 %
 \be
-\mat{C} = \mat{W}\mat{\Lambda}\mat{W}^\top
+\mat{C} = \mat{W}\mat{\Lambda}\mat{W}^\top.
 \ee
 %
-where $\mat{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with
+Here $\mat{\Lambda}$ = diag($\lambda_1,\ldots,\lambda_{N_p}$) with the eigenvalues
 $\lambda_i$'s sorted in descending order
 \[
-     \lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_\Np \geq 0.
+     \lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_\Np \geq 0,
 \] 
+and $\mat{W}$ has the eigenvectors $\vec{w}_1, \ldots, \vec{w}_\Np$ as its columns.
 The eigenpairs are partitioned about the $i^{\text{th}}$ eigenvalue such that
-the ratio, $\left(\frac{\lambda_i}{\lambda_{i+1}}\right)$ $\gg$ 1 as follows:
+the ratio, $\lambda_i/\lambda_{i+1}\gg 1$ as follows:
 \be
  \mat{W} = [\mat{W}_1~\mat{W}_2],~~\mat{\Lambda} = \begin{bmatrix}\mat{\Lambda}_1 & \\  &
-  \mat{\Lambda}_2 \\
+  \mat{\Lambda}_2. 
 \end{bmatrix}
 \ee
  %
- where $\mat{W}_1$ comprises the dominant eigenspace of $\mat{C}$ regarded as
-the active subspace, and $\mat{\Lambda}_1$ is the corresponding set of
-eigenvalues. Once the active subspace is computed, dimension reduction is
-accomplished by transforming the set of canonical random variables, $\bm{\xi}$
-into a reduced set, $\mat{W}_1^\top \bm{\xi}$, referred to as the set of active
-variables. The number of active variables is equal to the number
-of dominant eigenvectors. The model output in the original space, $f(\bm{\xi})$,
-is approximated  as $G(\mat{W}_1^\top \bm{\xi})$ in the active subspace.
-Hence, $f$ is essentially evaluated at the projection of $\bm{\xi}$ on the
-column space of $\mat{W}_1$. We could confine UQ to the inputs in the
+The columns of $\mat{W}_1$ span the dominant eigenspace of $\mat{C}$ and
+defines the active subspace, and $\mat{\Lambda}_1$ is a diagonal matrix with
+the corresponding set of eigenvalues on its diagonal. Once the active subspace
+is computed, dimension reduction is accomplished by transforming the parameter
+vector $\vec\xi$ into 
+$\vec{y} = \mat{W}_1^\top\vec{\xi}$. The elements of $\vec{y}$ are 
+referred to as the set of active variables. The number of active
+variables is equal to the number of dominant eigenvectors. Consider the function
+\[
+    G(\vec{y}) = f(\mat{W}\vec{y}).
+\]
+The model output in the original space, $f(\vec{\xi})$,
+is approximated by $G(\mat{W}_1^\top \vec{\xi})$ in the active subspace~\cite{Constantine:2015}.
+%Hence, $f$ is essentially evaluated at the projection of $\vec{\xi}$ on the
+%column space of $\mat{W}_1$. 
+We could confine uncertainty analysis to the inputs in the
 active subspace whose dimension is typically much smaller (in applications that
 admit such a subspace) than the dimension of the original input space. To further
-expedite UQ, one could easily fit a regression-surface to $G$ using the 
-following sequence of steps outlined in~\cite{Constantine:2015} (see chapter 4).
+expedite uncertainty analysis, one could fit a regression surface to $G$ using the 
+following sequence of steps, as outlined in~\cite[chapter 4]{Constantine:2015}. 
 \begin{enumerate}
-\item Consider a set of input-output pairs, $\{\bm{\xi}_i, f(\bm{\xi}_i)\}$.
-\item For each $\bm{\xi}_i$, compute $\mat{W}_1^\top\bm{\xi}_i$. Note that
- $G(\mat{W}_1^\top \bm{\xi}_i)$ $\approx$ $f(\bm{\xi}_i)$.
-\item Fit a regression surface, $\tilde{G}(\mat{W}_1^\top\bm{\xi}_i)$ $\approx$ 
-$G(\mat{W}_1^\top \bm{\xi}_i)$.
-\item Overall approximation, $f(\bm{\xi})$ $\approx$ $\tilde{G}(\mat{W}_1^\top\bm{\xi})$.
+\item Consider a set of input-output pairs, $\{\vec{\xi}_i, f(\vec{\xi}_i)\}$, $i = 1, \ldots, N$.
+\item For each $\vec{\xi}_i$, compute $\vec{y}_i = \mat{W}_1^\top\vec{\xi}_i$. Note that
+ $G(\mat{W}_1^\top \vec{\xi}_i)$ $\approx$ $f(\vec{\xi}_i)$.
+\item Use $\{\vec{y}_i\}_{i =1}^N$ to compute a 
+regression surface, $\tilde{G}(\vec{y})\approx 
+G(\vec{y})$.
+\item Overall approximation, $f(\vec{\xi})$ $\approx$ $\tilde{G}(\mat{W}_1^\top\vec{\xi})$.
 \end{enumerate}
 
-In practice, the matrix, $\mat{C}$ is typically
-approximated using pseudo-random sampling techniques such as Monte Carlo and
-Latin hypercube sampling. The integral in~\eqref{eq:C} is replaced with a
-summation as follows:
+In practice, the matrix $\mat{C}$ defined in~\eqref{eq:C} is 
+approximated using pseudo-random sampling techniques such as Monte Carlo or
+Latin hypercube sampling:
+%The integral in~\eqref{eq:C} is replaced with a
+%summation as follows:
  %
  \be
  \mat{C}\approx \hat{\mat{C}} = \frac{1}{N}\sum\limits_{i=1}^{N} 
- (\nabla_{\bm{\xi}}f(\bm{\xi}_i))(\nabla_{\bm{\xi}}f(\bm{\xi}_i))^\top
+ (\nabla_{\vec{\xi}}f(\vec{\xi}_i))(\nabla_{\vec{\xi}}f(\vec{\xi}_i))^\top
  = \hat{\mat{W}}\hat{\mat{\Lambda}}\hat{\mat{W}}^\top
 \label{eq:chat}
  \ee
  %
 Clearly, the amount of computational effort associated with constructing the matrix,
 $\hat{\mat{C}}$ scales with the number of samples, $N$. Hence, an iterative
-computational approach is adopted in this work to ensure that $N$ is sufficiently
-large so that the dominant eigenvectors in $\hat{\mat{W}}_1$ are approximated
-with reasonable accuracy as discussed later in Section~\ref{sec:method}. 
+computational approach is adopted in this work to gradually increase  
+$N$ until the dominant eigenpairs are approximated
+with sufficient accuracy; see Section~\ref{sec:method}. 
 
 %%It has been shown that the accuracy of approximated dominant eigenspace,
-%%$\hat{\bm{w}}_1$ is inversely proportional to the difference between the
-%%smallest eigenvalue in $\hat{\bm{\Lambda}}_1$ and the largest eigenvalue in
-%%$\hat{\bm{\Lambda}}_2$~\cite{Constantine:2014}. 
+%%$\hat{\vec{w}}_1$ is inversely proportional to the difference between the
+%%smallest eigenvalue in $\hat{\vec{\Lambda}}_1$ and the largest eigenvalue in
+%%$\hat{\vec{\Lambda}}_2$~\cite{Constantine:2014}. 
 %%Components of the eigenvectors in the active subspace could be used for
 %%estimating the so-called activity scores as a measure for global sensitivity
 %%and also be used for approximating the DGSMs as discussed in the following
@@ -136,17 +139,19 @@ output~\cite{Sobol:2001}. Mathematically, this can be expressed as follows:
 %
 \be
 T_i(f) = 1 - 
-\frac{\V[\mathbb{E}(f|\bm{\xi}_{\sim i})]}{\V(f)},
+\frac{\V[\mathbb{E}(f|\vec{\xi}_{\sim i})]}{\V(f)},
 \label{eq:total}
 \ee
 %
-where $\bm{\xi}_{\sim i}$ is a vector of all the inputs $\xi_i$ except the  $i^\text{th}$ entry, and $\V$ denotes the variance. The total Sobol' index accounts
+where $\vec{\xi}_{\sim i}$ is the input parameter vector with the  
+$i^\text{th}$ entry removed, and $\V$ denotes the variance. The total Sobol' index accounts
 for the contribution of a given input to the variability in the output by itself
 as well as due to its interaction or coupling with other inputs. 
 Determining accurate estimates of $T_i(f)$ typically involves tens of
 thousands of model runs and is therefore prohibitive in the case of
-compute-intensive applications. The DGSMs~\cite{Sobol:2009} provide a means for
-approximating the upper bound on $T_i(f)$ with fewer computations; see 
+compute-intensive applications. Derivative based 
+global sensitivity measures (DGSMs)~\cite{Sobol:2009} provide a means for
+approximating informative upper bounds on $T_i(f)$ with fewer computations; see 
 also~\cite{Vohra:2018}. 
 
 For $f: \Omega \to \R$, we consider the DGSMs,
@@ -156,33 +161,36 @@ For $f: \Omega \to \R$, we consider the DGSMs,
                   \left(\frac{\partial f}{\partial\xi_i}\right)^2
                   \pi(\vec{\xi})d\vec{\xi}, \quad i = 1, \ldots, \Np.   
 \]
-Here $\pi$ is the joint PDF of $\xi$. 
-Let $\mat{C} = \E{\nabla f \nabla f^\top}$; consider the spectral decomposition,
-$\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top$, where
-$\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$, in descending
-order, and
-$\vec{u}_k$ are the corresponding (orthonormal) eigenvectors. The following
+Here $\pi$ is the joint PDF of $\vec\xi$. 
+Let $\mat{C}$ be as in~\eqref{eq:C}, and consider the spectral decomposition written 
+as $\mat{C} = \sum_{k=1}^\Np \lambda_k \vec{w}_k \vec{w}_k^\top$. Herein, we use the notation 
+$\ip{\cdot}{\cdot}$ for the Euclidean inner product.
+% where
+%$\lambda_i$ are the (non-negative) eigenvalues of $\mat{C}$, in descending
+%order, and
+%$\vec{w}_k$ are the corresponding (orthonormal) eigenvectors. 
+The following
 result provides a representation of DGSMs in terms of the 
 spectral representation of $\mat{C}$: 
 \begin{lemma}
 We have
-$\nu_i(f) = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2$.
+$\nu_i(f) = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2$.
 \end{lemma}
 \begin{proof}
 Note that $\nu_i(f) = \vec{e}_i^\top \mat{C} \vec{e}_i$,  
 where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$, $i = 1, \ldots, \Np$.
 Therefore,
-\begin{equation}\label{equ:spectral_DGSM}
-\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{u}_k \vec{u}_k^\top\Big) \vec{e}_i
- = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2. 
-\end{equation}
+\[
+\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{w}_k \vec{w}_k^\top\Big) \vec{e}_i
+ = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2. \qedhere 
+\]
 \end{proof}
 In the case where the eigenvalues decay rapidly to zero, we can obtain
 accurate approximations of $\nu_i(f)$ by Truncating the summation: 
 \newcommand{\act}[3]{\nu_{{#2},{#3}}({#1})}
 \newcommand{\actt}[3]{\tilde{\nu}_{{#2},{#3}}({#1})}
 \[
-   \act{f}{i}{r} =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2,
+   \act{f}{i}{r} =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2,
    \quad j = 1, \ldots, \Np, \quad r \leq \Np.
 \]
 The quantities $\act{f}{i}{r}$ are called activity scores
@@ -203,39 +211,39 @@ For $1 \leq r < \Np$,
 %Using the spectral representation of the DGSMs and the definition of activity
 %scores we clearly see:
 %\[
-%\alpha_i(f;r) = \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 \leq \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 = \nu_i(f), \quad \quad i = 1,\ldots,N_p, \quad r \leq N_p
+%\alpha_i(f;r) = \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2 \leq \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2 = \nu_i(f), \quad \quad i = 1,\ldots,N_p, \quad r \leq N_p
 %\]
 %In other words
 %\[
-%0 \leq  \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 - \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2,  \quad \quad i = 1,\ldots,N_p
+%0 \leq  \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2 - \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2,  \quad \quad i = 1,\ldots,N_p
 %\]
 %with equality if $N_p=r$.
 %\newline
 %We can write:
 %\[
 %\begin{aligned}
-%\nu_i(f) = \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 = \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 + \sum_{k=r+1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2  \\
-%= \alpha_i(f;r) + \sum_{k=r+1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{u}_k \rangle^2 \leq \alpha_i(f;r) + \lambda_{r+1} \sum_{k=r+1}^{N_p} \langle \vec{e}_i, \vec{u}_k \rangle^2,  \quad \quad i = 1,\ldots,N_p
+%\nu_i(f) = \sum_{k=1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2 = \sum_{k=1}^{r}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2 + \sum_{k=r+1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2  \\
+%= \alpha_i(f;r) + \sum_{k=r+1}^{N_p}\lambda_k \langle \vec{e}_i, \vec{w}_k \rangle^2 \leq \alpha_i(f;r) + \lambda_{r+1} \sum_{k=r+1}^{N_p} \langle \vec{e}_i, \vec{w}_k \rangle^2,  \quad \quad i = 1,\ldots,N_p
 %\end{aligned}
 %\]
-%The eigenvectors $\vec{u}_k$ are orthonormal so they all have length 1. Also note that for every $x \in \R^n$ we have \[ \norm{x}^2 = \sum_{k=1}^{n} \langle \vec{x}, \vec{u}_k \rangle^2\] This is known as Parseval's identity.
+%The eigenvectors $\vec{w}_k$ are orthonormal so they all have length 1. Also note that for every $x \in \R^n$ we have \[ \norm{x}^2 = \sum_{k=1}^{n} \langle \vec{x}, \vec{w}_k \rangle^2\] This is known as Parseval's identity.
 %In particular in this case $\vec{x} = \vec{e}_i \in \R^{N_p}$ so
-%\[1 = \norm{\vec{e}_i}^2 = \sum_{k=r+1}^{N_p} \langle \vec{e}_i, \vec{u}_k \rangle^2\]
+%\[1 = \norm{\vec{e}_i}^2 = \sum_{k=r+1}^{N_p} \langle \vec{e}_i, \vec{w}_k \rangle^2\]
 %Finally we write:
 %\[
 %\nu_i(f) \leq \alpha_i(f;r) + \lambda_{r+1}, \quad \quad i = 1,\ldots,N_p
 %\]
 
-Note that, $\nu_i(f) - \act{f}{i}{r}= \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \geq 0$,
+Note that, $\nu_i(f) - \act{f}{i}{r}= \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2 \geq 0$,
 which gives the first inequality. To see the upper bound, we note,
 \[
-   \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2 \leq \lambda_{r+1} \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2
+   \sum_{k=r+1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2 \leq \lambda_{r+1} \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{w}_k}^2
    \leq \lambda_{r+1}. 
 \]
 The last inequality holds because 
 $1 = \|\vec{e}_i\|_2^2 = 
-\sum_{k = 1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2 
-\geq \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{u}_k}^2$.
+\sum_{k = 1}^\Np \ip{\vec{e}_i}{\vec{w}_k}^2 
+\geq \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{w}_k}^2$.
 \end{proof} 
 The utility of this result is realized in problems with 
 high-dimensional parameter spaces in which 
@@ -252,7 +260,9 @@ T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
 \end{equation}
 where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant
 that depends on the distribution of $\xi_i$; see~\cite{Lamboni:2013}.
-This provides a strong theoretical basis for using DGSMs to identify 
+For instance, if $\xi_i$ is uniformly distributed on $[-1, 1]$, then $C_i = 2/\pi^2$; and in the 
+case $\xi_i$ is normally distributed with variance $\sigma_i^2$, then $C_i = \sigma_i^2$. 
+The bound~\eqref{equ:sobol_bound} provides a strong theoretical basis for using DGSMs to identify 
 unimportant inputs. 
 
 Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
@@ -264,7 +274,7 @@ unimportant inputs at nominal values. Suppose $\xi_i$ is
 deemed unimportant as a result of a global sensitivity analysis (GSA)
 based on the activity scores; we want to estimate
 the approximation error that occurs once $\xi_i$ 
-is fixed at its nominal value.
+is fixed at a nominal value.
 %Let $\I \subset \{1, \ldots,
 %Np\}$ be an index set that indexes the unimportant parameters in the parameter
 %vector $\vec{\xi}$.  Letting $|\I|$ denote the number of elements of $\I$, 
@@ -275,15 +285,16 @@ is fixed at its nominal value.
 %For a vector $\xi$, we let $\xin$ denote the vector obtained by removing
 %$\xi_i$. 
 
-Let $\vec\xi$ be given and let $z$ be a nominal value for $\xi_i$;  we define 
-$\vec{y}^z(\vec\xi)$ as the vector with entries $y^z_j = \xi_j$ for $j \neq i$
-and $y^z_i = z_i$.
+Let $\vec\xi$ be given and let $z$ be a nominal value for $\xi_i$.  
+%we define 
+%$\vec{y}^z(\vec\xi)$ as the vector with entries $y^z_j = \xi_j$ for $j \neq i$
+%and $y^z_i = z$.
 We consider the \emph{reduced} model, 
 obtained by fixing $\xi_i$ at a nominal value $z \in \R$: 
 \[
-f^{z}(\vec\xi) = f(\vec{y}^z(\vec\xi))
+f^{z}(\vec\xi) = f(\xi_1, \xi_2, \ldots, \xi_{i-1}, z, \xi_{i+1}, \ldots, \xi_\Np),
 \] 
-We consider the following error indicator.
+and consider the following error indicator:
 \[
 \mathcal{E}(z) =
 \frac{ \int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) }
@@ -330,8 +341,8 @@ In~\cite{Vohra:2018} the following normalized screening metric
    \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
 \]
 was shown to be useful for detecting unimportant inputs. 
-
-We can also bound the normalized DGSMs using activity scores; it is easy to see  
+We can also bound the normalized DGSMs using activity scores as follows. It is straightforward to see  
+that
 \[
 \tilde{\nu}_i(f) \leq 
 \frac{ C_i \big(\act{f}{i}{r} + \lambda_{r+1}\big)}{\sum_{i=1}^\Np C_i \act{f}{i}{r}}
@@ -351,6 +362,10 @@ normalized screening metric will cancel and
 \[
     \tilde{\nu}_i(f) = \frac{\nu_i(f)}{\sum_{i=1}^\Np \nu_i(f)} 
       = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
-      = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{u}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
+      = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
+\]
+In this case, the normalized activity scores reduce to
+\[
+   \actt{f}{i}{r} =  \frac{\act{f}{i}{r}}{\sum_{i=1}^\Np \act{f}{i}{r}}.
 \]
 \end{remark}

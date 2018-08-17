@@ -69,8 +69,11 @@ Consider the function
 \[
     G(\vec{y}) = f(\mat{W}_1\vec{y}), \quad \vec{y} \in \R^r.
 \]
-Following~\cite{Constantine:2015}, we use the approximation $f(\vec{\xi}) \approx 
-G(\mat{W}_1^\top \vec{\xi})$. 
+Following~\cite{Constantine:2015}, we use the approximation 
+\[
+f(\vec{\xi}) \approx f(\mat{W}_1 \mat{W}_1^T \vec\xi) =  
+G(\mat{W}_1^\top \vec{\xi}).
+\] 
 That is, the model output $f(\vec\xi)$, in the original parameter space,
 is approximated by $G(\mat{W}_1^\top \vec{\xi})$ in the active subspace.
 %Hence, $f$ is essentially evaluated at the projection of $\vec{\xi}$ on the

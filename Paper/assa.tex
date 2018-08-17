@@ -366,14 +366,16 @@ normalized activity scores
 \] 
 
 \begin{remark}
-Note that if $\xi_i$ are iid, the $C_i$'s in the definition of the 
-normalized screening metric will cancel and 
+If the random inputs $\xi_i$, $i = 1, \ldots, \Np$, are iid, then 
+the $C_i$'s in the definition of the normalized screening metric will cancel and 
 \[
     \tilde{\nu}_i(f) = \frac{\nu_i(f)}{\sum_{i=1}^\Np \nu_i(f)} 
-      = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
+  %    = \frac{\vec{e}_i^T \mat{C} \vec{e}_i}{\trace(\mat{C})} 
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
-In this case, the normalized activity scores reduce to
+The expression for the denominator follows, since 
+$\sum_{i=1}^\Np \nu_i(f) = \trace(\mat{C}) = \sum_{k = 1}^\Np \lambda_k$.
+Also, in the case of iid inputs, the normalized activity scores reduce to
 \[
    \actt{f}{i}{r} =  \frac{\act{f}{i}{r}}{\sum_{i=1}^\Np \act{f}{i}{r}}.
 \]

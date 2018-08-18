@@ -1,3 +1,6 @@
+\newcommand{\act}[3]{\nu_{{#2},{#3}}({#1})}
+\newcommand{\actt}[3]{\tilde{\nu}_{{#2},{#3}}({#1})}
+\newcommand{\redf}[2]{f^{({#1})}(\vec\xi; {#2})}
 \section{Active subspaces}
 \label{sub:ac}
 
@@ -21,8 +24,10 @@ semidefinite matrix
 %
 with 
 $\mu(d\vec{\xi}) = \pi(\vec{\xi})d\vec{\xi}$, where $\pi(\vec{\xi})$ is the joint probability
-distribution of $\vec{\xi}$. Herein, $f$ is assumed to be a function with continuous partial 
-derivatives with respect to the input parameters. 
+distribution of $\vec{\xi}$. Herein, $f$ is assumed to be a square integrable 
+function with continuous partial 
+derivatives with respect to the input parameters; moreover, we assume the partial derivatives
+are square integrable. 
 %Hence, it is possible that a given $f(\vec{\xi})$ might not admit an active
 %subspace. However, it is of remarkable interest to investigate if one exists
 %since the subspace could be exploited to reduce the dimensionality of the
@@ -43,7 +48,7 @@ $\lambda_i$'s sorted in descending order
 \[
      \lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_\Np \geq 0,
 \] 
-and $\mat{W}$ has the eigenvectors $\vec{w}_1, \ldots, \vec{w}_\Np$ as its columns.
+and $\mat{W}$ has the (orthonormal) eigenvectors $\vec{w}_1, \ldots, \vec{w}_\Np$ as its columns.
 The eigenpairs are partitioned about the $r$th eigenvalue such that
 $\lambda_r/\lambda_{r+1}\gg 1$, 
 \be
@@ -107,7 +112,7 @@ Latin hypercube sampling:
 \label{eq:chat}
  \ee
  %
-Clearly, the amount of computational effort associated with constructing the matrix,
+Clearly, the computational effort associated with constructing the matrix,
 $\hat{\mat{C}}$ scales with the number of samples, $N$. Hence, an iterative
 computational approach is adopted in this work to gradually increase  
 $N$ until the dominant eigenpairs are approximated
@@ -163,7 +168,7 @@ Determining accurate estimates of $T_i(f)$ typically involves tens of
 thousands of model runs and is therefore prohibitive in the case of
 compute-intensive applications. Derivative based 
 global sensitivity measures (DGSMs)~\cite{Sobol:2009} provide a means for
-approximating informative upper bounds on $T_i(f)$ with fewer computations; see 
+approximating informative upper bounds on $T_i(f)$ at a lower cost; see 
 also~\cite{Vohra:2018}. 
 
 For $f: \Omega \to \R$, we consider the DGSMs,
@@ -192,15 +197,11 @@ $\nu_i(f) = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2$.
 Note that $\nu_i(f) = \vec{e}_i^\top \mat{C} \vec{e}_i$,  
 where $\vec{e}_i$ is the $i$th coordinate vector in $\R^\Np$, $i = 1, \ldots, \Np$.
 Therefore,
-\[
-\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{w}_k \vec{w}_k^\top\Big) \vec{e}_i
- = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2. \qedhere 
-\]
+$\nu_i(f) = \vec{e}_i^T \Big(\sum_{k=1}^\Np \lambda_k \vec{w}_k \vec{w}_k^\top\Big) \vec{e}_i
+ = \sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2$. 
 \end{proof}
 In the case where the eigenvalues decay rapidly to zero, we can obtain
 accurate approximations of $\nu_i(f)$ by truncating the summation: 
-\newcommand{\act}[3]{\nu_{{#2},{#3}}({#1})}
-\newcommand{\actt}[3]{\tilde{\nu}_{{#2},{#3}}({#1})}
 \[
    \act{f}{i}{r} =  \sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2,
    \quad i = 1, \ldots, \Np, \quad r \leq \Np.
@@ -315,20 +316,21 @@ is fixed at a nominal value.
 %where $\I^c$ denotes the complement of $\I$ in $\{1, \ldots, \Np\}$. 
 %For a vector $\xi$, we let $\xin$ denote the vector obtained by removing
 %$\xi_i$. 
-
+%
+To formalize this process, we proceed as follows.
 Let $\vec\xi$ be given and let $z$ be a nominal value for $\xi_i$.  
 %we define 
 %$\vec{y}^z(\vec\xi)$ as the vector with entries $y^z_j = \xi_j$ for $j \neq i$
 %and $y^z_i = z$.
-We consider the \emph{reduced} model, 
+Consider the \emph{reduced} model, 
 obtained by fixing $\xi_i$ at a nominal value $z \in \R$: 
 \[
-f^{z}(\vec\xi) = f(\xi_1, \xi_2, \ldots, \xi_{i-1}, z, \xi_{i+1}, \ldots, \xi_\Np),
+\redf{i}{z} = f(\xi_1, \xi_2, \ldots, \xi_{i-1}, z, \xi_{i+1}, \ldots, \xi_\Np),
 \] 
 and consider the following error indicator:
 \[
 \mathcal{E}(z) =
-\frac{ \int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi) }
+\frac{ \int_\Omega \big( f(\vec\xi) - \redf{i}{z}\big)^2 \, \mu(d\vec\xi) }
           {\int_\Omega f(\vec\xi)^2 \, \mu(d\vec\xi)}.
 \] 
 \begin{theorem}
@@ -353,7 +355,7 @@ $\int_\Omega f(\vec\xi)^2 \, \mu(d\vec\xi) = \V(f) +
 \left(\int_\Omega f(\vec\xi) \, \mu(d\vec\xi)\right)^2 \geq \V(f)$, we have
 \[
 \Ez{ \mathcal{E}(z)} \leq \frac{1}{\V(f)} \Ez{ 
-\int_\Omega \big( f(\vec\xi) - f^{z}(\vec\xi)\big)^2 \, \mu(d\vec\xi)}
+\int_\Omega \big( f(\vec\xi) - \redf{i}{z}\big)^2 \, \mu(d\vec\xi)}
 = 2 T_i(f), 
 \]
 where the equality can be shown using arguments similar to the proof of the main result 
@@ -396,12 +398,12 @@ the $C_i$'s in the definition of the normalized screening metric will cancel and
       = \frac{\sum_{k=1}^\Np \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2}{\sum_{k = 1}^\Np \lambda_k}.
 \]
 The expression for the denominator follows from Lemma~\ref{lem:sum}(b). 
-Also, in the case of iid inputs, the normalized activity scores reduce to
+Also, in the iid case, using Lemma~\ref{lem:sum}(a) we can simplify the normalized activity scores as follows. 
 \[
    \actt{f}{i}{r} =  \frac{\act{f}{i}{r}}{\sum_{i=1}^\Np \act{f}{i}{r}} = 
                      \frac{\sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2}
                           {\sum_{k = 1}^r \lambda_k}.
 \]
-The expression for the denominator can be seen from Lemma~\ref{lem:sum}(a). 
+%The expression for the denominator can be seen from Lemma~\ref{lem:sum}(a). 
 
 \end{remark}

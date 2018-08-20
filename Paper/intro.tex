@@ -121,12 +121,8 @@ respect to the input parameters. Estimating the
 gradients can however be computationally challenging in high-dimensional settings. 
 Hence, in this work, we further explore the suitability of a gradient-free
 approach that involves a regression-based local linear approximation of
-the model output. \alennote{I don't understand what the next sentence is 
-really trying to say here; I mean whatever we do involves approximating the
-gradient, the question is how rough the approximation is, right?} 
-It must be noted that since the gradient-free approach
-relies on approximating the model gradients, it is expected to be less
-robust than the gradient-based approach. The two approaches are based on
+the model output as discussed later in~\ref{sub:gradfree}. The two approaches
+ are based on
 algorithms 1.1 and 1.2 in~\cite{Constantine:2015}. Both strategies
 are implemented in an iterative manner i.e. a new set of model evaluations are
 generated, and gradient evaluations are performed at each iteration until 
@@ -146,9 +142,9 @@ developed to approximate upper bound on the Sobol' indices with much fewer
 computations~\cite{Sobol:2009, Lamboni:2013}. It was noted
 in~\cite{Diaz:2016,Constantine:2017} that DGSMs can be approximated by
 exploiting their links with active subspaces. This led to definition of the so
-called \emph{activity scores}. In Section~\ref{sec:assa}, we build on these
+called \emph{activity scores}. In Section~\ref{sub:gsa}, we build on these
 ideas to provide a complete analysis of links between Sobol indices, DGSMs, and
-activity scores for functions of independent random inputs whos distribution
+activity scores for functions of independent random inputs whose distribution
 law belongs to the class of Boltzmann probability measures. 
 It is worth mentioning that computing global sensitivity measures provides 
 important information about a model that go beyond dimension reduction. By 
@@ -159,13 +155,12 @@ The main contributions of this paper are as follows:
 \begin{itemize}
 \item 
 Active subspace
-discovery in the high-dimensional H$_2$/O$_2$ kinetics problem involving 33
-uncertain inputs: \alennote{Say some interesting conclusion of the analysis;
-e.g., we discover a 1D subspace for a 33-dimensional problem using a modest computational 
-budget ...} The presented
+discovery in a high-dimensional H$_2$/O$_2$ kinetics problem involving 33
+uncertain inputs. The implementation of the methodology presented in this work
+resulted in a 1-dimensional active subspace, indicating immense potential
+for computational savings. The presented
 analysis can also guide practitioners in area of chemical kinetics on using the
-method of active subspaces as an efficient means of uncertainty propagation in
-chemical systems.  
+method of active subspaces as an efficient means for uncertainty propagation.  
 \item Comprehensive numerical investigation of the gradient-based and gradient-free approach: 
 we investigate the suitability of both approach
 for computing active subspaces, surrogate modeling, and approximating global
@@ -183,8 +178,6 @@ computing their activity scores.
 
 \end{itemize}
 
-\alennote{Okay, I reorganized the sections a bit (new sec 2, 3); please read the following and
-make sure it reflects the contents of the sections correctly.}
 This article is organized as follows. In section~\ref{sub:ac}, a brief
 theoretical background on the active subspace methodology is provided. In
 section~\ref{sub:gsa}, it is shown that the activity scores provide a

@@ -3,13 +3,15 @@
 
 For the high-dimensional case, we aim to investigate the impact of the uncertain
 pre-exponents ($A_i$'s) as well as the activation energies ($E_{a,i}$'s) on ignition 
-delay during the H$_2$/O$_2$ reaction. The $A_i$'s were considered to be uniformly
-distributed in the interval, $[0.9A_i^\ast, 1.1A_i^\ast]$. The $E_{a,i}$'s for all
+delay during the H$_2$/O$_2$ reaction.  Prior distributions for $A_i$'s were considered
+to be the same as provided earlier in section~\ref{sec:method}. The $E_{a,i}$'s for all
 reactions except $\mathcal{R}_6$ -- $\mathcal{R}_9$ and $\mathcal{R}_{13}$ (due to 
 zero nominal values for $E_a$)
 were considered to be uncertain and uniformly distributed in the interval: 
-$[0.99E_{a,i}^\ast, 1.01E_{a,i}^\ast]$. The nominal values, $A_i^\ast$ and $E_{a,i}^\ast$
+$[0.99E_{a,i}^\ast, 1.01E_{a,i}^\ast]$. The nominal values, $E_{a,i}^\ast$
 corresponding to the different reaction rates are provided in~\cite{Yetter:1991}. 
+
+\subsection{Computing the active subspace}
 
 The gradient-based approach discussed earlier in~\ref{sub:grad} was used to compute the
 active subspace. Using the iterative procedure, the convergence of the eigenvectors
@@ -33,11 +35,7 @@ is plotted for successive iterations to illustrate the convergence behavior.}
  
 In Figure~\ref{fig:hd} (left), we illustrate the resulting eigenvalue spectrum. The second eigenvalue is
 found to be roughly two orders of magnitude smaller than the first, indicating that the active subspace
-is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right). Specifically
-in the case of gradient-based approach, the SSP exhibits a linear variation that is reasonably
-captured by its linear fit, $\tilde{G}$. Whereas, the SSP based on the gradient-free approach
-is relatively more scattered. Consequently, the linear fit exhibits a discrepancy with the corresponding
-fit for the gradient-based SSP. 
+is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right). 
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -49,38 +47,11 @@ corresponding 1-D linear fit.}
 \end{center}
 \end{figure}
 %
-We plot the normalized activity scores as well as the total Sobol' indices for the 33 uncertain 
-rate-controlling parameters in Figure~\ref{fig:as_33D}. Note that the normalized activity scores
-as well as the Sobol' indices
-were evaluated using respective 1-dimensional surrogates for the two approaches.
-%
-\begin{figure}[htbp]
- \begin{center}
-  \includegraphics[width=0.8\textwidth]{./Figures/as_33D_new}
-\caption{A bar-graph illustrating individual activity scores for the uncertain $A_i$' (left) and $E_{a,i}$'s (right).}
-\label{fig:as_33D}
-\end{center}
-\end{figure}
-%
-
-Several useful inferences can be drawn from the above plot. Firstly, the total Sobol indices are found to be
-consistent
-with the normalized activity scores evaluated uing the gradient-based approach. Whereas, the gradient-free
-approach yields consistent results for the $A_i$'s, it does not capture the sensitivity associated with
-$E_{a,15}$. While this observation bolsters our confidence in the gradient-based approach, it clearly
-underscores the shortcoming of the gradient-free approach. Numerical errors are incurred when approximating
-the model gradients using the local linear approximation in this case. In~\ref{sub:verify}, we further assess the
-suitability of the gradient-free approach in quantifying the uncertainty in the ignition delay. 
-Secondly, our findings indicate that   
-the ignition delay is predominantly sensitive towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 
-moderately sensitive towards $A_{15}$ and $A_{17}$. Sensitivity towards the remaining uncertain inputs is
-found to be low or negligible. Note that this observation can also be exploited for reducing the 
-dimensionality of the problem from 33 inputs to 4-6 inputs depending upon the required level of accuracy.
-The sensitivity-driven dimension reduction for uncertainty quantification has been
-discussed in our earlier effort~\cite{Vohra:2018}. In this work, however, we focus on dimension reduction using the active 
-subspace approach which is shown to yield even greater scope for dimension reduction i.e. from 33 to 1. Furthermore, we have
-shown that the dominant eigenspace can be used to approximate global sensitivity measures with no additional effort.
-The accuracy of the 1-dimensional surrogate, $\tilde{G}$, obtained using the two approaches is assessed in the following section. 
+Specifically
+in the case of gradient-based approach, the SSP exhibits a linear variation that is reasonably
+captured by its linear fit, $\tilde{G}$. Whereas, the SSP based on the gradient-free approach
+is relatively more scattered. Consequently, the linear fit exhibits a discrepancy with the corresponding
+fit for the gradient-based SSP. 
 
 \subsection{Surrogate Verification}
 \label{sub:verify}
@@ -158,7 +129,40 @@ consistent in their prediction of mean value of the ignition delay.  The standar
 evaluations and the gradient-based approach are found to be in close agreement, whereas, it  is accurately estimated
 by the gradient-free approach only upto the first significant figure. 
 
-%\subsection{Surrogate-induced risk analysis}
+\subsection{GSA consistency check}
+
+The normalized activity scores ($\tilde{\nu}_{i,r}$) based on the dominant eigenspace using the two
+approaches (gradient-based and gradient-free) are compared with the total Sobol' indices
+in Figure~\ref{fig:as_33D}. Note that the Sobol' indices were computed using the verified
+1-dimensional surrogate in the active subspace for the gradient-based approach. 
+%
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=0.8\textwidth]{./Figures/as_33D_new}
+\caption{A bar-graph illustrating individual activity scores for the uncertain $A_i$' (left) and $E_{a,i}$'s (right).}
+\label{fig:as_33D}
+\end{center}
+\end{figure}
+%
+Several useful inferences can be drawn from the above plot. Firstly, the total Sobol indices are found to be
+consistent
+with the normalized activity scores evaluated using the gradient-based approach. Whereas, the gradient-free
+approach yields consistent results for the $A_i$'s, it does not capture the sensitivity associated with
+$E_{a,15}$. While this observation bolsters our confidence in the gradient-based approach, it clearly
+underscores the shortcoming of the gradient-free approach. Numerical errors are incurred when approximating
+the model gradients using the local linear approximation in this case. 
+Secondly, our findings indicate that   
+the ignition delay is predominantly sensitive towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 
+moderately sensitive towards $A_{15}$ and $A_{17}$. Sensitivity towards the remaining uncertain inputs is
+found to be low or negligible. 
+%Note that this observation can also be exploited for reducing the 
+%dimensionality of the problem from 33 inputs to 4-6 inputs depending upon the required level of accuracy.
+%The sensitivity-driven dimension reduction for uncertainty quantification has been
+%discussed in our earlier effort~\cite{Vohra:2018}. In this work, however, we focus on dimension reduction using the active 
+%subspace approach which is shown to yield even greater scope for dimension reduction i.e. from 33 to 1. Furthermore, we have
+%shown that the dominant eigenspace can be used to approximate global sensitivity measures with no additional effort.
+
+
 
 
 

@@ -1,10 +1,13 @@
 \section{Methodology}
 \label{sec:method}
 
-In this section, we present the computational strategy used for computing the
-active subspace in the case of H$_2$/O$_2$ reaction kinetics with uncertain
-pre-exponent of the rate law associated with individual reactions provided in
-Table~\ref{tab:kinetics}.
+In this section, we present a generalized framework for computing the
+active subspace. The framework is employed to the H$_2$/O$_2$ reaction kinetics
+problem whereby the 
+pre-exponent ($A_i$) in the rate law associated with individual reactions provided in
+Table~\ref{tab:kinetics} is considered to be uniformly
+distributed in the interval, $[0.9A_i^\ast, 1.1A_i^\ast]$; $A_i^\ast$ is the nominal
+estimate provided in~\cite{Yetter:1991}.
 Specifically, we employ two strategies: 
 A gradient-based strategy that involves computation of model
 gradients in order to construct the matrix $\hat{\mat{C}}$
@@ -38,7 +41,10 @@ Using the gradient
 evaluations, the matrix, $\hat{\mat{C}}$ is computed. Eigenvalue decomposition
 of $\hat{\mat{C}}$ yields an initial estimate of the dominant eigenspace,
 $\hat{\mat{W}}_1$ and the set of corresponding eigenvalues, 
-$\hat{\mat{\Lambda}}_1$.
+$\hat{\mat{\Lambda}}_1$. Note that $\hat{\mat{W}}_1$ is obtained by
+partitioning the eigenspace around $\lambda_j$ such that the ratio of
+subsequent eigenvalues,
+$\left(\frac{\lambda_j}{\lambda_{j+1}}\right)>\mathcal{O}(10^2)$.
  At each subsequent iteration, model evaluations are
 generated at a new set of $n_k$ samples. The new set of gradient evaluations
 are augmented with the available set to re-construct $\hat{\mat{C}}$ followed
@@ -116,9 +122,9 @@ provided in Algorithm~\ref{alg:grad}.
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\nu_{i,r}(f) = \sum\limits_{j=1}^{r} \hat{\mat{\Lambda}}_{i,j}\hat{\mat{W}}_{i,j}^2$,
+	\State Compute $\nu_{i,r}(f) = \sum\limits_{j=1}^{r} \Lambda_j w_{i,j}^2$,
 	$i=1,\ldots,N_p$.
-	\State Normalize $\nu_{i,r}(f)$ as $\tilde{\nu_{i,r}}(f)$ = \scalebox{1.25}{$\frac{\nu_{i,r}(f)}{\sum_i\nu_{i,r}(f)}$}.
+	\State Normalize $\nu_{i,r}(f)$ as $\tilde{\nu}_{i,r}(f)$ = \scalebox{1.25}{$\frac{\nu_{i,r}(f)}{\sum_i\nu_{i,r}(f)}$}.
 	
     \EndProcedure
   \end{algorithmic}
@@ -131,27 +137,22 @@ Algorithm~\ref{alg:grad} to the 19-dimensional H$_2$/O$_2$ reaction kinetics
 problem with uncertain $A_i$'s. For the purpose of verification,
 $\hat{\mat{C}}$ is initially constructed using a large set of samples
 ($N$~=~1000) in the input domain and the corresponding active subspace is
-computed. In Figure~\ref{fig:eig_comp}~(left), we illustrate the comparison of
+computed. In Figure~\ref{fig:eig_comp}, we illustrate the comparison of
 the resulting normalized eigenvalue spectrum ($\lambda_1, \ldots, 
 \lambda_{19}$) with the same using a much 
 smaller set of samples, $n$~=~$\{20,40,80,120\}$.
-
-
-%Additionally, we compare relative L-2
-%norm of the difference between the squared value of corresponding components
-%of the eigenvectors, obtained using the large set, $N$, and the smaller sets, $n$.
-%In  Figure~\ref{fig:eig_comp} (right), the relative L-2 error norm for the
-%first five eigenvectors is plotted. 
-
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/eig_comp}
-   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1}
-\caption{Left: A comparison of the normalized eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
-obtained using a much larger sample size, $N$~=~1000. Right: Relative $L_2$ 
-norm of the difference between
-the square of individual components ($w_i$'s) of the dominant eigenvector evaluated using $N$=1000 and $n$ = $\{20,40,80,120\}$ samples.} 
+%   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1}
+\caption{A comparison of the normalized eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
+obtained using a much larger sample size, $N$~=~1000. 
+%Right: Relative $L_2$ 
+%norm of the difference between
+%the square of individual components ($w_i$'s) of the dominant eigenvector evaluated using 
+$N$=1000 and $n$ = $\{20,40,80,120\}$ samples.
+} 
 \label{fig:eig_comp}
 \end{center}
 \end{figure}
@@ -163,12 +164,14 @@ to improve with the sample size. Since
 $\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we expect 
 a 1-dimensional active subspace. Hence, the first eigenvector 
 sufficiently captures the uncertainty in
-the  model output. To confirm this, we plot a relative L-2 norm of the difference between the 
+the  model output. To further confirm this, we evaluate a relative L-2 norm of the difference
+ ($\varepsilon_\text{L-2}^{N-n}$) between the 
 squared value of corresponding components of the dominant eigenvector, computed using $N$ = 1000
-and $n$ = $\{20,40,80,120\}$ samples in Figure~\ref{fig:eig_comp} (right). 
-The relative L-2 error norm is found to be $\mathcal{O}(10^{-2})$ even for the case, $n$ = 20.
-Hence, a sample size of 20 is adequate for computing the active subspace in this
-case. The iterative strategy therefore offers a significant potential for computational advantage. 
+and $n$ = $\{20,40,80,120\}$.  The quantity, $\varepsilon_\text{L-2}^{N-n}$, was found to be 
+$\mathcal{O}(10^{-2})$ for $n$ = 20, 40, and 80; and $\mathcal{O}(10^{-3})$ for $n$ = 120.
+Thus, even a small sample size, $n$ = 20, seems to approximate the dominant eigenspace with
+reasonable accuracy in this case. 
+The iterative strategy therefore offers a significant potential for computational advantage. 
 In the following section, we provide a brief description of the gradient-free approach and compare
 numerical results for the active subspace and the global sensitivity measures based on the two
 approaches. 
@@ -344,10 +347,11 @@ Figure~\ref{fig:comp_as} (right).
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
   \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
-\caption{Left: A bar-graph of normalized activity scores ($\tilde{\nu_{i,r}}$'s) for the 19 uncertain pre-exponents ($A_i$'s); $r$
+\caption{Left: A bar-graph of normalized activity scores ($\tilde{\nu_{i,r}}$'s) 
+for the 19 uncertain pre-exponents ($A_i$'s); $r$
 denotes the number of eigenvectors in the active subspace.
-Right: A plot of the screening metric ($\widehat{\mathcal{C}_i\mu_i}$), defined as a normalized product of the
-Poincare constant and the DGSM ($\mu_i$) (adapted from~\cite{Vohra:2018}).}
+Right: A plot of the screening metric ($\tilde{\nu}_i$) for individual $A_i$'s 
+(adapted from~\cite{Vohra:2018}).}
 \label{fig:comp_as}
 \end{center}
 \end{figure}

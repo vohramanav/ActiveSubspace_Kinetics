@@ -104,7 +104,7 @@ provided in Algorithm~\ref{alg:grad}.
 	\Loop
 		\State Set $k$ = $k$ + 1
 		\State Draw $n_k =  \lceil\beta n_{k-1}\rceil$  new random samples 
-                $\{\bm{\xi}_i\}_{i=1}^{n_k}$  $\beta\in[0,1]$  $k = n_{k-1}+1,\ldots,n_{k-1}+n_k$.
+                $\{\bm{\xi}_i\}_{i=1}^{n_k}$  $\beta\in[0,1]$
                 
 	%	\State Project $\bm{\xi}_k$~$\rightarrow$~$\bm{\theta}_k$.%
 		\State Set $N_\text{total}$ = $N_\text{total}$ + $n_k$ 
@@ -114,6 +114,7 @@ provided in Algorithm~\ref{alg:grad}.
         	$\frac{1}{N_\text{total}}\sum\limits_{k=1}^{N_\text{total}}[\bm{g}^i][\bm{g}^i]^\top$
 		\State Eigenvalue decomposition, $\hat{\mat{C}}$ = $\hat{\mat{W}}^{(k)}\hat{\mat{\Lambda}}^{(k)}
 		 \hat{\mat{W}}^{(k)\top}$
+		\State Partition the eigenspace of $\hat{\mat{C}}$ as shown in Step 7
 		\State Compute $\delta \hat{\mat{W}}_{1,j}^{(k)}$ = 
                        \scalebox{1.25}{$\frac{\|(\hat{\mat{W}}_{1,j}^{k})^2 - 
                        (\hat{\mat{W}}_{1,j}^{k-1})^2\|}{\|(\hat{\mat{W}}_{1,j}^{k-1})^2\|}$}, 

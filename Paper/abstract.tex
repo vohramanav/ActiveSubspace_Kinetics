@@ -1,1 +1,30 @@
 \section*{Abstract}
+Time evolution of species' concentration in a chemical system is tightly coupled
+with the underlying mechanism and the governing rate laws for individual reactions.
+Oftentimes, the rate-controlling parameters cannot be specified precisely 
+due to sparse calibration data and lack of knowledge about them, regarded as
+the \textit{epistemic} uncertainty. Computer simulations for such systems must
+therefore account for the presence of the epistemic uncertainty in these parameters
+when making predictions. However, complex mechanisms typically involve a large number of
+reactions and consequently, a large set of uncertain rate parameters. Propagation of
+the uncertainty from parameters to predictions can be remarkably challenging for
+such high-dimensional problems. In this study, we focus on enabling an efficient
+approach for uncertainty propagation from inputs to the model output,
+through dimension reduction by computing the
+so-called
+\textit{active subspace}. The active subspace
+ predominantly captures the variability in the quantity of
+interest (QoI) in terms of fewer independent variables. 
+It is computed using an iterative, gradient-based
+approach and a computationally less intensive gradient-free approach for the 
+H$_2$/O$_2$ mechanism involving 19 reactions. An initial investigation considers
+only the 19 pre-exponents of the Arrhenius rate laws as uncertain. In this case, both
+approaches yield consistent results wherein the active subspace is found to be 
+1-dimensional. The two approaches are further implemented to a high-dimensional
+problem involving 33 uncertain rate-parameters: pre-exponent and the activation
+energy. Once again, a 1-dimensional active subspace is obtained, indicating
+enormous scope for dimension reduction in such applications. However, the
+gradient-free approach though reasonably captured the mean, mode, and the uncertainty
+in the QoI; failed to capture the sensitivity towards the most
+important parameter according to the gradient-based analysis for the high-dimensional
+application.   

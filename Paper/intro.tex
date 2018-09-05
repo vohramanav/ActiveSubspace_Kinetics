@@ -9,22 +9,21 @@ typically assumed to exhibit a certain correlation with temperature (e.g.,
 Arrhenius-type). Hence, accurate specification of the rate-controlling
 parameters is critical to the fidelity of simulations. However, in practical
 applications, these parameters are either specified using expert knowledge or
-estimated based on a regression-fit to a set of sparse and noisy
+estimated based on a regression fit to a set of sparse and noisy
 data~\cite{Burnham:1987, Burnham:1988, Vohra:2011, Sarathy:2012}.
 %Consequently, the underlying uncertainty associated with the parameters and
 %therefore the simulation is typically ignored. 
-Consequently, the inclusion of
-uncertainty due to corrupted calibration data, parametric uncertainty,
-and the discrepancy between predictions and experiments
-due to model inadequacy has been subject of increased research efforts in recent
-years~\cite{Vohra:2014, Vohra:2017, Morrison:2018, Hantouche:2018}. 
+Intensive research efforts in recent years within the field of uncertainty quantification (UQ)
+address the quantification and propagation of uncertainty in system models due to 
+inadequate data, parametric uncertainty, and model errors~\cite{Vohra:2014, 
+Vohra:2017, Morrison:2018, Hantouche:2018, Nannapaneni:2016, Sankararaman:2015}. 
 
 In complex mechanisms involving a large number of reactions, characterizing the
 propagation of uncertainty from a large set of inputs to the model output is
 challenging due to the associated computational effort.  A major focus of this
 article is the implementation of a robust framework that aims to identify
 \emph{important} directions in the input space that predominantly capture the
-variability in the model output. These directions, which span the so called
+variability in the model output. These directions, which constitute the so called
 \emph{active subspace}~\cite{Constantine:2015}, are the dominant eigenvectors
 of a matrix derived from the gradient information of the model output with
 respect to an input. The active subspace methodology thus focuses on reducing
@@ -118,7 +117,7 @@ of the problem by computing the aforementioned active subspace.
 This involves repeated evaluations of the gradient of a model output with
 respect to the input parameters. Estimating the
 gradients can however be computationally challenging in high-dimensional settings. 
-Hence, in this work, we further explore the suitability of a gradient-free
+Hence, in this work, we also explore the suitability of a gradient-free
 approach that involves a regression-based local linear approximation of
 the model output as discussed later in~\ref{sub:gradfree}. The two approaches
  are based on
@@ -129,15 +128,16 @@ a reasonably accurate approximation to the active subspace is achieved, as
 discussed later in Section~\ref{sec:method}. 
 
 An alternate approach to dimension reduction involves computing the global
-sensitivity measures associated with uncertain inputs of a model. Depending
+sensitivity measures associated with the uncertain inputs of a model. Depending
 upon the estimates of the sensitivity measures, only the important inputs are
 varied for the purpose of uncertainty quantification (UQ). Sobol' indices are
-commonly used as global sensitivity measures~\cite{Sobol:2001}. However,
-obtaining converged estimates of the Sobol' indices typically requires tens of
-thousands of model runs and is therefore impractical in situations involving
-expensive model simulations and/or high-dimensional input parameter spaces.
-Recently, the derivative-based global sensitivity measures~(DGSMs) were
-developed to approximate upper bound on the Sobol' indices with much fewer
+commonly used as global sensitivity measures~\cite{Sobol:2001}. They are
+used to quantify the relative contributions of the uncertain inputs to the variance
+in the output, either individually, or in combination with other inputs. 
+Multiple efforts have focused on efficient computation of the Sobol' 
+indices~\cite{Sudret:2008,Plischke:2013,Tissot:2015,Li:2016} including the 
+derivative-based global sensitivity measures~(DGSMs), developed to
+compute approximate upper bounds for the Sobol' indices with much fewer
 computations~\cite{Sobol:2009, Lamboni:2013}. It was noted
 in~\cite{Diaz:2016,Constantine:2017} that DGSMs can be approximated by
 exploiting their links with active subspaces. This led to definition of the so
@@ -147,29 +147,30 @@ activity scores for functions of independent random inputs whose distribution
 law belongs to the class of Boltzmann probability measures. 
 It is worth mentioning that computing global sensitivity measures provides 
 important information about a model that go beyond dimension reduction. By 
-identifying parameters with significant impact on model uncertainty global 
-sensitivity analysis can guide model calibration and risk assessment. 
+identifying parameters with significant impact on the model output, we can assess
+regimes of validity of the model formulation, and gain critical insight into the
+underlying physics in many cases. 
  
 The main contributions of this paper are as follows: 
 \begin{itemize}
 \item 
 Active subspace
 discovery in a high-dimensional H$_2$/O$_2$ kinetics problem involving 33
-uncertain inputs. The implementation of the methodology presented in this work
+uncertain inputs: The methodology presented in this work
 resulted in a 1-dimensional active subspace, indicating immense potential
 for computational savings. The presented
-analysis can also guide practitioners in area of chemical kinetics on using the
-method of active subspaces as an efficient means for uncertainty propagation.  
+analysis can also guide practitioners in other problems of chemical kinetics on using the
+method of active subspaces to achieve efficiency in uncertainty propagation.  
 \item Comprehensive numerical investigation of the gradient-based and gradient-free approach: 
-we investigate the suitability of both approach
+We investigate the suitability of both approaches
 for computing active subspaces, surrogate modeling, and approximating global
 sensitivity measures through a comprehensive set of numerical experiments. Our
 results reveal insight into the merits of the methods approach as well as
 their shortcomings.  
 \item Analysis of the links between  
 global sensitivity measures: 
-By connecting the recent advances in theory of variance based and
-derivative based global sensitivity analysis to active subspaces, we provide a complete analysis
+By connecting the recent theoretical advances in variance-based and
+derivative-based global sensitivity analysis to active subspaces, we provide a complete analysis
 of the links between total Sobol' indices, DGSMs, and activity scores for a broad
 class of probability distributions. Our analysis is concluded by a result quantifying
 approximation errors incurred due to fixing unimportant parameters, deemed so by 
@@ -190,9 +191,9 @@ obtained using the gradient-based approach.  The active subspace is computed
 for the H$_2$/O$_2$ reaction kinetics problem whereby only the $A_i$'s are
 considered as uncertain. In this case, the two approaches are observed to yield
 consistent results. In section~\ref{sec:app}, the gradient-based approach is
-further implemented to compute the active subspace for the high-dimensional
-H$_2$/O$_2$ reaction kinetics problem. The resulting active subspace is found
-to be 1-dimensional thereby indicating enormous potential for computational
+further implemented to compute the active subspace for the higher-dimensional
+H$_2$/O$_2$ reaction kinetics problem. The resulting active subspace is once again
+found to be 1-dimensional, thereby indicating enormous potential for computational
 savings in this application. The active subspace is also computed using the
 gradient-free approach. It is observed that although the uncertainty in the
 ignition delay is reasonably approximated, the gradient-free approach fails to

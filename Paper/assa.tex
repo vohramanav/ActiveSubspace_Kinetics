@@ -10,11 +10,11 @@ where $N_p$ is the number of uncertain inputs.
 In practical computations, the \emph{canonical} variables $\xi_i, i=1,\ldots ,N_p$, are  
 mapped to physical ranges meaningful in a given mathematical model. 
 As mentioned in the introduction, an active subspace is a low-dimensional subspace
-that constitutes important directions in a model's input
+that consists of important directions in a model's input
 parameter space~\cite{Constantine:2015}. The effective variability in a model output $f$
 due to uncertain inputs is predominantly captured
 along these directions. 
-The directions spanning the active subspace are the eigenvectors of the positive
+The directions constituting the active subspace are the eigenvectors of the positive
 semidefinite matrix 
 %
 \be
@@ -112,7 +112,7 @@ Latin hypercube sampling:
 \label{eq:chat}
  \ee
  %
-Clearly, the computational effort associated with constructing the matrix,
+Clearly, the computational effort associated with constructing the matrix
 $\hat{\mat{C}}$ scales with the number of samples, $N$. Hence, an iterative
 computational approach is adopted in this work to gradually increase  
 $N$ until the dominant eigenpairs are approximated

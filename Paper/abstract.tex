@@ -1,30 +1,35 @@
 \section*{Abstract}
 Time evolution of species' concentration in a chemical system is tightly coupled
 with the underlying mechanism and the governing rate laws for individual reactions.
-Oftentimes, the rate-controlling parameters cannot be specified precisely 
-due to sparse calibration data and lack of knowledge about them, regarded as
-the \textit{epistemic} uncertainty. Computer simulations for such systems must
-therefore account for the presence of the epistemic uncertainty in these parameters
+Often, the rate-controlling parameters cannot be specified precisely 
+due to \textit{epistemic} uncertainty, i.e., lack of knowledge and 
+sparse calibration data. Computer simulations of such systems must
+therefore account for the epistemic uncertainty regarding these parameters
 when making predictions. However, complex mechanisms typically involve a large number of
 reactions and consequently, a large set of uncertain rate parameters. Propagation of
 the uncertainty from parameters to predictions can be remarkably challenging for
-such high-dimensional problems. In this study, we focus on enabling an efficient
+such high-dimensional problems. In this study, we focus on developing an efficient
 approach for uncertainty propagation from inputs to the model output,
 through dimension reduction by computing the
 so-called
 \textit{active subspace}. The active subspace
  predominantly captures the variability in the quantity of
 interest (QoI) in terms of fewer independent variables. 
-It is computed using an iterative, gradient-based
-approach and a computationally less intensive gradient-free approach for the 
-H$_2$/O$_2$ mechanism involving 19 reactions. An initial investigation considers
-only the 19 pre-exponents of the Arrhenius rate laws as uncertain. In this case, both
-approaches yield consistent results wherein the active subspace is found to be 
-1-dimensional. The two approaches are further implemented to a high-dimensional
-problem involving 33 uncertain rate-parameters: pre-exponent and the activation
-energy. Once again, a 1-dimensional active subspace is obtained, indicating
-enormous scope for dimension reduction in such applications. However, the
-gradient-free approach though reasonably captured the mean, mode, and the uncertainty
-in the QoI; failed to capture the sensitivity towards the most
-important parameter according to the gradient-based analysis for the high-dimensional
-application.   
+However, its computation requires gradient estimation of
+the model output with respect to its inputs which can be
+remarkably challenging. In this study, we compute the active subspace
+for the H$_2$/O$_2$ mechanism that involves 19 chemical reactions,
+using two iterative strategies. The first strategy uses finite difference 
+to estimate the gradient, whereas, the second strategy approximates the
+gradient using a regression-based linear approximation of the model output.
+The finite difference approach requires additional model evaluations  and 
+is therefore computationally expensive. Both strategies yield consistent
+results for the case when only the pre-exponents in the Arrhenius rate laws
+for the 19 reactions are considered as uncertain. However, implementation 
+to a higher-dimensional problem involving 33 uncertain rate parameters:
+pre-exponents and activation energies reveals the trade-off between 
+accuracy and effort. Specifically, using the second strategy,
+the mean, mode, and the uncertainty
+in the QoI is reasonably approximated; the sensitivity towards the most
+important rate parameter is not captured. Hence, both approaches are
+useful depending upon the complexity of the mechanism and the QoI.

@@ -8,7 +8,8 @@ to be the same as provided earlier in section~\ref{sec:method}. The $E_{a,i}$'s 
 reactions except $\mathcal{R}_6$ -- $\mathcal{R}_9$ and $\mathcal{R}_{13}$ (due to 
 zero nominal values for $E_a$)
 were considered to be uncertain and uniformly distributed in the interval: 
-$[0.99E_{a,i}^\ast, 1.01E_{a,i}^\ast]$. The nominal values, $E_{a,i}^\ast$
+$[0.99E_{a,i}^\ast, 1.01E_{a,i}^\ast]$. Hence, the total number of uncertain rate parameters
+is 33. The nominal values, $E_{a,i}^\ast$
 corresponding to the different reaction rates are provided in~\cite{Yetter:1991}. 
 
 \subsection{Computing the active subspace}
@@ -49,7 +50,8 @@ corresponding 1-D linear fit.}
 %
 Specifically
 in the case of gradient-based approach, the SSP exhibits a linear variation that is reasonably
-captured by its linear fit, $\tilde{G}$. Whereas, the SSP based on the gradient-free approach
+captured by its linear fit, $\tilde{G}$, constructed using the sequence of steps outlined in Section~\ref{sub:ac}.
+ Whereas, the SSP based on the gradient-free approach
 is relatively more scattered. Consequently, the linear fit exhibits a discrepancy with the corresponding
 fit for the gradient-based SSP. 
 
@@ -66,12 +68,13 @@ model output and the surrogate in the following equation:
 \varepsilon_d = \frac{\|G(\bm{\xi}) - \tilde{G}(\bm{\xi})\|_2}{\|G(\bm{\xi})\|_2}
 \ee
 %
-The relative norm, $\varepsilon_d$ was estimated to be 1.35$\times10^{-2}$ and 1.02$\times10^{-1}$
+Model evaluations ($G$) at 10$^{4}$ samples in the input domain were used to evaluate $\varepsilon_d$. 
+It was estimated to be 1.35$\times10^{-2}$ and 1.02$\times10^{-1}$
 using $\tilde{G}$ from the gradient-based approach and the gradient-free approach respectively. Hence,
 an order of magnitude increase in $\varepsilon_d$ was estimated in the case of gradient-free approach.
-Model evaluations ($G$) at 10$^{4}$ samples in the input domain were used for this purpose. 
 Hence, in the norm-sense, it can be said that the 1-dimensional surrogate in the active subspace, obtained
-using the gradient-based approach is remarkably accurate with a relative error of less than 1.5$\%$.
+using the gradient-based approach is remarkably accurate with a relative error of less than 1.5$\%$, whereas
+the gradient-free approach resulted in a relative error of about 10$\%$.
 
 Secondly, we verify the accuracy of the two surrogates in a probabilistic setting. In particular, we compare 
 probability density functions (PDFs) obtained using the true set of model evaluations, and 1-dimensional
@@ -80,30 +83,9 @@ using the same set of 10$^4$ samples in the cross-validation set.
 %
 \begin{figure}[htbp]
 \begin{center}
-\begin{minipage}[htbp]{.25\linewidth}
-\vspace{0pt}
-%\centering
-\hspace{-25mm}
-\begin{tabular}{ccc}
-\toprule
-$\textbf{Distribution}$ & $\mu$ & $\sigma$ \\ 
-\bottomrule
-$G$~(Model) & 0.133 & 0.0198 \\
-$\tilde{G}$~(Gradient-based) & 0.133 & 0.0196 \\
-$\tilde{G}$~(Gradient-free) & 0.133 & 0.0167 \\
-\bottomrule
-\end{tabular}
-\end{minipage}
-\hspace{5mm}
-\begin{minipage}[htbp]{.25\linewidth}
-\vspace{0pt}
-%\centering
 \includegraphics[width=3.0in]{./Figures/pdf_comp_id_1e4}
-\end{minipage}%
 \end{center} 
-\caption{Left: Table providing the mean ($\mu$) and the standard deviation ($\sigma$) corresponding to
-the three PDFs using evaluations
-at 10$^4$ samples in the cross-validation set. Right: A comparison of the PDFs of ignition delay, obtained using model 
+\caption{A comparison of the PDFs of ignition delay, obtained using model 
 evaluations (solid line) and 1-dimensional surrogates using the gradient-free approach (dashed line) and the gradient-based
 approach (dashed-dotted line). The same set of 10$^4$ samples in the cross-validation set were used in each case.}
 \label{fig:pdf_33D}
@@ -122,9 +104,30 @@ approach (dashed-dotted line). The same set of 10$^4$ samples in the cross-valid
 %
 The PDFs based on the model evaluations and the gradient-based approach are nearly identical, confirming
 the existence of a 1-dimensional active subspace as well as the accuracy of the gradient-based approach. 
-Whereas, the PDF based on the gradient-free approach is observed to show consistency with the true PDF in the modal
+However, though the PDF based on the gradient-free approach is observed to show consistency with the true 
+PDF in the modal
 estimate; it underestimates the spread in the ignition delay. Specific values of the mean and the standard deviation
-in each case are provided in the table in Figure~\ref{fig:pdf_33D}. Hence, the three PDFs are found to be
+in each case are provided in Table~\ref{tab:stats}. 
+%
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$\textbf{Distribution}$ & $\mu$ & $\sigma$ \\ 
+\bottomrule
+$G$~(Model) & 0.133 & 0.0198 \\
+$\tilde{G}$~(Gradient-based) & 0.133 & 0.0196 \\
+$\tilde{G}$~(Gradient-free) & 0.133 & 0.0167 \\
+\bottomrule
+\end{tabular}
+\caption{The mean ($\mu$), and the standard deviation ($\sigma$), computed using the model ($G$), and
+the surrogate ($\tilde{G}$) based on the two approaches at 10$^4$ samples in the cross-validation
+set.}
+\label{tab:stats}
+\end{center}
+\end{table}
+%
+The three PDFs are found to be
 consistent in their prediction of mean value of the ignition delay.  The standard deviation estimates based on model
 evaluations and the gradient-based approach are found to be in close agreement, whereas, it  is accurately estimated
 by the gradient-free approach only upto the first significant figure. 
@@ -146,11 +149,10 @@ in Figure~\ref{fig:as_33D}. Note that the Sobol' indices were computed using the
 %
 Several useful inferences can be drawn from the above plot. Firstly, the total Sobol indices are found to be
 consistent
-with the normalized activity scores evaluated using the gradient-based approach. Whereas, the gradient-free
-approach yields consistent results for the $A_i$'s, it does not capture the sensitivity associated with
-$E_{a,15}$. While this observation bolsters our confidence in the gradient-based approach, it clearly
-underscores the shortcoming of the gradient-free approach. Numerical errors are incurred when approximating
-the model gradients using the local linear approximation in this case. 
+with the normalized activity scores evaluated using the gradient-based approach. The gradient-free
+approach yields consistent results for the $A_i$'s, but it does not capture the sensitivity associated with
+$E_{a,15}$. This is because numerical errors are incurred when approximating
+the model gradients using the regression-based approximation in the gradient-free case. 
 Secondly, our findings indicate that   
 the ignition delay is predominantly sensitive towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 
 moderately sensitive towards $A_{15}$ and $A_{17}$. Sensitivity towards the remaining uncertain inputs is

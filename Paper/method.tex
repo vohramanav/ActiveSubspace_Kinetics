@@ -8,8 +8,8 @@ pre-exponent ($A_i$) in the rate law associated with individual reactions provid
 Table~\ref{tab:kinetics} is considered to be uniformly
 distributed in the interval, $[0.9A_i^\ast, 1.1A_i^\ast]$; $A_i^\ast$ is the nominal
 estimate provided in~\cite{Yetter:1991}.
-Specifically, we employ two strategies: 
-A gradient-based strategy that involves computation of model
+Specifically, we employ two strategies --
+a gradient-based strategy that involves computation of model
 gradients in order to construct the matrix $\hat{\mat{C}}$
 in~\eqref{eq:chat}, and a gradient-free approach 
 that involves a regression-based local linear approximation of
@@ -19,7 +19,7 @@ The gradient-based approach is based on Algorithm
 1.1, and the gradient-free approach is based on Algorithm 1.2
 in~\cite{Constantine:2015}. The two strategies are implemented in an
 iterative manner to ensure computational efficiency by avoiding 
-extraneous model evaluations once a converged active subspace
+unnecessary model evaluations once a converged active subspace
 is achieved. 
 
 \subsection{Gradient-based approach}
@@ -192,7 +192,7 @@ between the two approaches.
 In the gradient-free approach, the model output is first computed at an initial set of $n_0$ samples. 
 An independent set of $M$ samples is also drawn according to the joint probability distribution of the inputs.
 For each sample in $M$, $p$ nearest neighbors in the $n_0$ set are identified. A least-squares fit to model
-evaluations at the $p$ samples is performed. The slope vector ($\bm{b}_i$) of the regression-fit is stored
+evaluations at the $p$ samples is performed. The slope vector ($\bm{b}_i$) of the regression fit is stored
 separately and the process is repeated for each sample in $M$. The symmetric and positive semi-definite matrix,
 $\hat{\mat{C}}$ is constructed using the slope vectors as follows:
 %

@@ -57,9 +57,9 @@ Additionally, the surrogate was verified by comparing probability distributions 
 the ignition delay based on its predictions and model evaluations. The two PDFs were observed to be nearly identical
 and consequently, their mean and standard deviations were found to be in excellent agreement. On the other hand,
 the gradient-free approach failed to capture the sensitivity towards the most important parameter, $E_{a,15}$. 
-We attribute this discrepancy to two potential sources of numerical errors: (1) Local linear approximation of the
+We attribute this discrepancy to two potential sources of numerical errors: (1) Regression-based approximation of the
 gradient of the model output, and (2) Scatter in the corresponding SSP (see Figure~\ref{fig:hd}) leading to numerical
-error incurred by the linear regression-fit in this case. The PDF was observed to be consistent with the true PDF in its
+error incurred by the linear regression fit in this case. The PDF was observed to be consistent with the true PDF in its
 estimate for the mode and the mean value of the ignition delay. However, it was observed to underestimate the uncertainty 
 associated with the ignition delay. Hence, the gradient-free approach might prove to be valuable in applications 
 involving intensive simulations (rendering the gradient-based approach prohibitive), and focused on a reasonable 

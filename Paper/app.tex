@@ -1,4 +1,4 @@
-\section{$\text{H}_2$/$\text{O}_2$ reaction kinetics: high-dimensional case}
+\section{$\text{H}_2$/$\text{O}_2$ reaction kinetics: higher-dimensional case}
 \label{sec:app}
 
 For the high-dimensional case, we aim to investigate the impact of the uncertain
@@ -14,8 +14,8 @@ corresponding to the different reaction rates are provided in~\cite{Yetter:1991}
 
 \subsection{Computing the active subspace}
 
-The gradient-based approach discussed earlier in~\ref{sub:grad} was used to compute the
-active subspace. Using the iterative procedure, the convergence of the eigenvectors
+The active subspace was computed using the iterative procedure outlined in Algorithm~\ref{alg:grad}.
+The convergence of the eigenvectors
 was examined by tracking $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$, plotted in 
 Figure~\ref{fig:conv_app} (right). In Figure~\ref{fig:conv_app} (left), individual
 components of the converged eigenvector are illustrated. The convergence was established using
@@ -25,8 +25,8 @@ the input domain. Hence, a total of 1360 model evaluations were required for thi
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv10}
-\caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector obtained
-using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  
+\caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector,
+obtained using the perturbation-based strategy. Right: The quantity,  
 $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$
 is plotted for successive iterations to illustrate the convergence behavior.}
 \label{fig:conv_app}
@@ -36,7 +36,8 @@ is plotted for successive iterations to illustrate the convergence behavior.}
  
 In Figure~\ref{fig:hd} (left), we illustrate the resulting eigenvalue spectrum. The second eigenvalue is
 found to be roughly two orders of magnitude smaller than the first, indicating that the active subspace
-is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right). 
+is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right), generated
+using both, perturbation-based and regression-based strategies. 
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -49,11 +50,13 @@ corresponding 1-D linear fit.}
 \end{figure}
 %
 Specifically
-in the case of gradient-based approach, the SSP exhibits a linear variation that is reasonably
-captured by its linear fit, $\tilde{G}$, constructed using the sequence of steps outlined in Section~\ref{sub:ac}.
- Whereas, the SSP based on the gradient-free approach
-is relatively more scattered. Consequently, the linear fit exhibits a discrepancy with the corresponding
-fit for the gradient-based SSP. 
+in the case of perturbation-based strategy, the SSP is observed to exhibit a linear variation that
+is reasonably
+captured by the corresponding straight-line fit, $\tilde{G}$, constructed using the sequence of steps
+outlined in Section~\ref{sub:ac}.
+On the other hand, the SSP constructed using the regression-based strategy
+is relatively more scattered. The two surrogates (straight-line fits) are observed to exhibit a
+discrepancy unlike our earlier observation for the 19-dimensional problem in Figure~\ref{fig:comp_ssp}. 
 
 \subsection{Surrogate Verification}
 \label{sub:verify}

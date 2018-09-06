@@ -19,10 +19,12 @@ However, its computation requires gradient estimation of
 the model output with respect to its inputs which can be
 remarkably challenging. In this study, we compute the active subspace
 for the H$_2$/O$_2$ mechanism that involves 19 chemical reactions,
-using two iterative strategies. The first strategy uses finite difference 
+using two iterative strategies. The first strategy uses perturbation methods
+such as finite differences 
 to estimate the gradient, whereas, the second strategy approximates the
 gradient using a regression-based linear approximation of the model output.
-The finite difference approach requires additional model evaluations  and 
+Perturbation-based strategies typically require additional model 
+evaluations  and 
 is therefore computationally expensive. Both strategies yield consistent
 results for the case when only the pre-exponents in the Arrhenius rate laws
 for the 19 reactions are considered as uncertain. However, implementation 

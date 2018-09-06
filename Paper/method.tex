@@ -8,32 +8,30 @@ pre-exponent ($A_i$) in the rate law associated with individual reactions provid
 Table~\ref{tab:kinetics} is considered to be uniformly
 distributed in the interval, $[0.9A_i^\ast, 1.1A_i^\ast]$; $A_i^\ast$ is the nominal
 estimate provided in~\cite{Yetter:1991}.
-Specifically, we employ two strategies --
-a gradient-based strategy that involves computation of model
-gradients in order to construct the matrix $\hat{\mat{C}}$
-in~\eqref{eq:chat}, and a gradient-free approach 
-that involves a regression-based local linear approximation of
-the model output to circumvent the computational cost associated with gradient
-computation. 
-The gradient-based approach is based on Algorithm
-1.1, and the gradient-free approach is based on Algorithm 1.2
-in~\cite{Constantine:2015}. The two strategies are implemented in an
+Specifically, we employed two strategies --
+a perturbation-based strategy that involves computation of model
+gradients using finite difference in order to construct the matrix $\hat{\mat{C}}$
+in~\eqref{eq:chat}, and a regression-based approach 
+that involves a linear approximation of
+the model output to approximate the gradient. 
+The two approaches are based on Algorithms~1.1 and 1.2 in~\cite{Constantine:2015} and
+essentially differ in the way the gradient is estimated. They were implemented in an
 iterative manner to ensure computational efficiency by avoiding 
 unnecessary model evaluations once a converged active subspace
-is achieved. 
+was achieved. 
 
-\subsection{Gradient-based approach}
-\label{sub:grad}
+%\subsection{Gradient-based approach}
+%\label{sub:grad}
 
-As discussed earlier, in the gradient-based approach, the elements of
-$\hat{\mat{C}}$ are estimated using model gradients.  In situations where the
-gradient is not available analytically, one could consider using finite
-difference and other relatively more efficient techniques such as automatic
-differentiation~\cite{Kiparissides:2009} and adjoint-based gradient
-computation~\cite{Jameson:1988,Gunzburger:2003,Borzi:2011,Alexanderian:2017}.
-Model evaluations at neighboring points are required if finite difference is
-used. Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
-model evaluations are needed. 
+As discussed earlier, gradient estimation using finite difference in the 
+perturbation-based strategy requires additional model evaluations at the
+neighboring points in the input domain. 
+Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
+model evaluations are needed. On the other hand, the regression-based
+strategy uses the available set of $N$ model evaluations to approximate
+the gradient. The computational effort in this case is therefore 
+reduced by a factor $(d+1)$ in this case. The specific sequence of steps
+for computing the active subspace is discussed as follows.   
 
 We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$,
 at an initial set of $n_0$ samples denoted by $\bm{\xi}_i$, $i$ = $1,\ldots,n_0$.
@@ -60,8 +58,8 @@ quantify the uncertainty in the model output. Moreover, the components of the
 dominant eigenvectors are used to compute the activity scores, $\bm{\nu}_r(f)$,
 which provide an insight into the relative importance of the uncertain inputs.
 Note that the index, $r$, corresponds to the number of dominant eigenvectors in
-$\hat{\mat{W}}_1$. The sequence of steps for the gradient-based approach are
-provided in Algorithm~\ref{alg:grad}.
+$\hat{\mat{W}}_1$. The sequence of steps as discussed are outlined
+in Algorithm~\ref{alg:grad}.
 
 %% Grad-based algorithm
 
@@ -73,7 +71,7 @@ provided in Algorithm~\ref{alg:grad}.
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $\tau$. 
 \Ensure $\hat{\mat{\Lambda}}$, $\hat{\mat{W}}$, $\bm{\nu}_r(f)$ %$\eta$. %
-    \Procedure{Gradient-based}{}
+    \Procedure{Active Subspace Computation}{}
     \State Set $k$ = 0
 	\State Draw $n_k$ random samples, $\{\bm{\xi}_i\}_{i=1}^{n_k}$ 
          according to $\pi_{\bm{\xi}}$. 
@@ -133,12 +131,14 @@ provided in Algorithm~\ref{alg:grad}.
 \end{breakablealgorithm}
 \bigskip
 
-To motivate our iterative strategy, we implement
-Algorithm~\ref{alg:grad} to the 19-dimensional H$_2$/O$_2$ reaction kinetics
+To assess its feasibility and suitability, we implement
+Algorithm~\ref{alg:grad} to compute the active subspace for 
+the 19-dimensional H$_2$/O$_2$ reaction kinetics
 problem with uncertain $A_i$'s. For the purpose of verification,
-$\hat{\mat{C}}$ is initially constructed using a large set of samples
-($N$~=~1000) in the input domain and the corresponding active subspace is
-computed. In Figure~\ref{fig:eig_comp}, we illustrate the comparison of
+$\hat{\mat{C}}$ was initially constructed using a large set of samples
+($N$~=~1000) in the input domain. The gradient was estimated using
+finite difference, and hence, a total of 20,000 model runs were performed. 
+In Figure~\ref{fig:eig_comp}, we illustrate the comparison of
 the resulting normalized eigenvalue spectrum ($\lambda_1, \ldots, 
 \lambda_{19}$) with the same using a much 
 smaller set of samples, $n$~=~$\{20,40,80,120\}$.
@@ -167,47 +167,49 @@ a 1-dimensional active subspace. Hence, the first eigenvector
 sufficiently captures the uncertainty in
 the  model output. To further confirm this, we evaluate a relative L-2 norm of the difference
  ($\varepsilon_\text{L-2}^{N-n}$) between the 
-squared value of corresponding components of the dominant eigenvector, computed using $N$ = 1000
-and $n$ = $\{20,40,80,120\}$.  The quantity, $\varepsilon_\text{L-2}^{N-n}$, was found to be 
+squared value of corresponding components of the dominant eigenvector, computed using $N$~=~1000
+and $n$~=~$\{20,40,80,120\}$.  The quantity, $\varepsilon_\text{L-2}^{N-n}$, was found to be 
 $\mathcal{O}(10^{-2})$ for $n$ = 20, 40, and 80; and $\mathcal{O}(10^{-3})$ for $n$ = 120.
 Thus, even a small sample size, $n$ = 20, seems to approximate the dominant eigenspace with
 reasonable accuracy in this case. 
 The iterative strategy therefore offers a significant potential for computational advantage. 
-In the following section, we provide a brief description of the gradient-free approach and compare
-numerical results for the active subspace and the global sensitivity measures based on the two
-approaches. 
 
-\subsection{Gradient-free approach}
-\label{sub:gradfree}
+%\subsection{Gradient-free approach}
+%\label{sub:gradfree}
 
-The gradient-free approach exploits a regression-based local linear
-approximation to the model output for estimating the gradients, $\bm{g}^i$
-in Algorithm~\ref{alg:grad}. Once again, we use an iterative strategy for
-computing the active subspace for the 19-dimensional 
-H$_2$/O$_2$ reaction kinetics problem considered in~\ref{sub:grad}.
-Moreover, we compare our findings with
-those obtained using the gradient-based approach to assess consistency
-between the two approaches. 
-
-In the gradient-free approach, the model output is first computed at an initial set of $n_0$ samples. 
-An independent set of $M$ samples is also drawn according to the joint probability distribution of the inputs.
-For each sample in $M$, $p$ nearest neighbors in the $n_0$ set are identified. A least-squares fit to model
-evaluations at the $p$ samples is performed. The slope vector ($\bm{b}_i$) of the regression fit is stored
-separately and the process is repeated for each sample in $M$. The symmetric and positive semi-definite matrix,
-$\hat{\mat{C}}$ is constructed using the slope vectors as follows:
+The active subspace for the 19-dimensional problem was also computed using the regression-based
+approach. As discussed earlier, a linear regression fit to the model output was used to
+approximate the gradient using the sequence of steps outlined in Algorithm 1.2 
+in~\cite{Constantine:2015}. 
 %
-\be
-\hat{\mat{C}} = \frac{1}{M}\sum\limits_{i=1}^{M}\bm{b}_i\bm{b}_i^\top = \hat{\bm{W}}\hat{\bm{\Lambda}}\hat{\bm{W}}^\top
-\ee
+%The gradient-free approach exploits a regression-based local linear
+%approximation to the model output for estimating the gradients, $\bm{g}^i$
+%in Algorithm~\ref{alg:grad}. Once again, we use an iterative strategy for
+%computing the active subspace for the 19-dimensional 
+%H$_2$/O$_2$ reaction kinetics problem considered in~\ref{sub:grad}.
+%Moreover, we compare our findings with
+%those obtained using the gradient-based approach to assess consistency
+%between the two approaches. 
 %
-Hence, the gradient-free approach essentially differs in the procedure for constructing the matrix, $\hat{\mat{C}}$.
-Instead of the model evaluations, a linear regression-based approximation is used to estimate the gradient of
-the model output. The suitability of this approach thus depends upon the accuracy of this approximation. 
-The active subspace computation involves the same sequence of steps as outlined previously for the gradient-based 
-approach in Algorithm~\ref{alg:grad}. The procedure for constructing $\hat{\mat{C}}$ using a regression-based
-local linear approximation
-of the model output is provided in Algorithm~\ref{alg:free2}.
-
+%In the gradient-free approach, the model output is first computed at an initial set of $n_0$ samples. 
+%An independent set of $M$ samples is also drawn according to the joint probability distribution of the inputs.
+%For each sample in $M$, $p$ nearest neighbors in the $n_0$ set are identified. A least-squares fit to model
+%evaluations at the $p$ samples is performed. The slope vector ($\bm{b}_i$) of the regression fit is stored
+%separately and the process is repeated for each sample in $M$. The symmetric and positive semi-definite matrix,
+%$\hat{\mat{C}}$ is constructed using the slope vectors as follows:
+%%
+%\be
+%\hat{\mat{C}} = \frac{1}{M}\sum\limits_{i=1}^{M}\bm{b}_i\bm{b}_i^\top = \hat{\bm{W}}\hat{\bm{\Lambda}}\hat{\bm{W}}^\top
+%\ee
+%%
+%Hence, the gradient-free approach essentially differs in the procedure for constructing the matrix, $\hat{\mat{C}}$.
+%Instead of the model evaluations, a linear regression-based approximation is used to estimate the gradient of
+%the model output. The suitability of this approach thus depends upon the accuracy of this approximation. 
+%The active subspace computation involves the same sequence of steps as outlined previously for the gradient-based 
+%approach in Algorithm~\ref{alg:grad}. The procedure for constructing $\hat{\mat{C}}$ using a regression-based
+%local linear approximation
+%of the model output is provided in Algorithm~\ref{alg:free2}.
+%
 %\bigskip
 %\begin{breakablealgorithm}
 %\renewcommand{\algorithmicrequire}{\textbf{Input:}}
@@ -256,73 +258,71 @@ of the model output is provided in Algorithm~\ref{alg:free2}.
 %\end{breakablealgorithm}
 %\bigskip
 %
-\bigskip
-\begin{breakablealgorithm}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-  \caption{Algorithm for constructing the matrix, $\hat{\mat{C}} in~\eqref{eq:chat}$}
-  \begin{algorithmic}[1]
-	\Procedure{Local Linear Approximation}{} 
-	\State Draw $N$ random samples, $\{\bm{\xi}_j\}_{j=1}^{N}$ 
-	according to $\pi_{\bm{\xi}}$.
-	\iffalse \State Project to the physical space:
-	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{N}$ \fi
-	\State Compute $f(\bm\xi_j)$, $j=1, \ldots, N$.
-	\State Draw $M$ random samples, $\{\bm{\zeta}_i\}_{i=1}^{M}$
-	according to $\pi_{\bm{\xi}}$.
-	\State Choose an integer $p \leq N$ 
-	\State For each $i=1, \ldots, M$, compute 
-	\[
-	\begin{aligned}
-	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_j\}_{j=1}^{N} \text{ to } \bm{\zeta}_i\}\\
-	\vspace{-2mm}
-	\Psi_i &= \text{subset of } f(\bm\xi_j) \text{ corresponding to the points in } \Phi_i
-	\end{aligned}
-	\]
-	\State Compute linear least square fits 
-	 $f(\bm\xi_j) \approx c_i + b_i^T\bm{\xi}_j$, \  $\bm{\xi}_j \in \Phi_i, \ f(\bm\xi_j) \in \Psi_i$
-	\State Compute the matrix 
-	\[
-	\hat{\mat{C}} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = \hat{\mat{W}}\hat{\mat{\Lambda}}\hat{\mat{W}}^\top
-	\]
-	\EndProcedure
-  \end{algorithmic}
-  \label{alg:free2}
-\end{breakablealgorithm}
-\bigskip
-
-
-The gradient-free approach when implemented to the 19-dimensional H$_2$/O$_2$ reaction kinetics problem
-with uncertain pre-exponents ($A_i$'s) also yielded a 1-dimensional active subspace. In Figure~\ref{fig:comp} (left),
+%\bigskip
+%\begin{breakablealgorithm}
+%\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+%\renewcommand{\algorithmicensure}{\textbf{Output:}}
+%  \caption{Algorithm for constructing the matrix, $\hat{\mat{C}} in~\eqref{eq:chat}$}
+%  \begin{algorithmic}[1]
+%	\Procedure{Local Linear Approximation}{} 
+%	\State Draw $N$ random samples, $\{\bm{\xi}_j\}_{j=1}^{N}$ 
+%	according to $\pi_{\bm{\xi}}$.
+%	\iffalse \State Project to the physical space:
+%	$\{\bm{\theta}_k\}_{k=1}^{N}=\theta_l+0.5(\theta_u-\theta_l)\{\bm{\xi}_k\}_{k=1}^{N}$ \fi
+%	\State Compute $f(\bm\xi_j)$, $j=1, \ldots, N$.
+%	\State Draw $M$ random samples, $\{\bm{\zeta}_i\}_{i=1}^{M}$
+%	according to $\pi_{\bm{\xi}}$.
+%	\State Choose an integer $p \leq N$ 
+%	\State For each $i=1, \ldots, M$, compute 
+%	\[
+%	\begin{aligned}
+%	\Phi_i &= \{ p \text{ nearest points in } \{\bm{\xi}_j\}_{j=1}^{N} \text{ to } \bm{\zeta}_i\}\\
+%	\vspace{-2mm}
+%	\Psi_i &= \text{subset of } f(\bm\xi_j) \text{ corresponding to the points in } \Phi_i
+%	\end{aligned}
+%	\]
+%	\State Compute linear least square fits 
+%	 $f(\bm\xi_j) \approx c_i + b_i^T\bm{\xi}_j$, \  $\bm{\xi}_j \in \Phi_i, \ f(\bm\xi_j) \in \Psi_i$
+%	\State Compute the matrix 
+%	\[
+%	\hat{\mat{C}} \approx \frac{1}{M} \sum_{i=1}^{M} b_i b_i^T = \hat{\mat{W}}\hat{\mat{\Lambda}}\hat{\mat{W}}^\top
+%	\]
+%	\EndProcedure
+%  \end{algorithmic}
+%  \label{alg:free2}
+%\end{breakablealgorithm}
+%\bigskip
+%
+In Figure~\ref{fig:comp} (left),
 we provide a comparison of the square of individual components of the dominant eigenvector, obtained using the two 
-approaches.
-Additionally, the quantity, $\delta \hat{\mat{W}}_{1,j}^{(r)}$ is also plotted in
-Figure~\ref{fig:comp} (right) to illustrate convergence characteristics for the gradient-free approach.
+strategies. Additionally, the quantity, $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is also plotted in
+Figure~\ref{fig:comp} (right) to illustrate convergence characteristics for the regression-based strategy.
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv6}
-\caption{Left: An illustrative comparison of individual squared components of the converged dominant eigenvector obtained
-using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  $\delta \hat{\mat{W}}_{1,j}^{(r)}$
-is plotted for successive iterations to illustrate the convergence behavior.}
+\caption{Left: An illustrative comparison of individual squared components of the converged dominant
+eigenvector obtained using the two strategies. Right: The quantity,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$
+is plotted for successive iterations to illustrate convergence behavior for the regression-based strategy.}
 \label{fig:comp}
 \end{center}
 \end{figure}
 %
-Individual components of the dominant eigenvector from the two approaches are observed to be in excellent
-agreement with each other. Moreover, as expected,  $\delta \hat{\mat{W}}_{1,j}^{(r)}$ is observed to decrease with iterations, and
-the eigenvector is considered to have converged if its value is found to be smaller than 0.1. Note that only 30 samples
-were found to be sufficient for approximating the active subspace in the 19-dimensional input domain. 
+Individual components of the dominant eigenvector from the two strategies are observed to be in excellent
+agreement with each other. Moreover, as expected,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is observed 
+to decrease with iterations, and required model evaluations at only 30 samples to converge using $\tau$~=~0.1.
 
 As mentioned earlier, the model output $f(\bm{\xi})$ predominantly varies in the active subspace. Hence, 
 $f(\bm{\xi})$ can be approximated as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
-the subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, regarded as the \textit{sufficient summary plot} (SSP) is 
-compared for the two approaches in Figure~\ref{fig:comp_ssp}.
+the subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, 
+regarded as the \textit{sufficient summary plot} (SSP), obtained using the two strategies is 
+compared in Figure~\ref{fig:comp_ssp}.
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/comp_ssp}
-\caption{An illustrative comparison of the SSPs generated using the gradient-based and the gradient-free approaches.}
+\caption{An illustrative comparison of the SSPs generated using the 
+perturbation-based and the regression-based strategies for computing the active subspace.}
 \label{fig:comp_ssp}
 \end{center}
 \end{figure}
@@ -333,22 +333,21 @@ delay based on the considered prior marginals for $A_i$'s is observed to be appr
 active subspace. This observation further indicates that the active subspace is 1-dimensional in this case.
 
 We extend the comparative assessment of the two approaches by estimating
-the normalized activity scores for individual uncertain inputs ($\tilde{\nu_{i,r}}$; $r$=1 since the
+the normalized activity scores for individual uncertain inputs ($\tilde{\nu}_{i,r}$; $r$=1 since the
 active subspace is 1-dimensional)
 using the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}.
 The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated
 using the gradient-based and gradient-free approaches are plotted in
 Figure~\ref{fig:comp_as} (left).  Additionally, for the purpose of
 verification, we compare these estimates with those obtained using the
-corresponding DGSMs, as reported in~\cite{Vohra:2018}, in
+normalized DGSMs in~\eqref{eq:ndgsm}, as reported in~\cite{Vohra:2018}, in
 Figure~\ref{fig:comp_as} (right). 
-
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
   \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
-\caption{Left: A bar-graph of normalized activity scores ($\tilde{\nu_{i,r}}$'s) 
+\caption{Left: A bar-graph of normalized activity scores ($\tilde{\nu}_{i,r}$'s) 
 for the 19 uncertain pre-exponents ($A_i$'s); $r$
 denotes the number of eigenvectors in the active subspace.
 Right: A plot of the screening metric ($\tilde{\nu}_i$) for individual $A_i$'s 

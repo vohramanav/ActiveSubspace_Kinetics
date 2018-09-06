@@ -361,9 +361,8 @@ based on the screening metric involving the DGSMs from~\cite{Vohra:2018}. It is 
 associated with the ignition delay is largely due to the uncertainty in $A_9$ and $A_1$. Sensitivity towards
 $A_{15}$ and $A_{17}$ is also found to be significant. 
 
-The above comparisons establish consistency between gradient-based and
-gradient-free approaches. This indicates that the local linear approximation
-of the model output resulted in a reasonably accurate estimation of the
-gradients in this case. In the following section, we shift our focus to 
-the high-dimensional H$_2$/O$_2$ reaction kinetics application involving
-33 uncertain inputs. 
+The above comparisons indicate that the two strategies yield consistent results for the 19-dimensional
+H$_2$/O$_2$ reaction kinetics problem. In other words, the gradient estimates using pertubation and
+regression are reasonably close, and therefore, using the regression-based strategy would be computationally
+advantageous in this case. In the following section, we shift our focus to 
+the higher-dimensional H$_2$/O$_2$ reaction kinetics application involving 33 uncertain inputs. 

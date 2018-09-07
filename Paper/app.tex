@@ -1,4 +1,4 @@
-\section{$\text{H}_2$/$\text{O}_2$ reaction kinetics: high-dimensional case}
+\section{$\text{H}_2$/$\text{O}_2$ reaction kinetics: higher-dimensional case}
 \label{sec:app}
 
 For the high-dimensional case, we aim to investigate the impact of the uncertain
@@ -14,8 +14,8 @@ corresponding to the different reaction rates are provided in~\cite{Yetter:1991}
 
 \subsection{Computing the active subspace}
 
-The gradient-based approach discussed earlier in~\ref{sub:grad} was used to compute the
-active subspace. Using the iterative procedure, the convergence of the eigenvectors
+The active subspace was computed using the iterative procedure outlined in Algorithm~\ref{alg:grad}.
+The convergence of the eigenvectors
 was examined by tracking $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$, plotted in 
 Figure~\ref{fig:conv_app} (right). In Figure~\ref{fig:conv_app} (left), individual
 components of the converged eigenvector are illustrated. The convergence was established using
@@ -25,8 +25,8 @@ the input domain. Hence, a total of 1360 model evaluations were required for thi
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv10}
-\caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector obtained
-using the two approaches discussed in~\ref{sub:grad} and~\ref{sub:gradfree}. Right: The quantity,  
+\caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector,
+obtained using the perturbation-based strategy. Right: The quantity,  
 $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$
 is plotted for successive iterations to illustrate the convergence behavior.}
 \label{fig:conv_app}
@@ -36,7 +36,8 @@ is plotted for successive iterations to illustrate the convergence behavior.}
  
 In Figure~\ref{fig:hd} (left), we illustrate the resulting eigenvalue spectrum. The second eigenvalue is
 found to be roughly two orders of magnitude smaller than the first, indicating that the active subspace
-is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right). 
+is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right), generated
+using both, perturbation-based and regression-based strategies. 
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -49,17 +50,19 @@ corresponding 1-D linear fit.}
 \end{figure}
 %
 Specifically
-in the case of gradient-based approach, the SSP exhibits a linear variation that is reasonably
-captured by its linear fit, $\tilde{G}$, constructed using the sequence of steps outlined in Section~\ref{sub:ac}.
- Whereas, the SSP based on the gradient-free approach
-is relatively more scattered. Consequently, the linear fit exhibits a discrepancy with the corresponding
-fit for the gradient-based SSP. 
+in the case of perturbation-based strategy, the SSP is observed to exhibit a linear variation that
+is reasonably
+captured by the corresponding straight-line fit, $\tilde{G}$, constructed using the sequence of steps
+outlined in Section~\ref{sub:ac}.
+On the other hand, the SSP constructed using the regression-based strategy
+is relatively more scattered. Consequently, the two surrogates (straight-line fits) are observed to exhibit a
+discrepancy unlike our earlier observation for the 19-dimensional problem in Figure~\ref{fig:comp_ssp}. 
 
 \subsection{Surrogate Verification}
 \label{sub:verify}
 
-The 1-dimensional surrogate ($\tilde{G}$) is investigated for its accuracy as well as the ability to capture the 
-uncertainty in the
+The 1-dimensional surrogate ($\tilde{G}$) shown in Figure~\ref{fig:hd}~(right) is investigated
+for its accuracy as well as the ability to capture the uncertainty in the
 model output in two ways. Firstly, we estimate the relative L-2 norm of the discrepancy~($\varepsilon_d$)
 between estimates of ignition delay in the case of H$_2$/O$_2$ reaction, obtained using the 
 model output and the surrogate in the following equation:
@@ -70,15 +73,15 @@ model output and the surrogate in the following equation:
 %
 Model evaluations ($G$) at 10$^{4}$ samples in the input domain were used to evaluate $\varepsilon_d$. 
 It was estimated to be 1.35$\times10^{-2}$ and 1.02$\times10^{-1}$
-using $\tilde{G}$ from the gradient-based approach and the gradient-free approach respectively. Hence,
-an order of magnitude increase in $\varepsilon_d$ was estimated in the case of gradient-free approach.
-Hence, in the norm-sense, it can be said that the 1-dimensional surrogate in the active subspace, obtained
-using the gradient-based approach is remarkably accurate with a relative error of less than 1.5$\%$, whereas
-the gradient-free approach resulted in a relative error of about 10$\%$.
+using $\tilde{G}$ based on the perturbation-based and the regression-based strategies respectively. Hence,
+$\varepsilon_d$ was found to increase by an order of magnitude when using the regression-based strategy.
+Therefore, in the norm-sense, it can be said that the 1-dimensional surrogate in the active subspace, obtained
+using the perturbation-based approach is remarkably accurate with a relative error of less than 1.5$\%$, whereas
+the regression-based approach resulted in a relative error of about 10$\%$.
 
-Secondly, we verify the accuracy of the two surrogates in a probabilistic setting. In particular, we compare 
+Secondly, we verified the accuracy of the two surrogates in a probabilistic setting. In particular, we compared 
 probability density functions (PDFs) obtained using the true set of model evaluations, and 1-dimensional
-surrogates from the two approaches, in Figure~\ref{fig:pdf_33D}. Note that the three PDFs were evaluated 
+surrogates ($\tilde{G}$'s) from the two strategies, in Figure~\ref{fig:pdf_33D}. Note that the three PDFs were evaluated 
 using the same set of 10$^4$ samples in the cross-validation set. 
 %
 \begin{figure}[htbp]
@@ -86,8 +89,9 @@ using the same set of 10$^4$ samples in the cross-validation set.
 \includegraphics[width=3.0in]{./Figures/pdf_comp_id_1e4}
 \end{center} 
 \caption{A comparison of the PDFs of ignition delay, obtained using model 
-evaluations (solid line) and 1-dimensional surrogates using the gradient-free approach (dashed line) and the gradient-based
-approach (dashed-dotted line). The same set of 10$^4$ samples in the cross-validation set were used in each case.}
+evaluations (solid line) and 1-dimensional surrogates using the regression-based strategy (dashed line) and the
+perturbation-based strategy (dashed-dotted line). The same set of 10$^4$ samples in the cross-validation set were 
+used in each case.}
 \label{fig:pdf_33D}
 \end{figure}
 %
@@ -102,12 +106,12 @@ approach (dashed-dotted line). The same set of 10$^4$ samples in the cross-valid
 %\end{center}
 %\end{figure}
 %
-The PDFs based on the model evaluations and the gradient-based approach are nearly identical, confirming
-the existence of a 1-dimensional active subspace as well as the accuracy of the gradient-based approach. 
-However, though the PDF based on the gradient-free approach is observed to show consistency with the true 
-PDF in the modal
-estimate; it underestimates the spread in the ignition delay. Specific values of the mean and the standard deviation
-in each case are provided in Table~\ref{tab:stats}. 
+The PDFs based on the model evaluations and the perturbation-based strategy are nearly identical, confirming
+the existence of a 1-dimensional active subspace as well as the accuracy of this strategy. 
+On the other hand, although the PDF obtained using the regression-based strategy is observed to show
+consistency with the true PDF in the modal
+estimate, it clearly underestimates the spread in the ignition delay. Specific values of the mean and the standard 
+deviation in each case are provided in Table~\ref{tab:stats}. 
 %
 \begin{table}[htbp]
 \begin{center}
@@ -116,12 +120,12 @@ in each case are provided in Table~\ref{tab:stats}.
 $\textbf{Distribution}$ & $\mu$ & $\sigma$ \\ 
 \bottomrule
 $G$~(Model) & 0.133 & 0.0198 \\
-$\tilde{G}$~(Gradient-based) & 0.133 & 0.0196 \\
-$\tilde{G}$~(Gradient-free) & 0.133 & 0.0167 \\
+$\tilde{G}$~(Perturbation-based) & 0.133 & 0.0196 \\
+$\tilde{G}$~(Regression-based) & 0.133 & 0.0167 \\
 \bottomrule
 \end{tabular}
 \caption{The mean ($\mu$), and the standard deviation ($\sigma$), computed using the model ($G$), and
-the surrogate ($\tilde{G}$) based on the two approaches at 10$^4$ samples in the cross-validation
+the surrogate ($\tilde{G}$) based on the two strategies at 10$^4$ samples in the cross-validation
 set.}
 \label{tab:stats}
 \end{center}
@@ -129,8 +133,8 @@ set.}
 %
 The three PDFs are found to be
 consistent in their prediction of mean value of the ignition delay.  The standard deviation estimates based on model
-evaluations and the gradient-based approach are found to be in close agreement, whereas, it  is accurately estimated
-by the gradient-free approach only upto the first significant figure. 
+evaluations and the perturbation-based strategy are found to be in close agreement, whereas, it  is accurately
+ estimated in the case of regression-based strategy only upto the first significant digit. 
 
 \subsection{GSA consistency check}
 

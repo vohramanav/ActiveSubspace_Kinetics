@@ -29,7 +29,7 @@ neighboring points in the input domain.
 Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
 model evaluations are needed. On the other hand, the regression-based
 strategy uses the available set of $N$ model evaluations to approximate
-the gradient. The computational effort in this case is therefore 
+the gradient. The computational effort is therefore 
 reduced by a factor $(d+1)$ in this case. The specific sequence of steps
 for computing the active subspace is discussed as follows.   
 
@@ -67,7 +67,7 @@ in Algorithm~\ref{alg:grad}.
 \begin{breakablealgorithm}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
-  \caption{An iterative gradient-based approach for discovering the active subspace}
+  \caption{An iterative strategy for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $\tau$. 
 \Ensure $\hat{\mat{\Lambda}}$, $\hat{\mat{W}}$, $\bm{\nu}_r(f)$ %$\eta$. %

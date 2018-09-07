@@ -29,7 +29,7 @@
  for uncertainty quantification such as those involving a surrogate model construction as well as
  sensitivity analysis would thus be computationally challenging and even prohibitive in some cases. 
  Hence, we focused our efforts on reducing the dimensionality of the problem by identifying important
- directions (active subspaces) in the parameter space such that the variability in the model output is 
+ directions (active subspace) in the parameter space such that the variability in the model output is 
  predominantly captured along these directions. Additionally, we demonstrated that the activity scores,
  computed using the components of the dominant eigenvectors can be used to approximate the
  DGSMs. Furthermore, we established generalized mathematical linkages between the different global sensitivity measures:
@@ -37,36 +37,54 @@
  associated with global sensitivity analysis. 
  
 Two computational strategies were explored to compute the active subspace for the H$_2$/O$_2$
-kinetics application in this work. The first strategy referred to as gradient-based requires computation of gradient of the 
-model output with respect to the input, whereas, the second strategy, referred to as gradient-free implements a local
-linear approximation to the model output in order to estimate the gradient using a regression-based fit.
+kinetics application in this work. The first strategy referred to as perturbation-based
+used finite difference to estimate the gradient of the model output with respect to the uncertain
+inputs. The second strategy referred to as regression-based involved gradient estimation by
+means of approximating the available set of model evaluations using a linear regression fit. 
 The two strategies were shown to yield
 consistent results for the 19-dimensional problem whereby only the pre-exponents were considered to be uncertain.
 Additionally, the activity scores were also shown to be consistent with the screening metric estimates based on
 DGSMs in~\cite{Vohra:2018}. Note that an iterative procedure was adopted to enhance the computational efficiency
 associated with both strategies. 
 
-Both strategies were further implemented to discover and compute the active
-subspace for the 33-dimensional problem. The gradient-based approach yielded a 1-dimensional active subspace
-and the activity scores which revealed that the uncertainty in the ignition delay is largely dependent on $A_1$, $A_9$, 
-$E_{a,1}$ and $E_{a,15}$, although contributions from $A_{15}$ and $A_{17}$ were also found to be significant. The activity
-scores were verified against the total Sobol' indices, computed using the 1-dimensional surrogate fit to the model response in
-the subspace. The 1-dimensional surrogate was verified for accuracy by evaluating the relative L-2
-norm of the error between its predictions and model evaluations at $10^4$ samples in the 33-dimensional input domain.
-Additionally, the surrogate was verified by comparing probability distributions (based on kernel density estimation) for
-the ignition delay based on its predictions and model evaluations. The two PDFs were observed to be nearly identical
-and consequently, their mean and standard deviations were found to be in excellent agreement. On the other hand,
-the gradient-free approach failed to capture the sensitivity towards the most important parameter, $E_{a,15}$. 
+The two strategies were further implemented to discover and compute the active
+subspace for the 33-dimensional problem. Both strategies revealed the existence of a 1-dimensional
+active subspace. The activity scores based on the dominant eigenvector and the total Sobol indices
+based on the 1-dimensional surrogate in the subspace, computed using the 
+perturbation-based strategy were found to be consistent with each other. Both sensitivity measures
+ indicated that the uncertainty in the ignition delay is largely dependent on $A_1$, $A_9$, 
+$E_{a,1}$ and $E_{a,15}$, although contributions from $A_{15}$ and $A_{17}$ were also found to be significant. 
+
+Computational gains using the proposed strategy in this work are essentially realized by using the
+1-dimensional surrogate in the active subspace that essentially casts a mutlivariate input in the full space
+into a univariate input in the reduced space. The surrogate can be used to accelerate forward propagation
+of the uncertainty as well as parameter estimation in a Bayesian setting. Hence, we focused our efforts to
+verify the accuracy of the 1-dimensional surrogates, obtained using both strategies.  
+The 1-dimensional surrogates were assessed for accuracy by first evaluating the relative L-2
+norm of the error between its predictions and model evaluations at $10^4$ independent MC samples in the
+33-dimensional input domain. The relative error based on predictions from the surrogate, computed
+using the regression-based strategy were found to be an order of magnitude larger than that estimated
+using the surrogate from the perturbation-based strategy.
+
+Additionally, the surrogates were assessed by comparing probability distributions (based on kernel density estimation)
+for the ignition delay, constructed using surrogate predictions and model evaluations at the same set of 10$^4$
+random samples. The PDFs based on model evaluations and the 1-dimensional surrogate from the perturbation-based
+strategy were found to be almost identical. However, the PDF based on 1-dimensional surrogate from the
+regression-based strategy although captured the modal estimate with reasonable accuracy, was observed to
+under-estimate the uncertainty in the ignition delay. Mean estimates of the ignition delay using model evaluations
+and predictions using the two surrogates at 10$^4$ samples were found to be in agreement. However, as expected, the
+standard deviation, computed using predictions from the surrogate based on the regression-based strategy was
+found to be accurate only upto the first significant digit. Moreover, it was observed that the activity scores,
+computed using the regression-based strategy failed to capture the sensitivity towards the 
+most important parameter, $E_{a,15}$. 
 We attribute this discrepancy to two potential sources of numerical errors: (1) Regression-based approximation of the
 gradient of the model output, and (2) Scatter in the corresponding SSP (see Figure~\ref{fig:hd}) leading to numerical
-error incurred by the linear regression fit in this case. The PDF was observed to be consistent with the true PDF in its
-estimate for the mode and the mean value of the ignition delay. However, it was observed to underestimate the uncertainty 
-associated with the ignition delay. Hence, the gradient-free approach might prove to be valuable in applications 
-involving intensive simulations (rendering the gradient-based approach prohibitive), and focused on a reasonable 
-approximation of the mean value and the uncertainty associated with the quantity of interest. Based on our findings, the 
-estimate for the mean is expected to be relatively more accurate. 
+error incurred by the linear regression fit in this case. Based on our findings in this work, it can be said that
+the regression-based strategy would be useful in situations involving complex mechanisms with a large number of
+uncertain inputs thereby rendering the UQ analysis intensive, and in applications where the focus is on a
+reasonable approximation of the statistics of the QoI. 
  
- The authors would like to highlight that the computational strategy presented in this work is agnostic to the choice
+ The authors would like to highlight that the computational framework presented in this work is agnostic to the choice
  of the chemical system and could thus be easily adapted for other systems. However, it is important to note that
  its applicability depends upon the nature of the relationship between the model output and the inputs. Specifically,
  the model output is required to be differentiable throughout the considered input domain to be able to evaluate

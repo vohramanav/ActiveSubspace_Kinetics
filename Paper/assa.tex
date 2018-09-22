@@ -261,13 +261,14 @@ $1 = \|\vec{e}_i\|_2^2 =
 \geq \sum_{k=r+1}^\Np \ip{\vec{e}_i}{\vec{w}_k}^2$.
 \end{proof} 
 The utility of this result is realized in problems with 
-high-dimensional parameter spaces in which 
+high-dimensional parameters in which 
 the eigenvalues $\lambda_i, i=1,\ldots,N_p$, decay rapidly to zero; in 
 such cases, this result implies that  $\nu_i(f) \approx \act{f}{i}{r}$,
 where $r$ is the \emph{numerical rank} of $\mat{C}$.  This will be especially
 effective if there is a large gap in the eigenvalues.  
 
-We also record the following useful relations:
+The relations recored in the following lemma will be useful in the discussion 
+that follows.
 \begin{lemma}\label{lem:sum}
 We have
 \begin{enumerate}[label=(\alph*)]
@@ -293,9 +294,11 @@ index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
 T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
 \end{equation}
 where for each $i$, $C_i$ is an appropriate \emph{Poincar\'{e}} constant
-that depends on the distribution of $\xi_i$; see~\cite{Lamboni:2013}.
+that depends on the distribution of $\xi_i$.
 For instance, if $\xi_i$ is uniformly distributed on $[-1, 1]$, then $C_i = 4/\pi^2$; and in the 
 case $\xi_i$ is normally distributed with variance $\sigma_i^2$, then $C_i = \sigma_i^2$. 
+Note that~\eqref{equ:sobol_bound} for the special cases of 
+uniformly distributed or normally distributed inputs was established first in~\cite{Sobol:2009}.
 The bound~\eqref{equ:sobol_bound} provides a strong theoretical basis for using DGSMs to identify 
 unimportant inputs. 
 
@@ -303,7 +306,8 @@ Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
 an interesting link between the activity scores and total Sobol' indices.
 Specifically, by computing the activity scores, we can identify the unimportant
 inputs.  
-One can attempt to reduce parameter dimension by fixing
+Subsequently, 
+one can attempt to reduce parameter dimension by fixing
 unimportant inputs at nominal values. 
 
 Suppose activity scores
@@ -312,23 +316,13 @@ $\xi_i$ is
 deemed unimportant as a result, due to a small activity score. 
 We want to estimate
 the approximation error that occurs once $\xi_i$ is fixed at a nominal value.
-%Let $\I \subset \{1, \ldots,
-%Np\}$ be an index set that indexes the unimportant parameters in the parameter
-%vector $\vec{\xi}$.  Letting $|\I|$ denote the number of elements of $\I$, 
-%we denote by $\vec{z} \in \R^{|\I|}$ a generic vector of nominal values for
-%the unimportant parameters $\vec\xi_\I$, and let $\vec{y}$ be a generic vector of
-%important variables, $\vec\xi_{\I^c}$,
-%where $\I^c$ denotes the complement of $\I$ in $\{1, \ldots, \Np\}$. 
-%For a vector $\xi$, we let $\xin$ denote the vector obtained by removing
-%$\xi_i$. 
-%
 To formalize this process, we proceed as follows.
 Let $\vec\xi$ be given and let $z$ be a nominal value for $\xi_i$.  
 %we define 
 %$\vec{y}^z(\vec\xi)$ as the vector with entries $y^z_j = \xi_j$ for $j \neq i$
 %and $y^z_i = z$.
 Consider the \emph{reduced} model, 
-obtained by fixing $\xi_i$ at a nominal value $z \in \R$: 
+obtained by fixing $\xi_i$ at the nominal value: 
 \[
 \redf{i}{z} = f(\xi_1, \xi_2, \ldots, \xi_{i-1}, z, \xi_{i+1}, \ldots, \xi_\Np),
 \] 
@@ -338,22 +332,12 @@ and consider the following relative error indicator:
 \frac{ \int_\Omega \big( f(\vec\xi) - \redf{i}{z}\big)^2 \, \mu(d\vec\xi) }
           {\int_\Omega f(\vec\xi)^2 \, \mu(d\vec\xi)}.
 \] 
+This error indicator is a function of $z$ with $z$ distributed 
+according to the distribution of $\xi_i$.
 \begin{theorem}\label{thm:error_estimate}
 We have $\Ez{ \mathcal{E}(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)}$, 
 for $1 \leq r < \Np$.
 \end{theorem}
-%
-%\[
-%       T_i(f) \leq \frac{C_i}{\V(f)}(\act{f}{i}{r} + \lambda_{r+1}).
-%\]
-%we obtain the following useful inequality, which
-%links activity scores and Sobol' indices:
-%for $1 \leq r \leq \Np$, and $i = 1, \ldots, \Np$, we have
-%\[
-%       T_i(f) \leq \frac{C_i}{\V(f)}(\act{f}{i}{r} + \lambda_{r+1}).
-%\]
-%This was noted in~\cite{Diaz:2016} for the specific case of all $\xi_i$'s being
-%iid $U(0, 1)$, in which case $C_i = 1/\pi^2$, $i = 1, \ldots, \Np$.
 \begin{proof} 
 Note that, since 
 $\int_\Omega f(\vec\xi)^2 \, \mu(d\vec\xi) = \V(f) + 
@@ -374,7 +358,7 @@ Proposition~\ref{prp:dgsm_bound}, we have
 \]
 \end{proof}
 
-In~\cite{Vohra:2018} the following screening metric
+In~\cite{Vohra:2018} the screening metric
 \be
    \tilde{\nu}_i(f) = \frac{C_i \nu_i(f)}{\sum_{i=1}^\Np C_i \nu_i(f)},
 \label{eq:ndgsm}

@@ -80,9 +80,15 @@ most important parameter, $E_{a,15}$.
 We attribute this discrepancy to two potential sources of numerical errors: (1) Regression-based approximation of the
 gradient of the model output, and (2) Scatter in the corresponding SSP (see Figure~\ref{fig:hd}) leading to numerical
 error incurred by the linear regression fit in this case. Hence, the regression-based approximation of the gradient 
-of the model output although reduces computational effort, the present investigations clearly reveal a potential pitfall associated
-with this approach. Therefore, this approach should only be preferred in situations involving intensive simulations, and 
-where the focus is essentially on estimating the statistics of the QoI as opposed to a more detailed analysis such as those involving
+of the model output although reduces computational effort, the present investigations clearly 
+reveals potential pitfalls associated with this approach. More specifically:
+\begin{itemize}
+\item The desired statistics (e.g. mean and variance) of the QoI might not be approximated
+to a desired level of accuracy.
+\item The approach might fail to capture the sensitivity  of the QoI towards all inputs. 
+\end{itemize}
+Therefore, the regression-based approach should only be preferred in situations involving intensive simulations such that the perturbation-based methods are intractable, and the objective is
+essentially on obtaining rough estimates of the statistics of the QoI as opposed to a more detailed analysis such as those involving
 parametric sensitivity. 
  
  We would like to highlight that the computational framework presented in this work is agnostic to the choice

@@ -79,26 +79,17 @@ computed using the regression-based strategy failed to capture the sensitivity t
 most important parameter, $E_{a,15}$. 
 We attribute this discrepancy to two potential sources of numerical errors: (1) Regression-based approximation of the
 gradient of the model output, and (2) Scatter in the corresponding SSP (see Figure~\ref{fig:hd}) leading to numerical
-error incurred by the linear regression fit in this case. Based on our findings in this work, it can be said that
-the regression-based strategy would be useful in situations involving complex mechanisms with a large number of
-uncertain inputs thereby rendering the UQ analysis intensive, and in applications where the focus is on a
-reasonable approximation of the statistics of the QoI. 
+error incurred by the linear regression fit in this case. Hence, the regression-based approximation of the gradient 
+of the model output although reduces computational effort, the present investigations clearly reveal a potential pitfall associated
+with this approach. Therefore, this approach should only be preferred in situations involving intensive simulations, and 
+where the focus is essentially on estimating the statistics of the QoI as opposed to a more detailed analysis such as
+parametric sensitivity analysis. 
  
- The authors would like to highlight that the computational framework presented in this work is agnostic to the choice
- of the chemical system and could thus be easily adapted for other systems. However, it is important to note that
- its applicability depends upon the nature of the relationship between the model output and the inputs. Specifically,
- the model output is required to be differentiable throughout the considered input domain to be able to evaluate
- the active subspace with reasonable accuracy. Hence, it is a realistic possibility that an active subspace might not
- exist for a given input-output relationship. While the active subspace could be exploited for a forward propagation of
- the uncertainty from inputs to the output, the low-dimensional surrogate could further be used to accelerate 
- calibration of the rate-controlling parameters in a Bayesian setting. Moreover, the activity scores could help
- identify important stages in a complex reaction mechanism and thereby guide development of a simplified
- mechanism. Furthermore, dimension reduction using active subspaces could be useful in studies aimed at
- investigating the inadequacy or model error associated with the reaction rate laws for such systems.  
- 
- 
- 
- 
- 
- 
- 
+ We would like to highlight that the computational framework presented in this work is agnostic to the choice
+ of the chemical system and could thus be easily adapted for other systems as long as the quantity of interest
+is continuously differentiable in the considered domain of the inputs.
+We have demonstrated that the active subspace could be exploited for a forward propagation of
+ the uncertainty from inputs to the output. However, the activity scores and the low-dimensional surrogate could further guide optimal allocation of computational resources for  
+ calibration of the important rate-controlling parameters in a Bayesian setting. 
+Additionally, dimension reduction using active subspaces could assist in developing robust formulations
+for predicting discrepancy between simulations and measurements due to epistemic uncertainty in the model inputs.

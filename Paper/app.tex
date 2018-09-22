@@ -18,14 +18,16 @@ The active subspace was computed using the iterative procedure outlined in Algor
 The convergence of the eigenvectors
 was examined by tracking $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$, plotted in 
 Figure~\ref{fig:conv_app} (right). In Figure~\ref{fig:conv_app} (left), individual
-components of the converged eigenvector are illustrated. The convergence was established using
+components of the converged eigenvector that constitutes the active subspace,
+are illustrated. The convergence was established using
 a $\tau$ value of 0.02. Finite difference was used to compute model gradients at 40 samples in
 the input domain. Hence, a total of 1360 model evaluations were required for this purpose.  
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eigv10}
-\caption{Left: An illustrative comparison of individual components of the converged dominant eigenvector,
+\caption{Left: Individual components of the dominant eigenvector in the
+active subspace,
 obtained using the perturbation-based strategy. Right: The quantity,  
 $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$
 is plotted for successive iterations to illustrate the convergence behavior.}
@@ -34,7 +36,8 @@ is plotted for successive iterations to illustrate the convergence behavior.}
 \end{figure}
 %
  
-In Figure~\ref{fig:hd} (left), we illustrate the resulting eigenvalue spectrum. The second eigenvalue is
+In Figure~\ref{fig:hd} (left), we illustrate converged estimates of the eigenvalues.
+ The second eigenvalue is
 found to be roughly two orders of magnitude smaller than the first, indicating that the active subspace
 is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right), generated
 using both, perturbation-based and regression-based strategies. 
@@ -63,7 +66,7 @@ discrepancy unlike our earlier observation for the 19-dimensional problem in Fig
 
 The 1-dimensional surrogate ($\tilde{G}$) shown in Figure~\ref{fig:hd}~(right) is investigated
 for its accuracy as well as the ability to capture the uncertainty in the
-model output in two ways. Firstly, we estimate the relative L-2 norm of the discrepancy~($\varepsilon_d$)
+model output in two ways. Firstly, we estimate the relative L$_2$ norm of the discrepancy~($\varepsilon_d$)
 between estimates of ignition delay in the case of H$_2$/O$_2$ reaction, obtained using the 
 model output and the surrogate in the following equation:
 %
@@ -153,11 +156,10 @@ perturbation-based strategy.
 \end{center}
 \end{figure}
 %
-Several useful inferences can be drawn from the above plot. Firstly, the total Sobol indices are found to be
+Several useful inferences can be drawn. Firstly, the total Sobol indices are found to be
 consistent
 with the normalized activity scores evaluated using the perturbation-based strategy. The regression-based
-strategy yields consistent results for the $A_i$'s, but it does not capture the sensitivity associated with
-the most important parameter, $E_{a,15}$. This is because numerical errors are incurred when approximating
+strategy yields consistent results for the $A_i$'s, but it does not capture the sensitivity associated with one of the most important parameters, $E_{a,15}$. This is because numerical errors are incurred when approximating
 the model gradients using a linear regression fit in this case. 
 Secondly, our findings indicate that   
 the ignition delay is predominantly sensitive towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 

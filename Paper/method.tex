@@ -27,10 +27,12 @@ As discussed earlier, gradient estimation using finite differences in the
 perturbation-based strategy requires additional model evaluations at the
 neighboring points in the input domain. 
 Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
-model evaluations are needed. On the other hand, the regression-based
-strategy uses the available set of $N$ model evaluations to approximate
-the gradient. The computational effort is therefore 
-reduced by a factor $(d+1)$ in this case. The specific sequence of steps
+model evaluations are needed. On the other hand, gradient estimation
+using the regression-based approach involves a series of linear regression
+fits to subsets of available evaluations as discussed 
+in~\cite{Constantine:2015}. Hence, the computational effort is  
+reduced by a factor $(d+1)$ when using the regression-based approach.
+The specific sequence of steps
 for computing the active subspace is discussed as follows.   
 
 We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$,
@@ -121,7 +123,7 @@ in Algorithm~\ref{alg:grad}.
 			\State break
 		\EndIf
 	\EndLoop
-	\State Compute $\nu_{i,r}(f) = \sum\limits_{j=1}^{r} \Lambda_j w_{i,j}^2$,
+	\State Compute $\nu_{i,r}(f) = \sum\limits_{j=1}^{r} \lambda_j w_{i,j}^2$,
 	$i=1,\ldots,N_p$.
 	\State Normalize $\nu_{i,r}(f)$ as $\tilde{\nu}_{i,r}(f)$ = \scalebox{1.25}{$\frac{\nu_{i,r}(f)}{\sum_i\nu_{i,r}(f)}$}.
 	
@@ -162,17 +164,24 @@ We observe that the dominant eigenvalues, $\lambda_1, \ldots, \lambda_4$,
 are approximated 
 reasonably well with just 20 samples. As expected, the accuracy of higher-order eigenvalues is observed
 to improve with the sample size. Since 
-$\left(\frac{\lambda_1}{\lambda_2}\right)\gg 1$, we expect 
+$\lambda_1$ is roughly three orders of magnitude larger than $\lambda_2$, we expect 
 a 1-dimensional active subspace. Hence, the first eigenvector 
 sufficiently captures the uncertainty in
-the  model output. To further confirm this, we evaluate a relative L-2 norm of the difference
- ($\varepsilon_\text{L-2}^{N-n}$) between the 
-squared value of corresponding components of the dominant eigenvector, computed using $N$~=~1000
-and $n$~=~$\{20,40,80,120\}$.  The quantity, $\varepsilon_\text{L-2}^{N-n}$, was found to be 
+the  model output. To further confirm this, we evaluate a relative L$^2$ norm of the difference
+ ($\varepsilon_{\text{L}^{2}}^{N-n}$) between the 
+squared value of corresponding components of the dominant eigenvector, computed using $N$~=~1000 ($\vec{w}_{1,N}$)
+and $n$~=~$\{20,40,80,120\}$ ($\vec{w}_{1,n}$) as follows:
+%
+\be
+\varepsilon_{\text{L}^{2}}^{N-n} = 
+\frac{\|\vec{w}_{1,N}^2-\vec{w}_{1,n}^2\|_2}{\|\vec{w}_{1,N}^2\|_2}
+\ee
+%
+The quantity, $\varepsilon_{\text{L}^{2}}^{N-n}$, was found to be 
 $\mathcal{O}(10^{-2})$ for $n$ = 20, 40, and 80; and $\mathcal{O}(10^{-3})$ for $n$ = 120.
 Thus, even a small sample size, $n$ = 20, seems to approximate the dominant eigenspace with
 reasonable accuracy in this case. 
-The iterative strategy therefore offers a significant potential for computational advantage. 
+The iterative strategy therefore offers a significant potential for computational gains. 
 
 %\subsection{Gradient-free approach}
 %\label{sub:gradfree}
@@ -312,7 +321,9 @@ Individual components of the dominant eigenvector from the two strategies are ob
 agreement with each other. Moreover, as expected,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is observed 
 to decrease with iterations, and required model evaluations at only 30 samples to converge using $\tau$~=~0.1.
 
-As mentioned earlier, the model output $f(\bm{\xi})$ predominantly varies in the active subspace. Hence, 
+As mentioned earlier, the model output $f(\bm{\xi})$ i.e. the igntion delay in the
+H$_2$/O$_2$ reaction in this case, varies
+ predominantly in the active subspace. Hence, 
 $f(\bm{\xi})$ can be approximated as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
 the subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, 
 regarded as the \textit{sufficient summary plot} (SSP), obtained using the two strategies is 
@@ -329,7 +340,7 @@ perturbation-based and the regression-based strategies for computing the active 
 %
 The two SSPs are observed to be in excellent agreement with each other. Moreover, it is interesting to note
 that the response in ignition
-delay based on the considered prior marginals for $A_i$'s is observed to be approximately linear in the
+delay based on the considered probability distributions for $A_i$'s is observed to be approximately linear in the
 active subspace. This observation further indicates that the active subspace is 1-dimensional in this case.
 
 We extend the comparative assessment of the two approaches by estimating

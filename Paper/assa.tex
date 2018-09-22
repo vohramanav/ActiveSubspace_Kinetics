@@ -14,7 +14,7 @@ that consists of important directions in a model's input
 parameter space~\cite{Constantine:2015}. The effective variability in a model output $f$
 due to uncertain inputs is predominantly captured
 along these directions. 
-The directions constituting the active subspace are the eigenvectors of the positive
+The directions constituting the active subspace are the dominant eigenvectors of the positive
 semidefinite matrix 
 %
 \be
@@ -85,7 +85,7 @@ is approximated by $G(\mat{W}_1^\top \vec{\xi})$ in the active subspace.
 %column space of $\mat{W}_1$. 
 We could confine uncertainty analysis to the inputs in the
 active subspace whose dimension is typically much smaller (in applications that
-admit such a subspace) than the dimension of the original input space. To further
+admit such a subspace) than the dimension of the original input parameter. To further
 expedite uncertainty analysis, one could fit a regression surface to $G$ using the 
 following sequence of steps, as outlined in~\cite[chapter 4]{Constantine:2015}. 
 \begin{enumerate}
@@ -112,7 +112,7 @@ Latin hypercube sampling:
 \label{eq:chat}
  \ee
  %
-Clearly, the computational effort associated with constructing the matrix
+Clearly the computational effort associated with constructing the matrix
 $\hat{\mat{C}}$ scales with the number of samples, $N$. Hence, an iterative
 computational approach is adopted in this work to gradually increase  
 $N$ until the dominant eigenpairs are approximated
@@ -164,8 +164,9 @@ where $\vec{\xi}_{\sim i}$ is the input parameter vector with the
 $i^\text{th}$ entry removed, and $\V$ denotes the variance. The total Sobol' index accounts
 for the contribution of a given input to the variability in the output by itself
 as well as due to its interaction or coupling with other inputs. 
-Determining accurate estimates of $T_i(f)$ typically involves tens of
-thousands of model runs and is therefore prohibitive in the case of
+Determining accurate estimates of $T_i(f)$ typically involves a large 
+number of 
+model runs and is therefore can be prohibitive in the case of
 compute-intensive applications. Derivative based 
 global sensitivity measures (DGSMs)~\cite{Sobol:2009} provide a means for
 approximating informative upper bounds on $T_i(f)$ at a lower cost; see 
@@ -207,7 +208,8 @@ accurate approximations of $\nu_i(f)$ by truncating the summation:
    \quad i = 1, \ldots, \Np, \quad r \leq \Np.
 \]
 The quantities $\act{f}{i}{r}$ are called activity scores
-in~\cite{Diaz:2016,Constantine:2017}.
+in~\cite{Diaz:2016,Constantine:2017}, where links between GSA measures and
+active subspaces is explored.
 %The activity scores connect ideas from active subspaces and global sensitivity
 %analysis, and can be used to approximate DGSMs.  
 The following result, which
@@ -302,11 +304,14 @@ an interesting link between the activity scores and total Sobol' indices.
 Specifically, by computing the activity scores, we can identify the unimportant
 inputs.  
 One can attempt to reduce parameter dimension by fixing
-unimportant inputs at nominal values. Suppose $\xi_i$ is
-deemed unimportant as a result of a global sensitivity analysis (GSA)
-based on the activity scores; we want to estimate
-the approximation error that occurs once $\xi_i$ 
-is fixed at a nominal value.
+unimportant inputs at nominal values. 
+
+Suppose activity scores
+are used to approximate DGSMs, and suppose
+$\xi_i$ is
+deemed unimportant as a result, due to a small activity score. 
+We want to estimate
+the approximation error that occurs once $\xi_i$ is fixed at a nominal value.
 %Let $\I \subset \{1, \ldots,
 %Np\}$ be an index set that indexes the unimportant parameters in the parameter
 %vector $\vec{\xi}$.  Letting $|\I|$ denote the number of elements of $\I$, 
@@ -327,13 +332,13 @@ obtained by fixing $\xi_i$ at a nominal value $z \in \R$:
 \[
 \redf{i}{z} = f(\xi_1, \xi_2, \ldots, \xi_{i-1}, z, \xi_{i+1}, \ldots, \xi_\Np),
 \] 
-and consider the following error indicator:
+and consider the following relative error indicator:
 \[
 \mathcal{E}(z) =
 \frac{ \int_\Omega \big( f(\vec\xi) - \redf{i}{z}\big)^2 \, \mu(d\vec\xi) }
           {\int_\Omega f(\vec\xi)^2 \, \mu(d\vec\xi)}.
 \] 
-\begin{theorem}
+\begin{theorem}\label{thm:error_estimate}
 We have $\Ez{ \mathcal{E}(z)} \leq 2C_i\big(\act{f}{i}{r} + \lambda_{r+1}\big)/{\V(f)}$, 
 for $1 \leq r < \Np$.
 \end{theorem}
@@ -405,6 +410,21 @@ Also, in the iid case, using Lemma~\ref{lem:sum}(a) we can simplify the normaliz
                      \frac{\sum_{k=1}^r \lambda_k \ip{\vec{e}_i}{\vec{w}_k}^2}
                           {\sum_{k = 1}^r \lambda_k}.
 \]
-%The expression for the denominator can be seen from Lemma~\ref{lem:sum}(a). 
-
 \end{remark}
+
+The significance of the developments in this section are as follows.
+Theorem~\ref{thm:error_estimate} provides a theoretical basis for parameter dimension
+reduction using activity scores. This is done by providing an estimate of the
+error between the reduced model and the original model. If a precise ranking of
+parameter importance based on total Sobol' indices is desired, one
+can first identify unimportant inputs by computing activity scores, and then
+perform a detailed variance based GSA of the remaining model parameters. This approach will 
+provide great computational savings as variance based GSA will now be performed only
+for a small number of
+inputs deemed important based on their activity scores. Moreover, the
+presented result covers a broad class of input distributions coming from 
+Boltzmann family of distributions.
+Additionally, the normalized activity scores discussed above provide practical
+screening metrics that require only computing the activity scores. This is in
+contrast to the bound in Theorem~\ref{thm:error_estimate} that requires the
+variance $\V(f)$ of the model output.

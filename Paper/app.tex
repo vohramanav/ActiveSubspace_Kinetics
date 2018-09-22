@@ -58,7 +58,7 @@ On the other hand, the SSP constructed using the regression-based strategy
 is relatively more scattered. Consequently, the two surrogates (straight-line fits) are observed to exhibit a
 discrepancy unlike our earlier observation for the 19-dimensional problem in Figure~\ref{fig:comp_ssp}. 
 
-\subsection{Surrogate Verification}
+\subsection{Surrogate Assessment}
 \label{sub:verify}
 
 The 1-dimensional surrogate ($\tilde{G}$) shown in Figure~\ref{fig:hd}~(right) is investigated
@@ -138,10 +138,12 @@ evaluations and the perturbation-based strategy are found to be in close agreeme
 
 \subsection{GSA consistency check}
 
-The normalized activity scores ($\tilde{\nu}_{i,r}$) based on the dominant eigenspace using the two
-approaches (gradient-based and gradient-free) are compared with the total Sobol' indices
+The normalized activity scores ($\tilde{\nu}_{i,r}$) based on the dominant eigenspace, obtained
+using the two strategies (perturbation-based and regression-based) are compared with the 
+total Sobol' indices
 in Figure~\ref{fig:as_33D}. Note that the Sobol' indices were computed using the verified
-1-dimensional surrogate in the active subspace for the gradient-based approach. 
+1-dimensional surrogate ($\tilde{G}$) in the active subspace, computed using the 
+perturbation-based strategy. 
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -153,10 +155,10 @@ in Figure~\ref{fig:as_33D}. Note that the Sobol' indices were computed using the
 %
 Several useful inferences can be drawn from the above plot. Firstly, the total Sobol indices are found to be
 consistent
-with the normalized activity scores evaluated using the gradient-based approach. The gradient-free
-approach yields consistent results for the $A_i$'s, but it does not capture the sensitivity associated with
-$E_{a,15}$. This is because numerical errors are incurred when approximating
-the model gradients using the regression-based approximation in the gradient-free case. 
+with the normalized activity scores evaluated using the perturbation-based strategy. The regression-based
+strategy yields consistent results for the $A_i$'s, but it does not capture the sensitivity associated with
+the most important parameter, $E_{a,15}$. This is because numerical errors are incurred when approximating
+the model gradients using a linear regression fit in this case. 
 Secondly, our findings indicate that   
 the ignition delay is predominantly sensitive towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 
 moderately sensitive towards $A_{15}$ and $A_{17}$. Sensitivity towards the remaining uncertain inputs is

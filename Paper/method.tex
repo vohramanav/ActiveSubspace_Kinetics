@@ -1,18 +1,18 @@
 \section{Methodology}
 \label{sec:method}
 
-In this section, we present a generalized framework for computing the
+In this section, we present an efficient framework for computing the
 active subspace. The framework is employed to the H$_2$/O$_2$ reaction kinetics
 problem whereby the 
 pre-exponent ($A_i$) in the rate law associated with individual reactions provided in
 Table~\ref{tab:kinetics} is considered to be uniformly
 distributed in the interval, $[0.9A_i^\ast, 1.1A_i^\ast]$; $A_i^\ast$ is the nominal
 estimate provided in~\cite{Yetter:1991}.
-Specifically, we employed two strategies --
+Specifically, we employed two strategies: 
 a perturbation-based strategy that involves computation of model
 gradients using finite difference in order to construct the matrix $\hat{\mat{C}}$
 in~\eqref{eq:chat}, and a regression-based approach 
-that involves a linear approximation of
+that involves a local linear approximation of
 the model output to approximate the gradient. 
 The two approaches are based on Algorithms~1.1 and 1.2 in~\cite{Constantine:2015} and
 essentially differ in the way the gradient is estimated. They were implemented in an
@@ -23,13 +23,13 @@ was achieved.
 %\subsection{Gradient-based approach}
 %\label{sub:grad}
 
-As discussed earlier, gradient estimation using finite difference in the 
+As discussed earlier, gradient estimation using finite differences in the 
 perturbation-based strategy requires additional model evaluations at the
 neighboring points in the input domain. 
 Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
 model evaluations are needed. On the other hand, the regression-based
 strategy uses the available set of $N$ model evaluations to approximate
-the gradient. The computational effort in this case is therefore 
+the gradient. The computational effort is therefore 
 reduced by a factor $(d+1)$ in this case. The specific sequence of steps
 for computing the active subspace is discussed as follows.   
 
@@ -67,7 +67,7 @@ in Algorithm~\ref{alg:grad}.
 \begin{breakablealgorithm}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
-  \caption{An iterative gradient-based approach for discovering the active subspace}
+  \caption{An iterative strategy for discovering the active subspace}
   \begin{algorithmic}[1]
 \Require $\theta_l$, $\theta_u$, $\tau$. 
 \Ensure $\hat{\mat{\Lambda}}$, $\hat{\mat{W}}$, $\bm{\nu}_r(f)$ %$\eta$. %

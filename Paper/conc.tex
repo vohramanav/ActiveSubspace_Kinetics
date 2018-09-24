@@ -115,14 +115,18 @@ potential pitfalls associated with this approach.
 %\item The
 %approach might fail to capture the sensitivity  of the QoI towards all inputs.
 %\end{itemize} 
-Therefore, in general, perturbation-based approaches should be preferred. The
-regression-based approach can be explored in situations involving intensive
-simulations where the perturbation-based methods are intractable, and the goal
-is obtaining rough estimates of the statistics of the QoI as opposed to a more
-detailed analysis such as those involving parametric sensitivity.  We also
-mention that alternate regression based approaches such as ones based on
-computing a global quadratic model have been proposed and used in the
-literature; see e.g.,~\cite{Constantine:2017a}. The applicability of such an
+Therefore, in general, perturbation-based approaches should be preferred for 
+active subspace computation.
+The regression-based approach can be explored in situations involving intensive
+simulations where the perturbation-based methods are intractable.
+%
+%and the goal is obtaining rough estimates of the statistics of the QoI as
+%opposed to a more detailed analysis such as those involving parametric
+%sensitivity.  
+%
+We also mention that alternate regression based approaches such as ones based
+on computing a global quadratic model have been proposed and used in the
+literature; see e.g.,~\cite{Constantine:2017a}.  The applicability of such an
 approach in the context of high-dimensional chemical reaction networks is
 subject to future work. 
 
@@ -131,7 +135,7 @@ the chemical system and can be easily adapted for other systems as long
 as the quantity of interest is continuously differentiable in the considered
 domain of the inputs.  We have demonstrated that the active subspace could be
 exploited for efficient forward propagation of the uncertainty from inputs to
-the output. However, the activity scores and the low-dimensional surrogate
+the output. Moreover, the activity scores and the low-dimensional surrogate
 could further guide optimal allocation of computational resources for
 calibration of the important rate-controlling parameters in a Bayesian setting.
 Additionally, dimension reduction using active subspaces could assist in

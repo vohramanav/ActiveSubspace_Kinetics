@@ -3,28 +3,14 @@ We focus on efficient quantification of uncertainty in complex chemical
 reaction networks with a large number of uncertain parameters.  Parameter
 dimension reduction is accomplished by computing an~\emph{active subspace} that
 predominantly captures the variability in the quantity of interest (QoI).  In
-this study, we compute the active subspace for the H$_2$/O$_2$ mechanism that
-involves 19 chemical reactions, using an efficient iterative strategy.  The
+the present work, we compute the active subspace for a H$_2$/O$_2$ mechanism 
+that involves 19 chemical reactions, using an efficient iterative strategy.  The
 active subspace is first computed for a 19-parameter problem wherein only the
 uncertainty in the pre-exponents of the individual reaction rates is
 considered. This is followed by the analysis of a 33-dimensional case wherein
 the activation energies are also considered uncertain.  In both cases, a
-one-dimensional active subspace is identified, which indicates
-enormous potential for efficient statistical analysis of complex 
-chemical systems. In addition, we explore links between active subspaces and
-global sensitivity analysis measures, and exploit these links for 
-indentification of key contributors to the variability in the model response.
-
-%In this case, the two approaches are observed to yield consistent results.
-%However, when computing the active subspace for a 33-dimensional problem
-%involving uncertain activation energies in addition to the pre-exponents, a
-%trade-off between accuracy and effort is observed. 
-
-%Specifically, when estimating the gradient using
-%the regression-based approach, the variability of the QoI (in the subspace),
-%due to uncertainty in the rate parameters, is under-estimated. Moreover, the
-%sensitivity towards one of the most important parameter is not captured. Hence,
-%we carefully recommend using the regression-based approach for estimating the
-%gradient only in situations involving intensive computations of the model 
-%(e.g. complex mechanisms involving a large number of reactions and species), and where the
-%goal is to obtain rough estimates of the statistics of the QoI.
+one-dimensional active subspace is identified, which indicates enormous
+potential for efficient statistical analysis of complex chemical systems. In
+addition, we explore links between active subspaces and global sensitivity
+analysis, and exploit these links for identification of key
+contributors to the variability in the model response.

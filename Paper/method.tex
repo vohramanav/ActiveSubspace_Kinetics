@@ -186,10 +186,9 @@ The iterative strategy therefore offers a significant potential for computationa
 %\subsection{Gradient-free approach}
 %\label{sub:gradfree}
 
-The active subspace for the 19-dimensional problem was also computed using the regression-based
-approach. As discussed earlier, a linear regression fit to the model output was used to
-approximate the gradient using the sequence of steps outlined in Algorithm 1.2 
-in~\cite{Constantine:2015}. 
+The active subspace for the 19-dimensional problem was also computed using regression-based
+estimates of the gradient that does not require model evaluations at neighboring points as
+discussed earlier.
 %
 %The gradient-free approach exploits a regression-based local linear
 %approximation to the model output for estimating the gradients, $\bm{g}^i$
@@ -303,9 +302,9 @@ in~\cite{Constantine:2015}.
 %\bigskip
 %
 In Figure~\ref{fig:comp} (left),
-we provide a comparison of the square of individual components of the dominant eigenvector, obtained using the two 
-strategies. Additionally, the quantity, $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is also plotted in
-Figure~\ref{fig:comp} (right) to illustrate convergence characteristics for the regression-based strategy.
+we provide a comparison of the square of individual components of the dominant eigenvector, obtained using both, perturbation-based and regression-based estimates of the gradient of the ignition 
+delay. Additionally, the quantity, $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is plotted in
+Figure~\ref{fig:comp} (right) to illustrate convergence characteristics of Algorithm~\ref{alg:grad}.
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -317,16 +316,17 @@ is plotted for successive iterations to illustrate convergence behavior for the 
 \end{center}
 \end{figure}
 %
-Individual components of the dominant eigenvector from the two strategies are observed to be in excellent
+Individual components of the dominant eigenvector from the two approaches are observed to be in excellent
 agreement with each other. Moreover, as expected,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is observed 
-to decrease with iterations, and required model evaluations at only 30 samples to converge using $\tau$~=~0.1.
+to decrease with iterations, and requires model evaluations at only 30 samples to converge using $\tau$~=~0.1.
 
 As mentioned earlier, the model output $f(\bm{\xi})$ i.e. the igntion delay in the
 H$_2$/O$_2$ reaction in this case, varies
  predominantly in the active subspace. Hence, 
 $f(\bm{\xi})$ can be approximated as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
 the subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, 
-regarded as the \textit{sufficient summary plot} (SSP), obtained using the two strategies is 
+regarded as the \textit{sufficient summary plot} (SSP), obtained using the perturbation-based and
+regression-based gradient estimates are
 compared in Figure~\ref{fig:comp_ssp}.
 %
 \begin{figure}[htbp]
@@ -343,12 +343,12 @@ that the response in ignition
 delay based on the considered probability distributions for $A_i$'s is observed to be approximately linear in the
 active subspace. This observation further indicates that the active subspace is 1-dimensional in this case.
 
-We extend the comparative assessment of the two approaches by estimating
+We further estimate
 the normalized activity scores for individual uncertain inputs ($\tilde{\nu}_{i,r}$; $r$=1 since the
 active subspace is 1-dimensional)
 using the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}.
 The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated
-using the gradient-based and gradient-free approaches are plotted in
+using the perturbation-based and regression-based approaches are plotted in
 Figure~\ref{fig:comp_as} (left).  Additionally, for the purpose of
 verification, we compare these estimates with those obtained using the
 normalized DGSMs in~\eqref{eq:ndgsm}, as reported in~\cite{Vohra:2018}, in
@@ -367,13 +367,15 @@ Right: A plot of the screening metric ($\tilde{\nu}_i$) for individual $A_i$'s
 \end{center}
 \end{figure}
 %
-The activity scores estimated using the two approaches agree favorably with each other as well as those
+The activity scores based on the two approaches for gradient estimation agree favorably 
+with each other as well as those
 based on the screening metric involving the DGSMs from~\cite{Vohra:2018}. It is observed that the uncertainty
 associated with the ignition delay is largely due to the uncertainty in $A_9$ and $A_1$. Sensitivity towards
 $A_{15}$ and $A_{17}$ is also found to be significant. 
 
-The above comparisons indicate that the two strategies yield consistent results for the 19-dimensional
-H$_2$/O$_2$ reaction kinetics problem. In other words, the gradient estimates using pertubation and
-regression are reasonably close, and therefore, using the regression-based strategy being computationally
-advantageous, would be preferred in this case. In the following section, we shift our focus to 
+The above comparisons indicate that the gradient of the ignition delay with respect to the
+uncertain $A_i$'s is reasonably approximated using both, perturbation-based and regression-based
+approaches in this case. Since the number of model evaluations required in the case of
+regression are much fewer, this approach seems favorable for the 19-dimensional problem. 
+In the following section, we shift our focus to 
 the higher-dimensional H$_2$/O$_2$ reaction kinetics application involving 33 uncertain inputs. 

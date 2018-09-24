@@ -40,7 +40,8 @@ In Figure~\ref{fig:hd} (left), we illustrate converged estimates of the eigenval
  The second eigenvalue is
 found to be roughly two orders of magnitude smaller than the first, indicating that the active subspace
 is 1-dimensional. This is further confirmed by the SSP plots in Figure~\ref{fig:hd} (right), generated
-using both, perturbation-based and regression-based strategies. 
+using both, perturbation-based and regression-based approaches for estimating
+the gradient. 
 %
 \begin{figure}[htbp]
  \begin{center}
@@ -53,11 +54,11 @@ corresponding 1-D linear fit.}
 \end{figure}
 %
 Specifically
-in the case of perturbation-based strategy, the SSP is observed to exhibit a linear variation that
+in the case of perturbation-based approach, the SSP is observed to exhibit a linear variation that
 is reasonably
 captured by the corresponding straight-line fit, $\tilde{G}$, constructed using the sequence of steps
 outlined in Section~\ref{sub:ac}.
-On the other hand, the SSP constructed using the regression-based strategy
+On the other hand, the SSP obtained by estimating the gradient using regression,
 is relatively more scattered. Consequently, the two surrogates (straight-line fits) are observed to exhibit a
 discrepancy unlike our earlier observation for the 19-dimensional problem in Figure~\ref{fig:comp_ssp}. 
 
@@ -76,16 +77,17 @@ model output and the surrogate in the following equation:
 %
 Model evaluations ($G$) at 10$^{4}$ samples in the input domain were used to evaluate $\varepsilon_d$. 
 It was estimated to be 1.35$\times10^{-2}$ and 1.02$\times10^{-1}$
-using $\tilde{G}$ based on the perturbation-based and the regression-based strategies respectively. Hence,
-$\varepsilon_d$ was found to increase by an order of magnitude when using the regression-based strategy.
+using $\tilde{G}$ based on the perturbation-based and the regression-based approaches respectively. Hence,
+$\varepsilon_d$ was found to increase by an order of magnitude when the gradient is estimated using
+the regression-based approach.
 Therefore, in the norm-sense, it can be said that the 1-dimensional surrogate in the active subspace, obtained
-using the perturbation-based approach is remarkably accurate with a relative error of less than 1.5$\%$, whereas
+using the perturbation-based approach is remarkably accurate with a relative error of less than 1.5$\%$, whereas,
 the regression-based approach resulted in a relative error of about 10$\%$.
 
 Secondly, we verified the accuracy of the two surrogates in a probabilistic setting. In particular, we compared 
 probability density functions (PDFs) obtained using the true set of model evaluations, and 1-dimensional
-surrogates ($\tilde{G}$'s) from the two strategies, in Figure~\ref{fig:pdf_33D}. Note that the three PDFs were evaluated 
-using the same set of 10$^4$ samples in the cross-validation set. 
+surrogates ($\tilde{G}$'s) based on the two approaches for gradient estimation as shown in Figure~\ref{fig:pdf_33D}.
+Note that the three PDFs were evaluated using the same set of 10$^4$ samples in the cross-validation set. 
 %
 \begin{figure}[htbp]
 \begin{center}
@@ -109,9 +111,9 @@ used in each case.}
 %\end{center}
 %\end{figure}
 %
-The PDFs based on the model evaluations and the perturbation-based strategy are nearly identical, confirming
-the existence of a 1-dimensional active subspace as well as the accuracy of this strategy. 
-On the other hand, although the PDF obtained using the regression-based strategy is observed to show
+The PDFs based on the model evaluations and the perturbation-based approach are nearly identical, confirming
+the existence of a 1-dimensional active subspace as well as the accuracy of gradient estimates in this case. 
+On the other hand, although the PDF obtained using the regression-based approach  is observed to show
 consistency with the true PDF in the modal
 estimate, it clearly underestimates the spread in the ignition delay. Specific values of the mean and the standard 
 deviation in each case are provided in Table~\ref{tab:stats}. 
@@ -135,22 +137,23 @@ set.}
 \end{table}
 %
 The three PDFs are found to be
-consistent in their prediction of mean value of the ignition delay.  The standard deviation estimates based on model
-evaluations and the perturbation-based strategy are found to be in close agreement, whereas, it  is accurately
- estimated in the case of regression-based strategy only upto the first significant digit. 
+consistent in their prediction of mean value of the ignition delay.  The standard deviation estimates using model
+evaluations and the perturbation-based approach are found to be in close agreement, whereas, it  is accurately
+ estimated in the case of regression-based approach only upto the first significant digit. 
 
 \subsection{GSA consistency check}
 
 The normalized activity scores ($\tilde{\nu}_{i,r}$) based on the dominant eigenspace, obtained
-using the two strategies (perturbation-based and regression-based) are compared with the 
+using the two approaches for gradient estimation (perturbation-based and regression-based),
+are compared with the 
 total Sobol' indices
 in Figure~\ref{fig:as_33D}. Note that the Sobol' indices were computed using the verified
-1-dimensional surrogate ($\tilde{G}$) in the active subspace, computed using the 
-perturbation-based strategy. 
+1-dimensional surrogate ($\tilde{G}$) in the active subspace, obtained using the 
+perturbation-based approach. 
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.8\textwidth]{./Figures/as_33D_new}
+  \includegraphics[width=0.8\textwidth]{./Figures/as_33D_new2}
 \caption{A bar-graph illustrating individual activity scores for the uncertain $A_i$' (left) and $E_{a,i}$'s (right).}
 \label{fig:as_33D}
 \end{center}
@@ -158,8 +161,10 @@ perturbation-based strategy.
 %
 Several useful inferences can be drawn. Firstly, the total Sobol indices are found to be
 consistent
-with the normalized activity scores evaluated using the perturbation-based strategy. The regression-based
-strategy yields consistent results for the $A_i$'s, but it does not capture the sensitivity associated with one of the most important parameters, $E_{a,15}$. This is because numerical errors are incurred when approximating
+with the normalized activity scores as obtained when the gradient is estimated using a perturbation-based approach.
+The regression-based
+approach, however, yields consistent results for the $A_i$'s but fails capture the sensitivity associated with one
+of the most important parameters, $E_{a,15}$. This is because numerical errors are incurred when approximating
 the model gradients using a linear regression fit in this case. 
 Secondly, our findings indicate that   
 the ignition delay is predominantly sensitive towards $A_1$, $A_9$, $E_{a,1}$, and $E_{a,15}$ and 

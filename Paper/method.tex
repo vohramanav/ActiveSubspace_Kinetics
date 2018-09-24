@@ -8,35 +8,34 @@ pre-exponent ($A_i$) in the rate law associated with individual reactions provid
 Table~\ref{tab:kinetics} is considered to be uniformly
 distributed in the interval, $[0.9A_i^\ast, 1.1A_i^\ast]$; $A_i^\ast$ is the nominal
 estimate provided in~\cite{Yetter:1991}.
-Specifically, we employed two strategies: 
-a perturbation-based strategy that involves computation of model
+Two approaches are explored for estimating the gradient of ignition delay with
+respect to uncertain $A_i$'s: 
+a perturbation-based approach that involves computation of model
 gradients using finite difference in order to construct the matrix $\hat{\mat{C}}$
 in~\eqref{eq:chat}, and a regression-based approach 
-that involves a local linear approximation of
-the model output to approximate the gradient. 
-The two approaches are based on Algorithms~1.1 and 1.2 in~\cite{Constantine:2015} and
-essentially differ in the way the gradient is estimated. They were implemented in an
-iterative manner to ensure computational efficiency by avoiding 
-unnecessary model evaluations once a converged active subspace
-was achieved. 
+that involves a linear regression fit to the available set of
+model evaluations in order to approximate the gradient. 
+The active subspace is computed in an iterative manner to avoid
+unnecessary model evaluations once converged is established.
 
 %\subsection{Gradient-based approach}
 %\label{sub:grad}
 
-As discussed earlier, gradient estimation using finite differences in the 
-perturbation-based strategy requires additional model evaluations at the
+As discussed earlier, gradient estimation using finite differences 
+requires additional model evaluations at the
 neighboring points in the input domain. 
 Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
 model evaluations are needed. On the other hand, gradient estimation
 using the regression-based approach involves a series of linear regression
 fits to subsets of available evaluations as discussed 
-in~\cite{Constantine:2015}. Hence, the computational effort is  
+in~\cite{Constantine:2015} (see Algorithm 1.2). Hence, the computational effort is  
 reduced by a factor $(d+1)$ when using the regression-based approach.
 The specific sequence of steps
 for computing the active subspace is discussed as follows.   
 
 We begin by evaluating the gradient of the model output, $\nabla_{\bm{\xi}}f$,
-at an initial set of $n_0$ samples denoted by $\bm{\xi}_i$, $i$ = $1,\ldots,n_0$.
+at an initial set of $n_0$ samples (generated using Monte Carlo sampling)
+denoted by $\bm{\xi}_i$, $i$ = $1,\ldots,n_0$.
 Using the gradient
 evaluations, the matrix, $\hat{\mat{C}}$ is computed. Eigenvalue decomposition
 of $\hat{\mat{C}}$ yields an initial estimate of the dominant eigenspace,
@@ -141,20 +140,21 @@ $\hat{\mat{C}}$ was initially constructed using a large set of samples
 ($N$~=~1000) in the input domain. The gradient was estimated using
 finite difference, and hence, a total of 20,000 model runs were performed. 
 In Figure~\ref{fig:eig_comp}, we illustrate the comparison of
-the resulting normalized eigenvalue spectrum ($\lambda_1, \ldots, 
-\lambda_{19}$) with the same using a much 
+the resulting normalized eigenvalue spectrum ($\lambda_i/\lambda_0,~i = 1,\ldots,19$)
+with the same using a much 
 smaller set of samples, $n$~=~$\{20,40,80,120\}$.
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/eig_comp}
 %   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1}
-\caption{A comparison of the normalized eigenvalue spectrum using $n$ = $\{20,40,80,120\}$ samples with that
+\caption{A comparison of the normalized eigenvalue spectrum ($\lambda_i/\lambda_0$)
+using $n$~=~$\{20,40,80,120\}$ samples with that
 obtained using a much larger sample size, $N$~=~1000. 
 %Right: Relative $L_2$ 
 %norm of the difference between
 %the square of individual components ($w_i$'s) of the dominant eigenvector evaluated using 
-$N$=1000 and $n$ = $\{20,40,80,120\}$ samples.
+%$N$=1000 and $n$~=~$\{20,40,80,120\}$ samples.
 } 
 \label{fig:eig_comp}
 \end{center}

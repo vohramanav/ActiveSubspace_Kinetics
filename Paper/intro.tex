@@ -129,16 +129,17 @@ are computationally less intensive than the former. However, as expected,
 there is a trade-off between computational effort and accuracy in the two
 approaches for estimating the gradient. 
 
-In this work, we implement two strategies for computing the active subspace for the
-H$_2$/O$_2$ mechanism, and refer to them as \textit{perturbation-based} and 
-\textit{regression-based} to highlight the difference in the approach for estimating
-the gradient of the model output as discussed.  
-Other than the difference in gradient estimation, the two strategies follow the same
-sequence of steps provided in~\cite{Constantine:2015}. However, 
-in order to reduce computational effort, the two strategies are implemented in an
-iterative manner in this work as discussed later in Section~\ref{sec:method}.
+In this work, we adopt an iterative strategy to reduce the computational effort
+associated with active subspace computation. Moreover, we explore two approaches
+for estimating the gradient of the ignition delay with respect to the uncertain
+rate-controlling parameters: pre-exponent, $A_i$ and the activation energy, $E_{a,i}$,
+for $i^{\text{th}}$ reaction in the H$_2$/O$_2$ mechanism. As mentioned above, the
+first approach uses finite difference to estimate the gradient and is regarded as
+the perturbation-based approach, whereas, the second approach involves a linear
+regression-fit to the available set of model evaluations and is regarded as
+the regression-based approach. 
 
-An alternate approach to dimension reduction involves computing the global
+An alternate strategy to dimension reduction involves computing the global
 sensitivity measures associated with the uncertain inputs of a model. Depending
 upon the estimates of the sensitivity measures, only the important inputs are
 varied for the purpose of uncertainty quantification (UQ). Sobol' indices are
@@ -174,7 +175,9 @@ analysis can also guide practitioners in other problems of chemical kinetics on 
 method of active subspaces to achieve efficiency in uncertainty propagation.  
 \item Comprehensive numerical investigation of the perturbation-based and the regression-based approaches: 
 We investigate the suitability of both approaches
-for computing active subspaces, surrogate modeling, and approximating global
+for estimating the gradient of ignition delay in the H$_2$/O$_2$ mechanism.
+Specifically, we compare resulting
+active subspaces, surrogate models, and the ability to approximate global
 sensitivity measures through a comprehensive set of numerical experiments. Our
 results reveal insight into the merits of the methods as well as
 their shortcomings.  
@@ -198,20 +201,20 @@ namely, the activity scores, DGSMs, and the total Sobol' indices is
 established. In section~\ref{sec:method}, a systematic framework for computing
 the active subspace is provided. 
 Numerical results based on the perturbation-based approach are compared with those
-obtained using the regression-based approach.  For our initial investigation aimed
-as assessing the feasibility and suitability of the two strategies, the active 
-subspace is computed for a 19-dimensional 
-H$_2$/O$_2$ reaction kinetics problem whereby only the $A_i$'s are
+obtained using the regression-based approach.  The active 
+subspace is initially computed for a 19-dimensional 
+H$_2$/O$_2$ reaction kinetics problem wherein only the $A_i$'s are
 considered as uncertain. In this case, the two approaches are observed to yield
-consistent results. Motivated by these results, we further implement the two
-strategies to compute the active subspace for a 33-dimensional H$_2$/O$_2$
-reaction kinetics problem in section~\ref{sec:app}. Once again, the two
-strategies reveal the existence of a 1-dimensional active subspace. However,
-it is observed that although the regression-based strategy results in a 
-reasonable approximation of the mean, mode, and the uncertainty in the ignition
-delay, it fails to capture the global sensitivity of all the uncertain inputs. 
+consistent results. We further compute the active  for a 33-dimensional H$_2$/O$_2$
+reaction kinetics problem in section~\ref{sec:app}. Once again, 
+active subspace is found to be 1-dimensional. However, in this case,
+it is observed that although the regression-based estimation of the gradient results in a 
+reasonable approximation of the mean and mode, the variability in the ignition delay
+due to uncertain rate-controlling parameters is under-estimated. Additionally,  
+the sensitivity towards one of the most important parameter is not captured.
 Hence, a trade-off between efficiency and accuracy between the two approaches is
-apparent in this case.  Finally, a summary and discussion based on our findings is included in
+apparent in the higher-dimensional problem. 
+Finally, a summary and discussion based on our findings is included in
 section~\ref{sec:conc}.
 
 

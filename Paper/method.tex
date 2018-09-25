@@ -349,27 +349,22 @@ active subspace is 1-dimensional)
 using the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}.
 The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated
 using the perturbation-based and regression-based approaches are plotted in
-Figure~\ref{fig:comp_as} (left).  Additionally, for the purpose of
-verification, we compare these estimates with those obtained using the
-normalized DGSMs in~\eqref{eq:ndgsm}, as reported in~\cite{Vohra:2018}, in
-Figure~\ref{fig:comp_as} (right). 
+Figure~\ref{fig:comp_as}.  
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
-  \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
+%  \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
 \caption{Left: A bar-graph of normalized activity scores ($\tilde{\nu}_{i,r}$'s) 
 for the 19 uncertain pre-exponents ($A_i$'s); $r$
-denotes the number of eigenvectors in the active subspace.
-Right: A plot of the screening metric ($\tilde{\nu}_i$) for individual $A_i$'s 
-(adapted from~\cite{Vohra:2018}).}
+denotes the number of eigenvectors in the active subspace.}
 \label{fig:comp_as}
 \end{center}
 \end{figure}
 %
 The activity scores based on the two approaches for gradient estimation agree favorably 
 with each other as well as those
-based on the screening metric involving the DGSMs from~\cite{Vohra:2018}. It is observed that the uncertainty
+based on the screening metric involving the DGSMs in~\cite{Vohra:2018}. It is observed that the uncertainty
 associated with the ignition delay is largely due to the uncertainty in $A_9$ and $A_1$. Sensitivity towards
 $A_{15}$ and $A_{17}$ is also found to be significant. 
 

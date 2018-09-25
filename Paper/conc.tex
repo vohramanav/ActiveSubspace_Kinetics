@@ -34,9 +34,9 @@ nominal values i.e. a total of 33 parameters instead of 38.
 %computationally challenging.
 To facilitate efficient uncertainty analysis, we focused our efforts on
 reducing the dimensionality of the problem by identifying important directions
-in the parameter space such that the variability in the model output is
-predominantly captured along these directions. This was done through active
-subspace construction.  Additionally, we demonstrated that the activity scores,
+in the parameter space such that the model output 
+predominantly varies along these directions. These important directions
+constitute the active subspace. Additionally, we demonstrated that the activity scores,
 computed using the components of the dominant eigenvectors provide an efficient
 means for approximating derivative based global sensitivity measures (DGSMs).
 Furthermore, we established generalized mathematical linkages between the
@@ -135,7 +135,7 @@ the chemical system and can be easily adapted for other systems as long
 as the quantity of interest is continuously differentiable in the considered
 domain of the inputs.  We have demonstrated that the active subspace could be
 exploited for efficient forward propagation of the uncertainty from inputs to
-the output. Moreover, the activity scores and the low-dimensional surrogate
+the output. The resulting activity scores and the low-dimensional surrogate
 could further guide optimal allocation of computational resources for
 calibration of the important rate-controlling parameters in a Bayesian setting.
 Additionally, dimension reduction using active subspaces could assist in

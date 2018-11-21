@@ -176,6 +176,7 @@ and $n$~=~$\{20,40,80,120\}$ ($\vec{w}_{1,n}$) as follows:
 \be
 \varepsilon_{\text{L}^{2}}^{N-n} = 
 \frac{\|\vec{w}_{1,N}^2-\vec{w}_{1,n}^2\|_2}{\|\vec{w}_{1,N}^2\|_2}
+\label{eq:accu}
 \ee
 %
 The quantity, $\varepsilon_{\text{L}^{2}}^{N-n}$, was found to be 
@@ -302,69 +303,94 @@ discussed earlier.
 %\end{breakablealgorithm}
 %\bigskip
 %
-In Figure~\ref{fig:comp} (left),
-we provide a comparison of the square of individual components of the dominant eigenvector, obtained using both, perturbation-based and regression-based estimates of the gradient of the ignition 
-delay. Additionally, the quantity, $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is plotted in
-Figure~\ref{fig:comp} (right) to illustrate convergence characteristics of Algorithm~\ref{alg:grad} \rebut{in both cases}. 
+\rebut{The quantity, $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is plotted in
+Figure~\ref{fig:comp} (center) to illustrate convergence characteristics based on Algorithm~\ref{alg:grad} 
+for the two approaches. As observed for a set tolerance $\tau$~=~0.05, 8 iterations are needed 
+to converge in both cases. 
+At each iteration, 5 new random samples were added for the perturbation approach. As discussed earlier, gradient 
+computation (using finite difference) at 5 samples requires 100 model runs. Hence, in order to compare the
+two approaches for the same computational effort, we generate 100 random samples in the 19D input domain for 
+the regression approach. Therefore, 8 iterations require 800 model runs leading to a total of 900 model runs 
+including the initial step in both cases.  The accuracy of the two approaches is compared for the same 
+computational effort by computing $\varepsilon_{\text{L}^{2}}^{N-n}$ using~\eqref{eq:accu} in 
+Figure~\ref{fig:comp} (right). Once again, $N$
+corresponds to the case of active subspace computation using the perturbation approach using 1000 samples
+in the 19D domain; $n$ ranges from 5 to 45 for the perturbation approach, and 100 to 900 for the regression 
+approach corresponding to iterations 1 to 8. The accuracy of the two approaches is found to be comparable for
+the same amount of computational effort. However, the perturbation approach is observed to be slightly more
+accurate.}
 %
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=0.8\textwidth]{./Figures/eig_convD19}
-\caption{Left: An illustrative comparison of individual squared components of the converged dominant
-eigenvector obtained using the two strategies. Right: The quantity,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$
-is plotted for successive iterations to illustrate convergence behavior for the regression-based strategy.}
+\caption{\rebut{Left: An illustrative comparison of individual squared components of the converged dominant
+eigenvector obtained using perturbation and regression strategies using $M$~=~900 model runs in each case. 
+Additionally, the dominant eigenvector components obtained using $M$~=~20000 model runs (corresponding to 
+$N$~=~1000 samples)
+in the perturbation strategy (test case), used to assess the accuracy of the two strategies are also plotted.
+Center: The quantity,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$
+is plotted for successive iterations to illustrate convergence behavior for the two strategies. Right: The
+quantity, $\varepsilon_{\text{L}^{2}}^{N-n}$ is plotted as a function of iterations to compare the accuracy
+of the two strategies. Note that the above plots compare the convergence and accuracy of the two
+strategies for the same amount of computational effort, quantified by the number of model runs, $M$.
+The legend provides the number of samples, $N$ and correspondingly, the
+model runs, $M$ required for obtaining a converged dominant eigenvector using the perturbation and
+regression strategies. Corresponding value of $N$ and $M$ for the test case are also provided.}}
 \label{fig:comp}
 \end{center}
 \end{figure}
 %
-\rebut{Convergence was established once $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ was found
-to be smaller than a set tolerance, $\tau$ = 0.05. As shown in Figure~\ref{fig:comp}, 8
-iterations were required in both cases. To compare convergence characteristics or the
-}
-
-
-Individual components of the dominant eigenvector from the two approaches are observed to be in excellent
-agreement with each other. Moreover, as expected,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is observed 
-to decrease with iterations, and requires model evaluations at only 30 samples to converge using $\tau$~=~0.1.
+\rebut{In Figure~\ref{fig:comp} (left), we compare the
+squared values of individual components of the dominant eigenvector obtained using the two approaches
+at the end of 8 iterations in each case. Additionally, the dominant eigenvector components obtained
+for a test case involving $N$~=~1000 samples using the perturbation approach are also plotted. 
+The set of eigenvector components for the three cases are found to be in excellent agreement with
+each other, indicating that both
+approaches have sufficiently converged and are reasonably accurate for this setup.}
 
 As mentioned earlier, the model output $f(\bm{\xi})$ i.e. the ignition delay in the
 H$_2$/O$_2$ reaction in this case, varies
- predominantly in the active subspace. Hence, 
+ predominantly in \rebut{a 1-dimensional} active subspace. Hence, 
 $f(\bm{\xi})$ can be approximated as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
-the subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, 
+the \rebut{1-dimensional active} subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, 
 regarded as the \textit{sufficient summary plot} (SSP), obtained using the perturbation-based and
 regression-based gradient estimates are
 compared in Figure~\ref{fig:comp_ssp}.
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/comp_ssp}
-\caption{An illustrative comparison of the SSPs generated using the 
-perturbation-based and the regression-based strategies for computing the active subspace.}
+  \includegraphics[width=0.45\textwidth]{./Figures/comp_ssp19D}
+\caption{\rebut{An illustrative comparison of the SSPs generated using the 
+perturbation and the regression strategies for computing the active subspace.}}
 \label{fig:comp_ssp}
 \end{center}
 \end{figure}
 %
-The two SSPs are observed to be in excellent agreement with each other. Moreover, it is interesting to note
+\rebut{The dominant eigenvector obtained using perturbation is based on $N$~=~45 samples which requires
+$M$~=~900 model runs. For the same amount of computational effort, we can afford $N$~=~900 samples
+when using regression. Hence, the SSP from regression is based on 900
+points: ($\hat{\mat{W}}_1^\top\bm{\xi}$,$G(\hat{\mat{W}}_1^\top\bm{\xi})$). On the other hand, the SSP
+from perturbation is plotted using only 45 points as mentioned earlier.
+Nevertheless, the illustrative comparison clearly indicates that the two SSPs
+are in excellent agreement. Moreover, it is interesting to note
 that the response in ignition
-delay based on the considered probability distributions for $A_i$'s is observed to be approximately linear in the
-active subspace. This observation further indicates that the active subspace is 1-dimensional in this case.
+delay based on the considered probability distributions for $\log(A_i)$ although non-linear, can be approximated by
+a 1-dimensional active subspace.}
 
 We further estimate
-the normalized activity scores for individual uncertain inputs ($\tilde{\nu}_{i,r}$; $r$=1 since the
-active subspace is 1-dimensional)
-using the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad}.
+the normalized activity scores for individual uncertain inputs ($\tilde{\nu}_{i,r}$; $r$=1 \rebut{since a
+1-dimensional active subspace seems reasonably accurate})
+using the components of the dominant eigenvector as shown in Algorithm~\ref{alg:grad} (steps 21 and 22).
 The activity scores for the 19 uncertain pre-exponents ($A_i$'s), estimated
-using the perturbation-based and regression-based approaches are plotted in
-Figure~\ref{fig:comp_as}.  
+using the perturbation and regression strategies are plotted in Figure~\ref{fig:comp_as}.  
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/comp_as}
+  \includegraphics[width=0.45\textwidth]{./Figures/comp_as19D}
 %  \includegraphics[width=0.45\textwidth]{./Figures/ub_conv_kinetics_rich}
-\caption{Left: A bar-graph of normalized activity scores ($\tilde{\nu}_{i,r}$'s) 
+\caption{\rebut{Left: A bar-graph of normalized activity scores ($\tilde{\nu}_{i,r}$'s) 
 for the 19 uncertain pre-exponents ($A_i$'s); $r$
-denotes the number of eigenvectors in the active subspace.}
+denotes the number of eigenvectors in the dominant eigenspace.}}
 \label{fig:comp_as}
 \end{center}
 \end{figure}
@@ -372,12 +398,14 @@ denotes the number of eigenvectors in the active subspace.}
 The activity scores based on the two approaches for gradient estimation agree favorably 
 with each other as well as those
 based on the screening metric involving the DGSMs in~\cite{Vohra:2018}. It is observed that the uncertainty
-associated with the ignition delay is largely due to the uncertainty in $A_9$ and $A_1$. Sensitivity towards
-$A_{15}$ and $A_{17}$ is also found to be significant. 
+associated with the ignition delay is largely due to the uncertainty in $A_9$ \rebut{while $A_1$, $A_{15}$, and
+$A_{17}$ are also observed to contribute significantly towards its variance.}
 
 The above comparisons indicate that the gradient of the ignition delay with respect to the
 uncertain $A_i$'s is reasonably approximated using both, perturbation-based and regression-based
-approaches in this case. Since the number of model evaluations required in the case of
-regression are much fewer, this approach seems favorable for the 19-dimensional problem. 
+approaches in this case. Since the regression approach requires fewer model evaluations for
+gradient estimation, it might be a preferred approach for this setting.
 In the following section, we shift our focus to 
-the higher-dimensional H$_2$/O$_2$ reaction kinetics application involving 33 uncertain inputs. 
+the higher-dimensional H$_2$/O$_2$ reaction kinetics application \rebut{wherein the activation
+energies in the rate law as well as initial pressure, temperature, and stoichiometric conditions
+are also considered to be uncertain.}

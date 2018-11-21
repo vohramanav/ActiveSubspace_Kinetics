@@ -1,0 +1,234 @@
+\section{Introduction}
+\label{sec:intro}
+
+%Constributions:
+
+Time evolution of a chemically reacting system is largely dependent upon rate
+constants associated with individual reactions. The rate constants are
+typically assumed to exhibit a certain correlation with temperature (e.g.,
+Arrhenius-type). Hence, accurate specification of the rate-controlling
+parameters is critical to the fidelity of simulations. However, in practical
+applications, these parameters are either specified using expert knowledge or
+estimated based on a regression fit to a set of sparse and noisy
+data~\cite{Burnham:1987, Burnham:1988, Vohra:2011, Sarathy:2012}.
+%Consequently, the underlying uncertainty associated with the parameters and
+%therefore the simulation is typically ignored. 
+Intensive research efforts in recent years within the field of uncertainty quantification (UQ)
+address the quantification and propagation of uncertainty in system models due to 
+inadequate data, parametric uncertainty, and model errors~\cite{Vohra:2014, 
+Vohra:2017, Morrison:2018, Hantouche:2018, Nannapaneni:2016, Sankararaman:2015,
+Reagana:2003}. 
+
+In complex mechanisms involving a large number of reactions, characterizing the
+propagation of uncertainty from a large set of inputs to the model output is
+challenging due to the associated computational effort.  A major focus of this
+article is the implementation of a robust framework that aims to identify
+\emph{important} directions in the input space that predominantly capture the
+variability in the model output. These directions, which constitute the so called
+\emph{active subspace}~\cite{Constantine:2015}, are the dominant eigenvectors
+of a matrix derived from the gradient information of the model output with
+respect to an input. The active subspace methodology thus focuses on reducing
+the dimensionality of the problem, and hence the computational effort
+associated with uncertainty propagation. 
+
+The application problem considered in this work is the
+H$_2$/O$_2$ reaction mechanism from~\cite{Yetter:1991}. This mechanism has gained
+a lot of attention as a potential source of clean energy for
+locomotive applications~\cite{Das:1996}, and more recently in fuel
+ cells~\cite{Loges:2008,Cosnier:2016}. 
+The mechanism involves 19
+reactions including chain reactions, dissociation/recombination reactions, and
+formation and consumption of intermediate species; see Table~\ref{tab:kinetics}. 
+For each reaction, the reaction rate is assumed to follow an Arrhenius
+correlation with temperature:
+%
+\be
+k_i(T) = A_iT^{n_i}\exp(-E_{a,i}/RT), 
+\label{eq:rate}
+\ee
+%
+where $A_i$ is the pre-exponent, $n_i$ is the index of $T$, $E_{a,i}$ is the
+activation energy corresponding to the $i^{th}$ reaction, and $R$ is the
+universal gas constant.  
+%
+\begin{table}[htbp]
+\renewcommand*{\arraystretch}{0.9}
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Reaction \#     & Reaction &&\\
+\bottomrule
+$\mathcal{R}_1$ & H + O$_2$          & $\rightleftharpoons$ & O + OH \\
+$\mathcal{R}_2$ & O + H$_2$          & $\rightleftharpoons$ & H + OH \\
+$\mathcal{R}_3$ & H$_2$ + OH         & $\rightleftharpoons$ & H$_2$O + H \\
+$\mathcal{R}_4$ & OH + OH            & $\rightleftharpoons$ & O + H$_2$O \\
+$\mathcal{R}_5$ & H$_2$ + M          & $\rightleftharpoons$ & H + H + M \\
+$\mathcal{R}_6$ & O + O + M          & $\rightleftharpoons$ & O$_2$ + M \\
+$\mathcal{R}_7$ & O + H + M          & $\rightleftharpoons$ & OH + M \\
+$\mathcal{R}_8$ & H + OH +M          & $\rightleftharpoons$ & H$_2$O + M \\
+$\mathcal{R}_9$ & H + O$_2$ + M      & $\rightleftharpoons$ & HO$_2$ + M \\
+$\mathcal{R}_{10}$ & HO$_2$ + H      & $\rightleftharpoons$ & H$_2$ + O$_2$ \\
+$\mathcal{R}_{11}$ & HO$_2$ + H      & $\rightleftharpoons$ & OH + OH \\
+$\mathcal{R}_{12}$ & HO$_2$ + O      & $\rightleftharpoons$ & O$_2$ + OH \\
+$\mathcal{R}_{13}$ & HO$_2$ + OH     & $\rightleftharpoons$ & H$_2$O + O$_2$ \\
+$\mathcal{R}_{14}$ & HO$_2$ + HO$_2$ & $\rightleftharpoons$ & H$_2$O$_2$ + O$_2$ \\
+$\mathcal{R}_{15}$ & H$_2$O$_2$ + M  & $\rightleftharpoons$ & OH + OH + M \\
+$\mathcal{R}_{16}$ & H$_2$O$_2$ + H  & $\rightleftharpoons$ & H$_2$O + OH \\
+$\mathcal{R}_{17}$ & H$_2$O$_2$ + H  & $\rightleftharpoons$ & HO$_2$ + H$_2$ \\
+$\mathcal{R}_{18}$ & H$_2$O$_2$ + O  & $\rightleftharpoons$ & OH + HO$_2$ \\
+$\mathcal{R}_{19}$ & H$_2$O$_2$ + OH & $\rightleftharpoons$ & HO$_2$ + H$_2$O \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Reaction mechanism for H$_2$/O$_2$ from~\cite{Yetter:1991}}.
+\label{tab:kinetics}
+\end{table}
+%
+The global reaction associated with the H$_2$/O$_2$ mechanism can
+be considered as follows:
+\be
+2\text{H}_2 + \text{O}_2 \rightarrow 2\text{H}_2\text{O}.
+\label{eq:global}
+\ee 
+The equivalence ratio ($\phi$) is given as follows:
+%
+\be
+\phi = \frac{(M_{\text{H}_2}/M_{\text{O}_2})_\text{obs}}{(M_{\text{H}_2}/M_{\text{O}_2})_\text{st}}.
+\label{eq:phi}
+\ee
+%
+where the numerator on the right-hand-side denotes the ratio of the fuel (H$_2$)
+and oxidizer (O$_2$) at a given condition to the same quantity under stoichiometric
+conditions. In this study, computations were performed at fuel-rich conditions,
+$\phi$ = 2.0. Homogeneous ignition at constant pressure is simulated using the
+TChem software package~\cite{Safta:2011}, and the time required for the rate of
+temperature increase to exceed a given threshold, regarded as \emph{ignition delay}
+is recorded. 
+
+We seek to understand the impact of uncertainty in the
+rate-controlling parameters, pre-exponent~($A_i$) and the activation
+energy~($E_{a,i}$) on the ignition delay. The $A_i$'s associated with all
+reactions and the $E_{a,i}$'s with non-zero nominal estimates
+are considered to be uniformly distributed about their nominal estimates provided
+in~\cite{Yetter:1991}.  The total number of uncertain inputs is 33 which makes
+the present problem computationally challenging due to the large number of 
+uncertain parameters.  
+To address this challenge, we focus on reducing the dimensionality
+of the problem by computing the aforementioned active subspace.
+This involves repeated evaluations of the gradient of a model output with
+respect to the input parameters. Several numerical techniques are available
+for computing the gradient. Perturbation-based techniques
+include finite differences and more advanced methods involving
+adjoints~\cite{Jameson:1988,Borzi:2011,Alexanderian:2017}. The
+adjoint-based method requires a solution of the state equation (forward solve)
+and the corresponding adjoint equation. Hence, it is 
+limited by the availability of an adjoint solver. Additional model evaluations
+at neighboring points are required if finite difference is used which increases
+the computational effort. Regression-based techniques aim to estimate the
+gradient by approximating the model output using a regression fit. These
+are computationally less intensive than the former. However, as expected,
+there is a trade-off between computational effort and accuracy in the two
+approaches for estimating the gradient. 
+
+In this work, we adopt an iterative strategy to reduce the computational effort
+associated with active subspace computation. Moreover, we explore two approaches
+for estimating the gradient of the ignition delay with respect to the uncertain
+rate-controlling parameters: pre-exponent, $A_i$ and the activation energy, $E_{a,i}$,
+for $i^{\text{th}}$ reaction in the H$_2$/O$_2$ mechanism. As mentioned above, the
+first approach uses finite difference to estimate the gradient and is regarded as
+the perturbation-based approach, whereas, the second approach involves a linear
+regression-fit to the available set of model evaluations and is regarded as
+the regression-based approach. 
+
+An alternate strategy to dimension reduction involves computing the global
+sensitivity measures associated with the uncertain inputs of a model. Depending
+upon the estimates of the sensitivity measures, only the important inputs are
+varied for the purpose of uncertainty quantification (UQ). Sobol' indices are
+commonly used as global sensitivity measures~\cite{Sobol:2001}. They are
+used to quantify the relative contributions of the uncertain inputs to the variance
+in the output, either individually, or in combination with other inputs. 
+Multiple efforts have focused on efficient computation of the Sobol' 
+indices~\cite{Sudret:2008,Plischke:2013,Tissot:2015,Li:2016} including the 
+derivative-based global sensitivity measures~(DGSMs), developed to
+compute approximate upper bounds for the Sobol' indices with much fewer
+computations~\cite{Sobol:2009, Lamboni:2013}. It was noted
+in~\cite{Diaz:2016,Constantine:2017} that DGSMs can be approximated by
+exploiting their links with active subspaces. This led to the definition of the 
+so-called \emph{activity scores}. In Section~\ref{sub:gsa}, we build on these
+ideas to provide a complete analysis of links between Sobol indices, DGSMs, and
+activity scores for functions of independent random inputs whose distribution
+law belongs to the class of Boltzmann probability measures. 
+It is worth mentioning that computing global sensitivity measures provides 
+important information about a model that go beyond dimension reduction. By 
+identifying parameters with significant impact on the model output, we can assess
+regimes of validity of the model formulation, and gain critical insight into the
+underlying physics in many cases. 
+ 
+The main contributions of this paper are as follows: 
+\begin{itemize}
+\item 
+Active subspace
+discovery in a high-dimensional H$_2$/O$_2$ kinetics problem involving 33
+uncertain inputs: The methodology presented in this work
+resulted in a 1-dimensional active subspace, indicating immense potential
+for computational savings. The presented
+analysis can also guide practitioners in other problems of chemical kinetics on using the
+method of active subspaces to achieve efficiency in uncertainty propagation.  
+\item Comprehensive numerical investigation of the perturbation-based and the regression-based approaches: 
+We investigate the suitability of both approaches
+for estimating the gradient of ignition delay in the H$_2$/O$_2$ mechanism.
+Specifically, we compare resulting
+active subspaces, surrogate models, and the ability to approximate global
+sensitivity measures through a comprehensive set of numerical experiments. Our
+results reveal insight into the merits of the methods as well as
+their shortcomings.  
+\item Analysis of the links between  
+global sensitivity measures: 
+By connecting the recent theoretical advances in variance-based and
+derivative-based global sensitivity analysis to active subspaces, we provide a complete analysis
+of the links between total Sobol' indices, DGSMs, and activity scores for a broad
+class of probability distributions. Our analysis is concluded by a result quantifying
+approximation errors incurred due to fixing unimportant parameters, deemed so by 
+computing their activity scores.  
+
+\end{itemize}
+
+This article is organized as follows. In section~\ref{sub:ac}, a brief
+theoretical background on the active subspace methodology is provided. In
+section~\ref{sub:gsa}, it is shown that the activity scores provide a
+reasonable approximation to the DGSMs especially in a high-dimensional setting.
+Additionally, a relationship between the three global sensitivity measures,
+namely, the activity scores, DGSMs, and the total Sobol' indices is
+established. In section~\ref{sec:method}, a systematic framework for computing
+the active subspace is provided. 
+Numerical results based on the perturbation-based approach are compared with those
+obtained using the regression-based approach.  The active 
+subspace is initially computed for a 19-dimensional 
+H$_2$/O$_2$ reaction kinetics problem wherein only the $A_i$'s are
+considered as uncertain. In this case, the two approaches are observed to yield
+consistent results. We further compute the active  for a 33-dimensional H$_2$/O$_2$
+reaction kinetics problem in section~\ref{sec:app}. Once again, 
+active subspace is found to be 1-dimensional. However, in this case,
+it is observed that although the regression-based estimation of the gradient results in a 
+reasonable approximation of the mean and mode, the variability in the ignition delay
+due to uncertain rate-controlling parameters is under-estimated. Additionally,  
+the sensitivity towards one of the most important parameter is not captured.
+Hence, a trade-off between efficiency and accuracy between the two approaches is
+apparent in the higher-dimensional problem. 
+Finally, a summary and discussion based on our findings is included in
+section~\ref{sec:conc}.
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+

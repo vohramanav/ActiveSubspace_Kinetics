@@ -2,35 +2,38 @@
 \label{sec:app}
 
 For the high-dimensional case, we aim to investigate the impact of the uncertain
-pre-exponents ($A_i$'s) as well as the activation energies ($E_{a,i}$'s) on ignition 
-delay during the H$_2$/O$_2$ reaction.  Prior distributions for $A_i$'s were considered
-to be the same as provided earlier in section~\ref{sec:method}. The $E_{a,i}$'s for all
-reactions except $\mathcal{R}_6$ -- $\mathcal{R}_9$ and $\mathcal{R}_{13}$ (due to 
-zero nominal values for $E_a$)
-were considered to be uncertain and uniformly distributed in the interval: 
-$[0.99E_{a,i}^\ast, 1.01E_{a,i}^\ast]$. Hence, the total number of uncertain rate parameters
-is 33. The nominal values, $E_{a,i}^\ast$
-corresponding to the different reaction rates are provided in~\cite{Yetter:1991}. 
+pre-exponents ($A_i$'s) as well as the activation energies ($E_{a,i}$'s) \rebut{and
+the initial conditions: pressure~($P_0$), temperature~($T_0$), and stoichiometry based on
+the equivalence ratio~($\Phi_0$)} on ignition delay during the H$_2$/O$_2$ reaction. 
+\rebut{The $\log(A_i)$'s, $E_{a,i}$'s for all reactions except 
+$\mathcal{R}_6$ -- $\mathcal{R}_9$, $\mathcal{R}_{13}$ (due to 
+zero nominal values for $E_a$), and the initial conditions were perturbed by
+2$\%$ about their nominal values. Note that the mangnitude of the perturbation
+was selected such that the ignition delay remains positive throughout the input
+domain. The nominal values of the rate parameters, $A_i$'s and $E_{a,i}$'s 
+were taken from~\cite{Yetter:1991}. The nominal values of $P_0$, $T_0$, and
+$\Phi_0$ were considered to be 1.0 atm, 900~K, and 2.0 respectively.}
 
 \subsection{Computing the active subspace}
 
-The active subspace was computed using the iterative procedure outlined in Algorithm~\ref{alg:grad}.
-The convergence of the eigenvectors
-was examined by tracking $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$, plotted in 
-Figure~\ref{fig:conv_app} (right). In Figure~\ref{fig:conv_app} (left), individual
-components of the converged eigenvector that constitutes the active subspace,
-are illustrated. The convergence was established using
-a $\tau$ value of 0.02. Finite difference was used to compute model gradients at 40 samples in
-the input domain. Hence, a total of 1360 model evaluations were required for this purpose.  
+The active subspace was computed using the iterative procedure outlined in 
+Algorithm~\ref{alg:grad}. The convergence of the eigenvectors was examined
+by tracking the quantity `$\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$'. 
+\rebut{In Figure~\ref{fig:conv_app}, we examine $\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$
+with increasing iterations for the perturbation and the regression approaches 
+discussed earlier in Section~\ref{sec:method}}. 
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.8\textwidth]{./Figures/eigv10}
-\caption{Left: Individual components of the dominant eigenvector in the
-active subspace,
-obtained using the perturbation-based strategy. Right: The quantity,  
-$\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$
-is plotted for successive iterations to illustrate the convergence behavior.}
+  \includegraphics[width=0.8\textwidth]{./Figures/eig_conv36Dp2}
+\caption{\rebut{Left: An illustrative comparison of individual components of the 
+dominant eigenvector in the converged active subspace i.e., at the end
+of 4 iterations in the perturbation approach and 9 iterations in the
+regression approach. Right: A comparison of the convergence behavior
+of the perturbation and the
+regression approaches. Convergence is accomplished once 
+$\max(\delta \hat{\mat{W}}_{1,j}^{(i)})$ assumes a value smaller
+than 0.05.}}
 \label{fig:conv_app}
 \end{center}
 \end{figure}

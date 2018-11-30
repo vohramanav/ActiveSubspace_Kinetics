@@ -1,0 +1,83 @@
+\documentclass[11pt,final]{article}
+\renewcommand*\familydefault{\sfdefault}
+%\usepackage{amssymb,amsmath,amsfonts,comment}
+%\usepackage{amsmath,amssymb,graphicx,subfigure,psfrag}
+\usepackage{amsmath,amssymb,graphicx,subfigure,psfrag,upgreek}
+\usepackage{algorithm,algorithmic}
+\usepackage{amssymb,mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{color,pdfcolmk}
+\newcommand{\todo}[1]{\noindent\emph{\textcolor{red}{Todo: #1\:}}}
+%\newcommand{\alennote}[1]{\noindent\emph{\vspace{1ex}\textcolor{cyan}{Alen: #1\:}}\\[1ex]}
+\newcommand{\referee}[1]{\vspace{.1ex}\noindent{\textcolor{blue}{#1}}}
+
+
+
+\begin{document}
+
+%We thank the reviewers for their careful reading of our article 
+%and the helpful comments and suggestions.
+%Please find below point-by-point replies (in black) to your comments and
+%questions (which are reprinted in blue). To give you an overview of all the
+%changes in the paper, we also provide a diff-document that highlights the
+%changes between the initial submission and this re-submission.\\[1ex]
+\begin{center}
+{\bf Summary of Modifications to CNF-D-18-00757}\\[6pt]
+{\bf Subspace-based dimension reduction for chemical kinetics applications with epistemic uncertainty}\\[6pt]
+By \\
+Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan 
+\end{center}
+
+\baselineskip=22pt
+
+
+\vspace*{1in}
+
+%We thank the reviewers for their assessment of our manuscript. Please find
+%below point-by-point replies (in black) to your comments and questions
+%(reprinted in blue). Where possible, key modifications have been highlighted
+%in blue in the revised manuscript. We sincerely hope that with these
+%modifications, the paper is found suitable for publication in the
+%{\it Journal of Scientific Computing}.
+
+\clearpage
+
+
+\section{Replies to reviewer \#1}
+%\referee{This draft proposed a systematic approach for surrogate model construction in
+%reduced input parameter spaces in order to reduce the number of model
+%evaluations. The key idea is to approximate the screening parameter iteratively
+%in order to identify the unimportant inputs. The screening procedure also
+%integrates with the adaptive construction of a surrogate in the reduced space
+%to improve the efficiency of the methods. Several numerical examples are used
+%to demonstrate the efficiency and accuracy of the proposed framework.}
+%
+%Comments and Questions:
+%\begin{enumerate}
+%
+%\item \referee{P16, Figure.2,  the estimated screening parameters eq (5) based on eq(1)
+%quickly converge with a small number of samples (5-10 samples). It seems that
+%if $\mu_i$ is based on eq(1), it will still require a reasonable amount of
+%samples, can authors comment on why this example converges with a small number
+%of samples? The same question applies to Figure 5 and Figure 7.}
+%
+%Convergence behavior in this case depends upon the variability in the gradient of
+%$G(\theta)$ with respect to individual parameters, $\theta_i$ in their respective
+%domains. For the numerical tests and the application considered in this work, the
+%gradient is not observed to vary significantly in the considered domain of the
+%parameters. In other words, the variance of the estimator is low. 
+%Hence, a small number of Monte Carlo samples are able to estimate
+%the screening parameters. This is a common observation in many practical
+%applications, and therefore the proposed methodology involving an iterative
+%approach can yield significant computational savings. 
+%
+%These points have been added in the discussion in Section~6 (Summary and
+%Conclusion, Page 34) in the revised manuscript. 
+%
+%\end{enumerate}
+
+\section{Replies to reviewer \#2}
+
+
+\end{document}

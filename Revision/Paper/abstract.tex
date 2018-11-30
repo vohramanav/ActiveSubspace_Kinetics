@@ -1,15 +1,16 @@
 \section*{Abstract}
 We focus on an efficient approach for quantification of uncertainty in complex chemical
-reaction networks with a large number of uncertain parameters.  Parameter
+reaction networks with a large number of uncertain parameters \rebut{and input conditions}.  Parameter
 dimension reduction is accomplished by computing an~\emph{active subspace} that
 predominantly captures the variability in the quantity of interest (QoI).  In
 the present work, we compute the active subspace for a H$_2$/O$_2$ mechanism 
 that involves 19 chemical reactions, using an efficient iterative strategy.  The
 active subspace is first computed for a 19-parameter problem wherein only the
 uncertainty in the pre-exponents of the individual reaction rates is
-considered. This is followed by the analysis of a 33-dimensional case wherein
-the activation energies are also considered uncertain.  In both cases, a
-1-dimensional active subspace is identified, which indicates enormous
+considered. This is followed by the analysis of a \rebut{36}-dimensional case wherein
+the activation energies \rebut{and initial conditions} are also considered uncertain.  In both cases, a
+1-dimensional active subspace is observed to capture the uncertainty in the QoI,
+ which indicates enormous
 potential for efficient statistical analysis of complex chemical systems. In
 addition, we explore links between active subspaces and global sensitivity
 analysis, and exploit these links for identification of key

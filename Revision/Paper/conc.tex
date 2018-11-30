@@ -1,34 +1,17 @@
 \section{Summary and Discussion}
 \label{sec:conc}
-
-%%Brief summary
-%-Mathematical connections between Sobol, DGSMs, and activity scores exist and could
-%be exploited to perform GSA with reduced effort.
-%-Iterative implementation yields advantage
-%-Consistency between the two approaches with DGSM as well as among themselves
-%encourages the use of gradient-free.
-%-Grad-free was found to be suitable for a high-dimensional problem.
-%-Based on the results presented, the following parameter were found to be 
-%significant.
-%
-%discussion
-%- Methodology is agnostic to the choice of mechanism and could be applied to other
-%systems.
-%- However, constraints exist in terms of differentiability of the QoI. Not all
-%input/output relationships exhibit an active subspace. However, it is important to
-%check.
-%- Activity scores could be used to identify key reactions and thereby construct
-%reduced order mechanisms for reducing computational effort and investigating the
-%inadequacy associated with rate laws.
  
 In this work, we focused on the uncertainty associated with the
-rate-controlling parameters in the H$_2$/O$_2$ reaction mechanism and its
+rate-controlling parameters in the H$_2$/O$_2$ reaction mechanism
+\rebut{as well as the initial pressure, temperature, and stoichiometry} and its
 impact on ignition delay predictions. The mechanism involves 19 different
 reactions and in each case, the reaction rate depends upon the choice of a
 pre-exponent and an activation energy. Hence, in theory, the evolution of the
-chemical system depends upon 38 inputs. However, we considered 
+chemical system depends upon 38 rate parameters \rebut{and three initial conditions}.
+However, we considered 
 epistemic uncertainty in all pre-exponents and activation energies with non-zero
-nominal values i.e. a total of 33 parameters instead of 38.  
+nominal values i.e. a total of 33 rate parameters instead of 38 \rebut{in addition to
+the three initial conditions}.  
 %Conventional means for uncertainty quantification such as those involving
 %surrogate model construction as well as sensitivity analysis would thus be
 %computationally challenging.
@@ -44,80 +27,41 @@ different global sensitivity measures: activity scores, DGSMs, and total Sobol'
 index which could be exploited to reduce computational effort associated with
 global sensitivity analysis. 
  
-
 Active subspace computation requires repeated evaluations of the gradient of
 the QoI i.e. the ignition delay. For this purpose, we explored two approaches,
 namely, perturbation-based (e.g. finite difference - used in this work, adjoint-based
 methods, etc.) and regression-based. Both approaches were shown to yield consistent
 results for the 19-dimensional
 problem wherein only the pre-exponents were considered to be uncertain.
+\rebut{It was observed that the computational effort required to obtain a 
+converged active subspace was comparable for the two approaches. However,
+the predictive accuracy of the perturbation approach was observed to be
+slightly higher. Moreover, a 1-dimensional active subspace was shown to
+reasonably approximate the uncertainty in the ignition delay.}
 Additionally, the activity scores were also shown to be consistent with the
 screening metric estimates based on DGSMs in~\cite{Vohra:2018}. An
 iterative procedure was adopted to enhance the computational efficiency. 
 
-The active subspace was further computed for a 33-dimensional problem
+The active subspace was further computed for a 36-dimensional problem
 wherein all pre-exponents and activation energies with non-zero nominal
-estimates were considered uncertain. Once again, the active subspace
-was found to be 1-dimensional. However, unlike the 19-dimensional case,
-gradient estimation using the regression-based approach resulted in an
-under-estimation of the variability in the ignition delay and also failed
-to capture the sensitivity towards one of the most important parameters, $E_{a,15}$.
-We attribute
-this discrepancy to two potential sources of numerical errors: (1)
-Regression-based approximation of the gradient of the model output, and (2)
-Scatter in the corresponding SSP (see Figure~\ref{fig:hd}) leading to numerical
-error incurred by the linear regression fit in this case. 
-Global sensitivity estimates using the perturbation-based
-approximation of the gradient indicated that the variability in the ignition
-delay is  largely dependent on $A_1$, $A_9$,
-$E_{a,1}$ and $E_{a,15}$, although contributions from $A_{15}$ and $A_{17}$
-were also found to be significant. 
-Hence, while the
-regression-based approach 
-reduces computational effort, the present investigations clearly reveal
-potential pitfalls associated with this approach. 
+estimates \rebut{as well as the initial conditions} were considered uncertain. 
+\rebut{Once again, consistent results were obtained using the two approaches.
+A 1-dimensional active subspace was shown to reasonably
+capture the uncertainty in the ignition delay in this case. However, the
+computational effort required to compute a converged active subspace
+using perturbation was found to be half of the effort required in the case
+of regression. Predictive accuracy of the two approaches was found to 
+be comparable. Hence, perturbation seems like a preferred approach
+for the higher-dimensional problem based on our findings. GSA results indicated
+that the variability in the ignition delay is predominantly due to the 
+uncertainty in the rate parameters, $A_1$ and $A_9$ with significant
+contributions from $A_{15}$, $A_{17}$, and $E_{a,15}$. Additionally, the
+ignition delay was found to be sensitive towards $T_0$.}
 
-%Computational gains using the proposed framework in this work are essentially
-%realized by using the 1-dimensional surrogate in the active subspace that
-%essentially casts a mutlivariate input in the full space into a univariate
-%input in the reduced space. The surrogate can be used to accelerate forward
-%propagation of the uncertainty as well as parameter estimation in a Bayesian
-%setting. Hence, we focused our efforts to verify the accuracy of the
-%1-dimensional surrogates, obtained using both strategies.  The 1-dimensional
-%surrogates were assessed for accuracy by first evaluating the relative $L^2$-norm
-%of the error between its predictions and model evaluations at $10^4$
-%independent MC samples in the 33-dimensional input domain. The relative error
-%computed using predictions from the surrogate resulting from the regression-based
-%approach were found to be an order of magnitude larger than that estimated
-%using surrogate resulting from the perturbation-based approximation of the gradient.
-
-%Additionally, the surrogates were assessed by comparing probability
-%distributions for the ignition delay,
-%constructed using surrogate predictions and model evaluations at the same set
-%of 10$^4$ random samples. The PDFs based on model evaluations and the
-%1-dimensional surrogate from the perturbation-based approach were found to be
-%almost identical. However, the PDF based on 1-dimensional surrogate from the
-%regression-based approach, although captured the modal estimate with reasonable
-%accuracy, was observed to underestimate the uncertainty in the ignition delay.
-%Mean estimates of the ignition delay using model evaluations and predictions
-%using the two surrogates at 10$^4$ samples were found to be in agreement.
-%However, the standard deviation, computed using predictions from
-%the surrogate resulting from the regression-based approach was found to be accurate
-%only upto the first significant digit. Moreover, it was observed that the
-%activity scores, computed using the regression-based strategy failed to capture
-%the sensitivity towards one of the most important parameters, $E_{a,15}$.  
-%
-%More specifically, using
-%the regression-based approach, 
-%\begin{itemize} 
-%\item The desired statistics (e.g. mean and variance) of the
-%QoI might not be approximated to a desired level of accuracy.  
-%\item The
-%approach might fail to capture the sensitivity  of the QoI towards all inputs.
-%\end{itemize} 
 Therefore, in general, perturbation-based approaches should be preferred for 
-active subspace computation.
-The regression-based approach can be explored in situations involving intensive
+active subspace computation especially in situations where efficient gradient
+computation techniques (adjoints-based, automatic differentiation, etc.) are
+feasible. The regression-based approach can be explored in situations involving intensive
 simulations where the perturbation-based methods are intractable.
 %
 %and the goal is obtaining rough estimates of the statistics of the QoI as
@@ -137,7 +81,8 @@ domain of the inputs.  We have demonstrated that the active subspace could be
 exploited for efficient forward propagation of the uncertainty from inputs to
 the output. The resulting activity scores and the low-dimensional surrogate
 could further guide optimal allocation of computational resources for
-calibration of the important rate-controlling parameters in a Bayesian setting.
+calibration of the important rate-controlling parameters \rebut{and input conditions}
+ in a Bayesian setting.
 Additionally, dimension reduction using active subspaces could assist in
 developing robust formulations for predicting discrepancy between simulations
 and measurements due to epistemic uncertainty in the model inputs.

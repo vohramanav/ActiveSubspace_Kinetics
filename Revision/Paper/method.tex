@@ -11,9 +11,9 @@ $A_i^\ast$ is the nominal
 estimate provided in~\cite{Yetter:1991}.
 Two approaches are explored for estimating the gradient of ignition delay with
 respect to \rebut{$\log(A_i)$}: 
-a perturbation-based approach that involves computation of model
+a perturbation  approach that involves computation of model
 gradients using finite difference in order to construct the matrix $\hat{\mat{C}}$
-in~\eqref{eq:chat}, and a regression-based approach 
+in~\eqref{eq:chat}, and a regression  approach 
 that involves a linear regression fit to the available set of
 model evaluations in order to approximate the gradient. 
 The active subspace is computed in an iterative manner to avoid
@@ -31,6 +31,9 @@ using the regression-based approach involves a series of linear regression
 fits to subsets of available evaluations as discussed 
 in~\cite{Constantine:2015} (see Algorithm 1.2). Hence, the computational effort is  
 reduced by a factor $(d+1)$ when using the regression-based approach.
+In other words, for the same amount of computational effort, the regression
+approach can afford a sample size that is (d+1) times larger than that in the
+case of perturbation approach.
 The specific sequence of steps
 for computing the active subspace is discussed as follows.   
 
@@ -57,7 +60,7 @@ the maximum relative change at iteration $k$, $\max(\delta \hat{\mat{W}}_{1,j}^{
 is smaller than a given tolerance, $\tau$.  A regression fit to
 $G(\hat{\mat{W}}_1^\top\bm{\xi})$ is used as a surrogate to characterize and
 quantify the uncertainty in the model output. Moreover, the components of the
-dominant eigenvectors are used to compute the activity scores, $\bm{\nu}_r(f)$,
+eigenvectors in the active subspace are used to compute the activity scores, $\bm{\nu}_r(f)$,
 which provide an insight into the relative importance of the uncertain inputs.
 Note that the index, $r$, corresponds to the number of eigenvectors in
 $\hat{\mat{W}}_1$. The sequence of steps as discussed are outlined
@@ -136,8 +139,8 @@ in Algorithm~\ref{alg:grad}.
 To assess its feasibility and suitability, we implement
 Algorithm~\ref{alg:grad} to compute the active subspace for 
 the 19-dimensional H$_2$/O$_2$ reaction kinetics
-problem with uncertain \rebut{$\log(A_i)$ values as discussed earlier}.
-For the purpose of verification,
+problem by perturbing \rebut{$\log(A_i)$ by 3$\%$ about its nominal
+value as discussed earlier}. For the purpose of verification,
 $\hat{\mat{C}}$ was initially constructed using a large set of samples
 ($N$~=~1000) in the input domain. The gradient was estimated using
 finite difference, and hence, a total of 20,000 model runs were performed. 
@@ -189,7 +192,7 @@ The iterative strategy therefore offers a significant potential for computationa
 %\label{sub:gradfree}
 
 The active subspace for the 19-dimensional problem was also computed using regression-based
-estimates of the gradient that does not require model evaluations at neighboring points as
+estimates of the gradient that do not require model evaluations at neighboring points as
 discussed earlier.
 %
 %The gradient-free approach exploits a regression-based local linear
@@ -332,10 +335,7 @@ Center: The quantity,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$
 is plotted for successive iterations to illustrate convergence behavior for the two strategies. Right: The
 quantity, $\varepsilon_{\text{L}^{2}}^{N-n}$ is plotted as a function of iterations to compare the accuracy
 of the two strategies. Note that the above plots compare the convergence and accuracy of the two
-strategies for the same amount of computational effort, quantified by the number of model runs, $M$.
-The legend provides the number of samples, $N$ and correspondingly, the
-model runs, $M$ required for obtaining a converged dominant eigenvector using the perturbation and
-regression strategies. Corresponding value of $N$ and $M$ for the test case are also provided.}}
+strategies for the same amount of computational effort, quantified by the number of model runs, $M$.}}
 \label{fig:comp}
 \end{center}
 \end{figure}
@@ -343,7 +343,8 @@ regression strategies. Corresponding value of $N$ and $M$ for the test case are 
 \rebut{In Figure~\ref{fig:comp} (left), we compare the
 squared values of individual components of the dominant eigenvector obtained using the two approaches
 at the end of 8 iterations in each case. Additionally, the dominant eigenvector components obtained
-for a test case involving $N$~=~1000 samples using the perturbation approach are also plotted. 
+for a test case involving $N$~=~1000 (and $M$ = 20,000 model runs)
+samples using the perturbation approach are also plotted. 
 The set of eigenvector components for the three cases are found to be in excellent agreement with
 each other, indicating that both
 approaches have sufficiently converged and are reasonably accurate for this setup.}
@@ -369,7 +370,7 @@ perturbation and the regression strategies for computing the active subspace.}}
 \rebut{The dominant eigenvector obtained using perturbation is based on $N$~=~45 samples which requires
 $M$~=~900 model runs. For the same amount of computational effort, we can afford $N$~=~900 samples
 when using regression. Hence, the SSP from regression is based on 900
-points: ($\hat{\mat{W}}_1^\top\bm{\xi}$,$G(\hat{\mat{W}}_1^\top\bm{\xi})$). On the other hand, the SSP
+points: ($\hat{\mat{W}}_1^\top\bm{\xi}$,~$G(\hat{\mat{W}}_1^\top\bm{\xi})$). On the other hand, the SSP
 from perturbation is plotted using only 45 points as mentioned earlier.
 Nevertheless, the illustrative comparison clearly indicates that the two SSPs
 are in excellent agreement. Moreover, it is interesting to note
@@ -402,9 +403,10 @@ associated with the ignition delay is largely due to the uncertainty in $A_9$ \r
 $A_{17}$ are also observed to contribute significantly towards its variance.}
 
 The above comparisons indicate that the gradient of the ignition delay with respect to the
-uncertain $A_i$'s is reasonably approximated using both, perturbation-based and regression-based
-approaches in this case. Since the regression approach requires fewer model evaluations for
-gradient estimation, it might be a preferred approach for this setting.
+uncertain $A_i$'s is reasonably approximated using both, perturbation  and regression 
+approaches in this case. \rebut{Since both approaches yield consistent results and are
+comparable in terms of convergence and accuracy, we could use either for the purpose
+of active subspace computation for this setting.}
 In the following section, we shift our focus to 
 the higher-dimensional H$_2$/O$_2$ reaction kinetics application \rebut{wherein the activation
 energies in the rate law as well as initial pressure, temperature, and stoichiometric conditions

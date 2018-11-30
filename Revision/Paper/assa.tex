@@ -94,14 +94,14 @@ data points, $\big(\vec{\xi}_i, f(\vec{\xi}_i)\big)$, $i = 1, \ldots, N$.
 \item For each $\vec{\xi}_i$, compute $\vec{y}_i = \mat{W}_1^\top\vec{\xi}_i$. Note that
  $G(\vec{y}_i)$ $\approx$ $f(\vec{\xi}_i)$.
 \item Use data points $\big(\vec{y}_i, f(\vec\xi_i)\big)$, $i = 1, \ldots, N$, to compute a 
-regression surface $\tilde{G}(\vec{y})\approx 
+regression surface $\hat{G}(\vec{y})\approx 
 G(\vec{y})$.
-\item Overall approximation, $f(\vec{\xi})$ $\approx$ $\tilde{G}(\mat{W}_1^\top\vec{\xi})$.
+\item Overall approximation, $f(\vec{\xi})$ $\approx$ $\hat{G}(\mat{W}_1^\top\vec{\xi})$.
 \end{enumerate}
 
 In practice, the matrix $\mat{C}$ defined in~\eqref{eq:C} is 
 approximated using pseudo-random sampling techniques such as Monte Carlo or
-Latin hypercube sampling:
+Latin hypercube sampling (used in this work):
 %The integral in~\eqref{eq:C} is replaced with a
 %summation as follows:
  %
@@ -150,7 +150,7 @@ where $V$ is a continuous function and $C$ a normalization
 constant~\cite{Lamboni:2013}.
 
 
-The total Sobol' index ($T_i(f)$) of a model output, $f(\vec\xi)$ quantifies
+The total-effect Sobol' index ($T_i(f)$) of a model output, $f(\vec\xi)$ quantifies
 the total contribution of the input, $\xi_i$ to the variance of the
 output~\cite{Sobol:2001}. Mathematically, this can be expressed as follows:
 %
@@ -161,7 +161,7 @@ T_i(f) = 1 -
 \ee
 %
 where $\vec{\xi}_{\sim i}$ is the input parameter vector with the  
-$i^\text{th}$ entry removed, and $\V$ denotes the variance. The total Sobol' index accounts
+$i^\text{th}$ entry removed, and $\V$ denotes the variance. The total-effect Sobol' index accounts
 for the contribution of a given input to the variability in the output by itself
 as well as due to its interaction or coupling with other inputs. 
 Determining accurate estimates of $T_i(f)$ typically involves a large 
@@ -288,7 +288,7 @@ The statement (b) follows immediately from (a), because $\nu_i(f) = \act{f}{i}{\
 %$\sum_{i=1}^\Np \nu_i(f) = \trace(\mat{C}) = \sum_{k = 1}^\Np \lambda_k$.
 \end{proof}
 
-It was shown in~\cite{Lamboni:2013} that the total Sobol' 
+It was shown in~\cite{Lamboni:2013} that the total-effect Sobol' 
 index $T_i(f)$ can be bounded in terms of $\nu_i(f)$:
 \begin{equation}\label{equ:sobol_bound}
 T_i(f) \leq \frac{C_i}{\V(f)}\nu_i(f), \quad i = 1, \ldots, \Np,
@@ -303,7 +303,7 @@ The bound~\eqref{equ:sobol_bound} provides a strong theoretical basis for using 
 unimportant inputs. 
 
 Combining Proposition~\ref{prp:dgsm_bound} and~\eqref{equ:sobol_bound}, shows
-an interesting link between the activity scores and total Sobol' indices.
+an interesting link between the activity scores and total-effect Sobol' indices.
 Specifically, by computing the activity scores, we can identify the unimportant
 inputs.  
 Subsequently, 
@@ -400,7 +400,7 @@ The significance of the developments in this section are as follows.
 Theorem~\ref{thm:error_estimate} provides a theoretical basis for parameter dimension
 reduction using activity scores. This is done by providing an estimate of the
 error between the reduced model and the original model. If a precise ranking of
-parameter importance based on total Sobol' indices is desired, one
+parameter importance based on total-effect Sobol' indices is desired, one
 can first identify unimportant inputs by computing activity scores, and then
 perform a detailed variance based GSA of the remaining model parameters. This approach will 
 provide great computational savings as variance based GSA will now be performed only

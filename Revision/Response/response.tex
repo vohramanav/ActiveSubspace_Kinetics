@@ -8,6 +8,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{color,pdfcolmk}
+\usepackage{enumitem,kantlipsum}
 \newcommand{\todo}[1]{\noindent\emph{\textcolor{red}{Todo: #1\:}}}
 %\newcommand{\alennote}[1]{\noindent\emph{\vspace{1ex}\textcolor{cyan}{Alen: #1\:}}\\[1ex]}
 \newcommand{\referee}[1]{\vspace{.1ex}\noindent{\textcolor{blue}{#1}}}
@@ -24,7 +25,8 @@
 %changes between the initial submission and this re-submission.\\[1ex]
 \begin{center}
 {\bf Summary of Modifications to CNF-D-18-00757}\\[6pt]
-{\bf Subspace-based dimension reduction for chemical kinetics applications with epistemic uncertainty}\\[6pt]
+{\bf Subspace-based dimension reduction for chemical kinetics applications with 
+epistemic uncertainty}\\[6pt]
 By \\
 Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan 
 \end{center}
@@ -44,40 +46,85 @@ Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan
 \clearpage
 
 
-\section{Replies to reviewer \#1}
-%\referee{This draft proposed a systematic approach for surrogate model construction in
-%reduced input parameter spaces in order to reduce the number of model
-%evaluations. The key idea is to approximate the screening parameter iteratively
-%in order to identify the unimportant inputs. The screening procedure also
-%integrates with the adaptive construction of a surrogate in the reduced space
-%to improve the efficiency of the methods. Several numerical examples are used
-%to demonstrate the efficiency and accuracy of the proposed framework.}
-%
-%Comments and Questions:
-%\begin{enumerate}
-%
-%\item \referee{P16, Figure.2,  the estimated screening parameters eq (5) based on eq(1)
-%quickly converge with a small number of samples (5-10 samples). It seems that
-%if $\mu_i$ is based on eq(1), it will still require a reasonable amount of
-%samples, can authors comment on why this example converges with a small number
-%of samples? The same question applies to Figure 5 and Figure 7.}
-%
-%Convergence behavior in this case depends upon the variability in the gradient of
-%$G(\theta)$ with respect to individual parameters, $\theta_i$ in their respective
-%domains. For the numerical tests and the application considered in this work, the
-%gradient is not observed to vary significantly in the considered domain of the
-%parameters. In other words, the variance of the estimator is low. 
-%Hence, a small number of Monte Carlo samples are able to estimate
-%the screening parameters. This is a common observation in many practical
-%applications, and therefore the proposed methodology involving an iterative
-%approach can yield significant computational savings. 
-%
-%These points have been added in the discussion in Section~6 (Summary and
-%Conclusion, Page 34) in the revised manuscript. 
-%
-%\end{enumerate}
+\section*{Reviewer \#1}
 
-\section{Replies to reviewer \#2}
+\begin{enumerate}[wide, labelwidth=!, labelindent=0pt]
+\item \referee{The authors find that the uncertainty in the ignition delay time is governed
+by the uncertainty in H+O~2$<$=$>$~O+OH.
+The connection between this reaction and the ignition delay time is so overwhelming that it
+is probably responsible for the 1-dimensional active subspace reduction. Once the sensitivity
+indices are computed, the one associated with this key reaction is largest.
+To a combustion scientist, the fact that ignition delay time (and the uncertainty in the 
+ignition delay time when pre-exponentials or activation energies are changed) is governed 
+by H+O2~$<$=$>$~O+OH is obvious. This is THE key reaction in combustion kinetics with 10s 
+(if not 100s) of studies dedicated to it (from the beginning of the field…). This is textbook k knowledge.
+E.g. Figure 4 in Hong et al. (PCI 33, 2011, p. 309-316) shows that, indeed, this is the key 
+reaction in sensitivity (by a large margin…). That figure is a "sensitivity analysis" 
+which one can accomplish easily.
+So, if this is the case, is the authors' reduction framework working because the nonlinear system
+is really "simple" in its response to varying parameters}
+
+The complexity of the H$_2$/O$_2$ reaction kinetics application in the revised manuscript has been significantly
+enhanced by increasing the degree of uncertainty in the rate parameters, and considering additional 
+uncertainty in the
+initial pressure, temperature, and stoichiometry of the system. As a result, the non-linearity in the system
+response is observed to increase substantially as seen in Figures 3 and 6 unlike a straight line as 
+observed earlier. Our sensitivity analysis results in Figure 4 using the proposed framework based on the
+active subspace methodology are shown to be consistent with our earlier results using the derivative-based
+global sensitivity analysis (Ref. 35). The sensitivity results for the higher-dimensional problem in the
+revised manuscript reveal that the igntion delay is largely impacted by
+the uncertainty in the pre-exponents associated with reactions 1, 9, and the initial temperature. Additionally,
+we observe significant sensitivity towards the rate parameters associated with reaction 15 and the pre-exponent
+associated with the rate of reaction 17. 
+Therefore, depending upon the considered prior uncertainty in the individual rate parameters for the 19
+reactions, and the range of values of the initial conditions, the proposed framework helps identify the
+key contributors to the uncertainty in the ignition delay. The analysis accounts for individual 
+contributions of the parameters as well as due to their interactions with other parameters to the 
+output uncertainty in the system response. Through this relatively more complex
+problem, we have demonstrated the robustness of the proposed framework. 
+
+As mentioned in Section 6
+(Summary and Discussion), the proposed framework is agnostic to the choice of the system and could be extended
+to other kinetics applications as long as the system response is continuously differentiable in the domain of
+the inputs and is therefore applicable to a wide variety of applications.    
+
+\item \referee{Related to 1) above, it is of paramount importance that the authors consider, at least, 
+methane, for which I expect less of a spectral gap in the matrix C. Ideally, more complex fuels with 
+more nounced responses.
+In other words, if the method works well for a simple case, what is its value to the community?
+The authors must try this out on a much more complex hydrocarbon/oxygen system.}
+
+A more complex problem as suggested by the reviewer would manifest itself into an increased number of
+uncertain parameters and/or an increased amount of non-linearity in the system response. Therefore, while
+we did not implement the framework to a new system, we have significantly increased the non-linearity of the
+response by increasing the degree of uncertainty in the rate parameters. In addition to the rate parameters,
+we perturb the initial conditions to investigate their impact on the response individually as well as due to
+their interaction with the rate parameters. Hence, we have also increased the dimensionality of the problem.
+As expected by the reviewer, the resulting spectral gap between the first two eigenvalues is observed to
+decrease for this relative more complex scenario as shown in Figure~1 in the revised manuscript. 
+The proposed framework has been used effectively compute the active subspace, construct a low-dimensional
+surrogate, and perform a global sensitivity analysis in this case. 
+
+\item \referee{The authors report ignition delay times of 0.1 s (?). See for example Fig. 7 and Tab. 2.
+Are these seconds (s)? If this is the case, what kind of conditions (temperature/pressure/stoichiometry)
+are the authors considering? They seem very unphysical if the yield an ignition delay time of O(0.1 s).
+I could not find any clarification of the initial conditions for the ignition calculations.
+This is again a symptom of the disconnect between the authors' aims (a novel method, potentially very useful to the combustion community) and the combustion community's aims (more understanding and tools that can be of help in combustion kinetics).}
+
+The nominal values of the initial conditions: pressure ($P_0$), temperature ($T_0$), and
+the equivalence ratio~($\Phi_0$) considered in the computations are 1~atm, 900~K, and 2.0
+respectively. These values have been reported in the revised manuscript in the begining of
+Section 5 on page 15.
+In this revision, we perturb the initial conditions to study their impact
+on ignition delay estimates. The mean estimate of the ignition delay using data at 10$^4$ random samples in
+the 36-dimensional space is found to be approximately 0.15 as reported in Table 2 on page 18 in the
+revised manuscript. As mentioned in the paper, we have used 
+the TChem software for model predictions and based on our recent communication with the developers at
+Sandia National Laboratories, these estimates seem reasonable. 
+
+\noindent Minor comments by the reviewer have also been addressed in the revised manuscript.
+
+\end{enumerate}
 
 
 \end{document}

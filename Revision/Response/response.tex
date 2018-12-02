@@ -64,7 +64,7 @@ which one can accomplish easily.
 So, if this is the case, is the authors' reduction framework working because the nonlinear system
 is really "simple" in its response to varying parameters}
 
-The complexity of the H$_2$/O$_2$ reaction kinetics application in the revised manuscript has been significantly
+\noindent The complexity of the H$_2$/O$_2$ reaction kinetics application in the revised manuscript has been significantly
 enhanced by increasing the degree of uncertainty in the rate parameters, and considering additional 
 uncertainty in the
 initial pressure, temperature, and stoichiometry of the system. As a result, the non-linearity in the system
@@ -94,7 +94,7 @@ more nounced responses.
 In other words, if the method works well for a simple case, what is its value to the community?
 The authors must try this out on a much more complex hydrocarbon/oxygen system.}
 
-A more complex problem as suggested by the reviewer would manifest itself into an increased number of
+\noindent  A more complex problem as suggested by the reviewer would manifest itself into an increased number of
 uncertain parameters and/or an increased amount of non-linearity in the system response. Therefore, while
 we did not implement the framework to a new system, we have significantly increased the non-linearity of the
 response by increasing the degree of uncertainty in the rate parameters. In addition to the rate parameters,
@@ -111,7 +111,7 @@ are the authors considering? They seem very unphysical if the yield an ignition 
 I could not find any clarification of the initial conditions for the ignition calculations.
 This is again a symptom of the disconnect between the authors' aims (a novel method, potentially very useful to the combustion community) and the combustion community's aims (more understanding and tools that can be of help in combustion kinetics).}
 
-The nominal values of the initial conditions: pressure ($P_0$), temperature ($T_0$), and
+\noindent  The nominal values of the initial conditions: pressure ($P_0$), temperature ($T_0$), and
 the equivalence ratio~($\Phi_0$) considered in the computations are 1~atm, 900~K, and 2.0
 respectively. These values have been reported in the revised manuscript in the begining of
 Section 5 on page 15.
@@ -135,7 +135,7 @@ works better than regression, but then it is a direct and clear consequence of t
 approximation is supposed to be better than a global one. Ideally, much more quantitative comparison
 needs to be made here before reaching any meaningful conclusions.}
 
-As suggested by the reviewer, we have focused on a quantitative comparison in terms of the
+\noindent  As suggested by the reviewer, we have focused on a quantitative comparison in terms of the
 number of samples and associated model runs required to obtain a converged active subspace
 for the two approaches. In addition to convergence characteristics, we have also compared
 the two approaches for their predictive accuracy for the same computational effort for the
@@ -151,7 +151,7 @@ uncertainty form is multiplicative or, equivalently, log(A) is the underlying fu
 with additive uncertainty range. In the current form of the uncertainty, the problem is too benign,
 and barely carries any practical usability for the practitioners.}
 
-The reviewer has made a valuable suggestion. Therefore, in the revised manuscript, we have
+\noindent The reviewer has made a valuable suggestion. Therefore, in the revised manuscript, we have
 updated the computations for the active subspace using perturbation and regression by considering
 the uncertainty in $\log(A)$ as opposed to $A$. As a result, the non-linearity of the system
 response is observed to increase significantly and the variability of the ignition delay in the
@@ -163,13 +163,13 @@ to more complex scenarios.
 \item \referee{Why not use the word 'active' in the title, since active subspace is essentially
 what has been done here?}
 
-The title has been updated as ``Active subspace-based dimension reduction for chemical kinetics
+\noindent  The title has been updated as ``Active subspace-based dimension reduction for chemical kinetics
 applications with epistemic uncertainty".
 
 \item \referee{3.36 $n_i$ is index or power? Is this an established term for the power of T? 
 Also, what are the values of $n_i$'s?}
 
-In the revised manuscript, we denote $n_i$ as the `temperature exponent' as suggested by
+\noindent  In the revised manuscript, we denote $n_i$ as the `temperature exponent' as suggested by
 the other reviewer. Yes, it is an established quantity and its value in addition to the
 rate constants for the 19 reactions
 in the H$_2$/O$_2$ mechanism is taken from [Yetter et. al., 1991] and implemented in the
@@ -178,12 +178,12 @@ in the revised manuscript.
 
 \item \referee{3.51 'rate of temperature' or 'temperature'?}
 
-The ignition delay is considered as the time required for the rate of temperature increase to
+\noindent  The ignition delay is considered as the time required for the rate of temperature increase to
 exceed a threshold in this work.
 
 \item \referee{4.57 not clear where the number 33 comes from since we have 19 reactions. I see it is explained at the beginning of Section 5, but it should be noted here briefly, too.}
 
-We could not locate the number 33 in the location specified by the reviewer. Nevertheless, we would like
+\noindent  We could not locate the number 33 in the location specified by the reviewer. Nevertheless, we would like
 to point out that on Page 4 (just below Table 1) in the introduction, 
 it is mentioned that the activation energies with a non-zero nominal value are considered as uncertain. 
 Since the uncertainty in the activation energy is considered only in the higher-dimensional case
@@ -192,26 +192,49 @@ specified the reactions for which it is 0 in the begining of that section.
 
 \item \referee{6.19 distribution->density function}
 
-The revised manuscript has been updated to include the reviewer's suggestion. 
+\noindent  The revised manuscript has been updated to include the reviewer's suggestion. 
 
 \item \referee{6.38: typo, $w_r$ should be $w_1$}
 
-The typo has been fixed in the revised manuscript. 
+\noindent  The typo has been fixed in the revised manuscript. 
 
 \item \referee{7.23-27: why 'statistical independence' and not just 'independence'? Is there any other 
 type of independence?}
-
-
 
 \item \referee{7.29-30: Any PDF can be written in a Boltzmann form, V(x) is just the negative log-PDF, 
 I am not sure if it is necessary to bring up a Boltzmann distribution language here.
 Also, it could be confused with Maxwell-Boltzmann distribution, which is a very specific PDF form.}
 
+
 \item \referee{7.40: Explain what E and V are with respect to in Eq (8).}
 
-The equation as well as the following descritption of the expectation and the variance
-has been updated to address the reviewer's comment in the revised manuscript. 
+\noindent  The equation as well as the following description of the expectation (E) and the variance (V)
+has been updated to address the reviewer's comment, in the revised manuscript. 
 
+\item \referee{7.50: Just say in words that it is the i-th diagonal element of matrix C.}
+
+\noindent Following the reviewer's suggestion, we have updated the text in the revised manuscript to
+clearly note that the DGSM $\nu_i(f)$ is the $i^{\text{th}}$ diagonal element in the matrix, $\mathbf{C}$
+on Page 8.
+
+\item \referee{10.56: what if there is no eigenvalue gap of O(100)?}
+
+\noindent A large gap in the eigenvalue spectrum typically indicates that a low-dimensional (1--2) active subspace 
+would sufficiently capture the variability in the model output due to uncertainty in the inputs. However,
+in the revised manuscript, we have shown that the variability in the ignition delay is reasonably
+approximated with a 1-dimensional active subspace even though the gap in the first two eigenvalues
+is found to be O(10). Hence, a smaller gap in the eigenvalue spectrum might still lead to a reasonable
+accuracy with a low-dimensional active subspace depending upon the relationship between the
+system response and the inputs. However, it is also possible that we might need to a consider a higher 
+dimensional active subspace to be able to approximate the variability in the response with reasonable
+accuracy in situations where the gap is small. 
+
+\item \referee{11.33: Alg. 1: should have \beta as input, too?}
+
+\noindent The reviewer is correct. Algorithm 1 in the revised manuscript has been updated to include $\beta$
+as an input. 
+
+\noindent 
 
 \end{enumerate}
 

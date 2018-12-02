@@ -24,7 +24,7 @@ semidefinite matrix
 %
 with 
 $\mu(d\vec{\xi}) = \pi(\vec{\xi})d\vec{\xi}$, where $\pi(\vec{\xi})$ is the joint probability
-distribution of $\vec{\xi}$. Herein, $f$ is assumed to be a square integrable 
+\rebut{density function} of $\vec{\xi}$. Herein, $f$ is assumed to be a square integrable 
 function with continuous partial 
 derivatives with respect to the input parameters; moreover, we assume the partial derivatives
 are square integrable. 
@@ -58,7 +58,7 @@ $\lambda_r/\lambda_{r+1}\gg 1$,
 \ee
  %
 The columns of $\mat{W}_1 = 
-\begin{bmatrix} \vec{w}_r \cdots \vec{w}_r\end{bmatrix}$ 
+\begin{bmatrix} \vec{w}_\rebut{1} \cdots \vec{w}_r\end{bmatrix}$ 
 span the dominant eigenspace of $\mat{C}$ and
 define the active subspace, and $\mat{\Lambda}_1$ is a diagonal matrix with
 the corresponding set of eigenvalues, $\lambda_1, \ldots, \lambda_r$, on its diagonal. 
@@ -156,12 +156,15 @@ output~\cite{Sobol:2001}. Mathematically, this can be expressed as follows:
 %
 \be
 T_i(f) = 1 - 
-\frac{\V[\mathbb{E}(f|\vec{\xi}_{\sim i})]}{\V(f)},
+\frac{\V_{\rebut{\vec{\xi}_{\sim i}}}[\mathbb{E}_{\rebut{\xi_i}}(f|\vec{\xi}_{\sim i})]}{\V(f)},
 \label{eq:total}
 \ee
 %
 where $\vec{\xi}_{\sim i}$ is the input parameter vector with the  
-$i^\text{th}$ entry removed, and $\V$ denotes the variance. The total-effect Sobol' index accounts
+$i^\text{th}$ entry removed. \rebut{The expectation is taken over all possible
+values of $\xi_i$ and its variance is computed with respect to all parameters except $\xi_i$.}
+The quantity, $\V(f)$ denotes the total variance of the model output.
+ The total-effect Sobol' index accounts
 for the contribution of a given input to the variability in the output by itself
 as well as due to its interaction or coupling with other inputs. 
 Determining accurate estimates of $T_i(f)$ typically involves a large 

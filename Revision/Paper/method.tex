@@ -120,9 +120,9 @@ in Algorithm~\ref{alg:grad}.
 		\State Partition the eigenspace of $\hat{\mat{C}}$ as shown in Step 7
 		\State Compute $\delta \hat{\mat{W}}_{1,j}^{(k)}$ = 
                        \scalebox{1.25}{$\frac{\|(\hat{\mat{W}}_{1,j}^{k})^2 - 
-                       (\hat{\mat{W}}_{1,j}^{k-1})^2\|}{\|(\hat{\mat{W}}_{1,j}^{k-1})^2\|}$}, 
+                       (\hat{\mat{W}}_{1,j}^{k-1})^2\|_\rebut{2}}{\|(\hat{\mat{W}}_{1,j}^{k-1})^2\|_\rebut{2}}$}, 
                        $j = 1,\ldots,r$.
-		\If {$\max\left(\delta \hat{\mat{W}}_{1,j}^{(k)}\right)<\tau$}
+		\If {$\max\limits_{\rebut{j}}\left(\delta \hat{\mat{W}}_{1,j}^{(k)}\right)<\tau$}
 			\State break
 		\EndIf
 	\EndLoop
@@ -166,7 +166,8 @@ obtained using a much larger sample size, $N$~=~1000.
 %
 We observe that the dominant eigenvalues, $\lambda_1, \ldots, \lambda_4$, 
 are approximated 
-reasonably well with just 20 samples. As expected, the accuracy of higher-order eigenvalues is observed
+reasonably well with just 20 samples. As expected, the accuracy of higher-\rebut{index}
+ eigenvalues is observed
 to improve with the sample size. Since 
 $\lambda_1$ is roughly \rebut{an order of magnitude} larger than $\lambda_2$, we expect 
 a 1-dimensional active subspace \rebut{to reasonably approximate the uncertainty

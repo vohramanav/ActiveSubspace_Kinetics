@@ -229,12 +229,27 @@ system response and the inputs. However, it is also possible that we might need 
 dimensional active subspace to be able to approximate the variability in the response with reasonable
 accuracy in situations where the gap is small. 
 
-\item \referee{11.33: Alg. 1: should have \beta as input, too?}
+\item \referee{11.33: Alg. 1: should have $\beta$ as input, too?}
 
 \noindent The reviewer is correct. Algorithm 1 in the revised manuscript has been updated to include $\beta$
 as an input. 
 
-\noindent 
+\item \referee{11.42: Which norm is used? Any intuition why squares of W are used, and not just W?}
+
+\noindent We have used the L$^2$ norm to estimate the relative change in the squared values of corresponding
+eigenvector components between successive iterations. The algorithm in the revised manuscript has been updated 
+to specify the norm. 
+We consider square of individual components due to the fact the both W and -W contain legitimate eigenvectors 
+of C. Alternatively, we could have also used the modulus value of the components to assess convergence. 
+
+\item \referee{11.45: what is max over?}
+
+\noindent The max is over all eigenvectors in the active subspace denoted by $j$. This has been specified in
+the updated algorithm in the revised manuscript.
+
+\item \referee{12.29: 'higher-order' should be replaced with higher-index or smaller-magnitude, to avoid confusion.}
+
+\noindent The reviewer's suggestion has been incorporated in the revised manuscript.
 
 \end{enumerate}
 

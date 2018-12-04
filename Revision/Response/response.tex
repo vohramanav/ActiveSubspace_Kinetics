@@ -108,7 +108,7 @@ associated with the rate of reaction 17.
 Therefore, depending upon the considered prior uncertainty in the individual rate parameters for the 19
 reactions, and the range of values of the initial conditions, the proposed framework helps identify the
 key contributors to the uncertainty in the ignition delay. The analysis accounts for individual 
-contributions of the parameters as well as due to their interactions with other parameters to the 
+contributions of the parameters as well as contributions due to their interactions with other parameters to the 
 output uncertainty in the system response. Through this relatively more complex
 problem, we have demonstrated the robustness of the proposed framework. 
 
@@ -131,7 +131,7 @@ we perturb the initial conditions to investigate their impact on the response in
 their interaction with the rate parameters. Hence, we have also increased the dimensionality of the problem.
 As expected by the reviewer, the resulting spectral gap between the first two eigenvalues is observed to
 decrease for this relative more complex scenario as shown in Figure~1 in the revised manuscript. 
-The proposed framework has been used effectively compute the active subspace, construct a low-dimensional
+The proposed framework has been used effectively to compute the active subspace, construct a low-dimensional
 surrogate, and perform a global sensitivity analysis in this case. 
 
 \item \referee{The authors report ignition delay times of 0.1 s (?). See for example Fig. 7 and Tab. 2.
@@ -183,11 +183,12 @@ and barely carries any practical usability for the practitioners.}
 \noindent The reviewer has made a valuable suggestion. Therefore, in the revised manuscript, we have
 updated the computations for the active subspace using perturbation and regression by considering
 the uncertainty in $\log(A)$ as opposed to $A$. As a result, the non-linearity of the system
-response is observed to increase significantly and the variability of the ignition delay in the
+response is observed to increase significantly. As shown in Figures~3 and 6, 
+the variability of the ignition delay in the
 active subspace is no longer a straight line as observed earlier. Hence, we have substantially
 increased the complexity of the problem by increasing the non-linearity in the system response
 as well as its dimensionality to illustrate the robustness and the applicability of the proposed framework
-to more complex scenarios. 
+for a wide range of kinetics applications. 
 
 \item \referee{Why not use the word 'active' in the title, since active subspace is essentially
 what has been done here?}
@@ -207,8 +208,8 @@ in the revised manuscript.
 
 \item \referee{3.51 'rate of temperature' or 'temperature'?}
 
-\noindent  The ignition delay is considered as the time required for the rate of temperature increase to
-exceed a threshold in this work.
+\noindent  The ignition delay is considered as the time required for the {\it rate of temperature}
+increase to exceed a threshold, in this work.
 
 \item \referee{4.57 not clear where the number 33 comes from since we have 19 reactions. I see it is explained at the beginning of Section 5, but it should be noted here briefly, too.}
 
@@ -219,7 +220,7 @@ Since the uncertainty in the activation energy is considered only in the higher-
 presented in Section 5, we have
 specified the reactions for which it is 0 in the begining of that section.
 
-\item \referee{6.19 distribution->density function}
+\item \referee{6.19 distribution-$>$density function}
 
 \noindent  The revised manuscript has been updated to include the reviewer's suggestion. 
 
@@ -238,7 +239,7 @@ Also, it could be confused with Maxwell-Boltzmann distribution, which is a very 
 \item \referee{7.40: Explain what E and V are with respect to in Eq (8).}
 
 \noindent  The equation as well as the following description of the expectation (E) and the variance (V)
-has been updated to address the reviewer's comment, in the revised manuscript. 
+has been updated to address the reviewer's comment on Page~7 in the revised manuscript. 
 
 \item \referee{7.50: Just say in words that it is the i-th diagonal element of matrix C.}
 
@@ -321,7 +322,7 @@ perturbations to the input. Otherwise, the problem is too simple and does not do
 \noindent We have made a sincere effort to incorporate these valuable suggestions by the 
 reviewer in the revised manuscript. 
 Specifically, we perturb $\log(A)$ instead of $A$ which is observed to significantly increase
-the non-linearity of the system response. In addition the rate parameters, we analyse the impact
+the non-linearity of the system response. In addition to the rate parameters, we analyse the impact
 of perturbing the initial conditions. Moreover, as suggested by the reviewer, we have
 increased the mangnitude of the perturbations from 1$\%$ to 2$\%$ to illustrate the applicability
 and robustness of the proposed approach to more complex scenarios. 

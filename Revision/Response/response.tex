@@ -43,6 +43,35 @@ Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan
 %modifications, the paper is found suitable for publication in the
 %{\it Journal of Scientific Computing}.
 
+We are extremely thankful to the reviewers for recognizing potential in this effort and 
+for their constructive feedback on the manuscript. A point-by-point
+response to the comments has been provided below. Corresponding modifications have been
+highlighted (in blue) in the revised manuscript. Major changes in the revised manuscript
+are summarized as follows:
+
+\begin{itemize}
+
+\item The complexity of the problem has been increased substantially in two ways: First, 
+the non-linearity of the system response has been signficantly increased by increasing
+the perturbations associated with the uncertain rate-controlling parameters: pre-exponent
+and the activation energy. Second, in addition to the rate parameters, the impact of
+perturbing the initial conditions: pressure, temperature, and stoichiometry pertaining to the
+H$_2$/O$_2$ reaction mechanism on the ignition delay is investigated. Such analysis using the
+proposed framework would provide useful insights to combustion scientists interested in
+kinetics applications. Moreover, it illustrates the applicability and robustness of the 
+framework to complex kinetics applications. 
+
+\item The two approaches, perturbation and regression, for estimating the model gradient
+with respect to uncertain parameters and inputs are compared for convergence behavior and
+predictive accuracy using the same amount of
+computational effort in the revised manuscript, as suggested by one of the reviewers. 
+
+\end{itemize} 
+
+We sincerely hope that based on the modifications in the revised manuscript and our 
+response to reviewers' comments, the paper is found suitable for publication in
+{\it Combustion and Flame}. 
+
 \clearpage
 
 
@@ -250,6 +279,73 @@ the updated algorithm in the revised manuscript.
 \item \referee{12.29: 'higher-order' should be replaced with higher-index or smaller-magnitude, to avoid confusion.}
 
 \noindent The reviewer's suggestion has been incorporated in the revised manuscript.
+
+\item \referee{Figs 2a, 3 and 4 demonstrate the regression-based gradient computation is working
+similarly to the perturbation based one. However, the comparison is really qualitative and does
+ not provide much insight. Clearly, regression will approximate the gradient less accurately then
+a local perturbation, but the latter has a price associated with it as new simulations are needed
+(a factor of d+1). It would have been great to see how accurate each method is for comparable
+expense, or vice-verse, how expensive each approach is for a comparable accuracy. I know there
+is a statement about this at the end of Section 4, but it is neither sufficient nor quantitative.
+Same goes for statements in Section 5.2 - it was not clear whether regression- and
+perturbation- based approaches had comparable expenses (in terms of model evaluations) or not.}
+
+\noindent Based on the reviewer's feedback, in the revised manuscript, the analysis has been
+updated to
+compare the perturbation and regression approaches for their convergence and predictive 
+accuracy using the same amount of computational effort. As a result, the comparative 
+analysis is much more conclusive with regards to the performance of the two approaches. 
+
+\item \referee{For Figure 8b, the reasoning why E$_15$ was not captured by the regression approach,
+is not satisfactory. I think the authors could have gone a bit deeper in order to explain this
+glaring miss of the regression-based approach. There is some discussion in Section 6, but it is
+equally unsatisfactory.}
+
+\noindent Our latest analysis in the revised manuscript has revealed that the two approaches
+in fact yield consistent results
+for sensitivity analysis even for the 36-dimensional case with increased non-linearity
+when using the same amount of
+computational effort or the same number of model evaluations. Earlier, the two approaches were
+compared for the same number of samples, N. However, the number of model runs in the case of
+perturbation were N(d+1); d is the number of uncertain parameters and inputs to the model. Whereas,
+the number of model runs in the case of regression were only N. Therefore, it can be said that
+the accuracy of the regression-based approximation of the gradient can be increased to the 
+extent of perturbation-based approach by increasing the sample size. 
+
+\item \referee{14.4-8: the near-linearity simply makes the problem extremely benign, nearly any
+reasonable method would have captured such behavior. It would have been great to consider more
+complicated case (more than simply going from 19 to 33 parameters), perhaps looking at logA 
+perturbation instead of A would help? Also consider more than 1$\%$ 
+perturbations to the input. Otherwise, the problem is too simple and does not do justice to the method.}
+
+\noindent We have made a sincere effort to incorporate these valuable suggestions by the 
+reviewer in the revised manuscript. 
+Specifically, we perturb $\log(A)$ instead of $A$ which is observed to significantly increase
+the non-linearity of the system response. In addition the rate parameters, we analyse the impact
+of perturbing the initial conditions. Moreover, as suggested by the reviewer, we have
+increased the mangnitude of the perturbations from 1$\%$ to 2$\%$ to illustrate the applicability
+and robustness of the proposed approach to more complex scenarios. 
+
+\item \referee{14.8: here and in a few other places, I have an issue with statements like
+active subspace is 1-dimensional'. To me, active subspace is as many dimensional as one likes,
+so the statement should be changed to something like '1-dimensional active subspace captures
+most of the variance/uncertainty/dynamics etc..', or '1-dimensional active subspace provides
+very accurate approximation...'.}
+
+\noindent The reviewer's suggestion has been incorporated in the revised manuscript.
+
+\item \referee{14.57: even if nominal is zero, one could perturb them, right? 
+Or it is actually indicating the fact that there should be no exponential factor whatsoever.}
+
+\noindent Based on our conversations with the developers of the TChem software at Sandia
+National Laboratories, we decided not to perturb the activation energies with a 0
+nominal value. 
+
+\item \referee{18.35: the remark in the parentheses did not make sense to me.}
+
+\noindent We have provided examples for perturbation-based techniques such as finite difference and
+adjoint-based methods for estimating the
+gradient of the model output with respect to uncertain parameters and inputs. 
 
 \end{enumerate}
 

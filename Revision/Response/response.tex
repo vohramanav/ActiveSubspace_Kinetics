@@ -31,7 +31,7 @@ By \\
 Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan 
 \end{center}
 
-\baselineskip=22pt
+%\baselineskip=22pt
 
 
 \vspace*{1in}
@@ -141,7 +141,9 @@ are the authors considering? They seem very unphysical if the yield an ignition 
 I could not find any clarification of the initial conditions for the ignition calculations.
 This is again a symptom of the disconnect between the authors' aims (a novel method, potentially very useful to the combustion community) and the combustion community's aims (more understanding and tools that can be of help in combustion kinetics).}
 
-\noindent  The nominal values of the initial conditions: pressure ($P_0$), temperature ($T_0$), and
+\noindent  Depending upon the initial conditions, the ignition delay can range from $\mathcal{O}(10^{-3})$
+to $\mathcal{O}(10^3)$ seconds for hydrogen-air mixtures as shown by Starostin et al. in~\cite{Starostin:2011}.
+In this work, the initial pressure ($P_0$), temperature ($T_0$), and
 the equivalence ratio~($\Phi_0$) considered in the computations are 1~atm, 900~K, and 2.0
 respectively. These values have been reported in the revised manuscript in the beginning of
 Section 5 on page 15.
@@ -354,7 +356,8 @@ Or it is actually indicating the fact that there should be no exponential factor
 
 \noindent Based on our conversations with the developers of the TChem software at Sandia
 National Laboratories, we decided not to perturb the activation energies with a 0
-nominal value. 
+nominal value since the exponential factor is not considered for these reactions, as mentioned
+by the reviewer. 
 
 \item \referee{18.35: the remark in the parentheses did not make sense to me.}
 
@@ -365,7 +368,8 @@ gradient of the model output with respect to uncertain parameters and inputs.
 \end{enumerate}
 
 
-
+\bibliographystyle{elsarticle-num}
+\bibliography{REFER}
 
 
 

@@ -307,45 +307,73 @@ discussed earlier.
 %\end{breakablealgorithm}
 %\bigskip
 %
-\rebut{The quantity, $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ is plotted in
-Figure~\ref{fig:comp} (center) to illustrate convergence characteristics based on Algorithm~\ref{alg:grad} 
-for the two approaches. As observed for a set tolerance $\tau$~=~0.05, 8 iterations are needed 
-to converge in both cases. 
-At each iteration, 5 new random samples were added for the perturbation approach. As discussed earlier, gradient 
-computation (using finite difference) at 5 samples requires 100 model runs. Hence, in order to compare the
-two approaches for the same computational effort, we generate 100 random samples in the 19D input domain for 
-the regression approach. Therefore, 8 iterations require 800 model runs leading to a total of 900 model runs 
-including the initial step in both cases.  The accuracy of the two approaches is compared for the same 
-computational effort by computing $\varepsilon_{\text{L}^{2}}^{N-n}$ using~\eqref{eq:accu} in 
-Figure~\ref{fig:comp} (right). Once again, $N$
-corresponds to the case of active subspace computation using the perturbation approach using 1000 samples
-in the 19D domain; $n$ ranges from 5 to 45 for the perturbation approach, and 100 to 900 for the regression 
-approach corresponding to iterations 1 to 8. The accuracy of the two approaches is found to be comparable for
-the same amount of computational effort. However, the perturbation approach is observed to be slightly more
-accurate.}
+\rebut{The quantity, $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$ defined in Algorithm~\ref{alg:grad} was
+used to assess the convergence behavior of the two approaches. Using a set tolerance, $\tau$~=~0.05,
+it was observed that both, perturbation and regression approaches took 8 iterations to converge. 
+Note that the computational effort at each iteration was considered to be the same in both cases.
+More specifically, 5 new random samples were added for the perturbation approach at each iteration.
+However, as discussed earlier, as total of 100 (=5$\times$(19+1)) model runs were needed to obtain the
+model prediction and its gradients at these newly generated samples. Hence, in the case of
+regression, 100 new random samples were generated at each iteration since gradient computation does
+not require additional model runs in this case. Thus, including the initial step, a total of 900
+model runs were required to obtained a converged active subspace in both cases. 
+
+The accuracy of the two approaches was assessed by estimating $\varepsilon_{\text{L}^{2}}^{N-n}$ 
+using the components of the dominant eigenvector in the converged active subspace in each case
+in~\eqref{eq:accu}. The quantity, $\varepsilon_{\text{L}^{2}}^{N-n}$ was estimated to be 0.0657
+and 0.1050 using perturbation and regression respectively. Hence, the regression approach was
+found to be relatively more accurate. Squared values of the individual components of the 
+dominant eigenvector from the
+two approaches and for the case using $N$~=~1000 in the perturbation approach are plotted in
+Figure~\ref{fig:comp}.}
+%
+%is plotted in
+%Figure~\ref{fig:comp} (center) to illustrate convergence characteristics based on Algorithm~\ref{alg:grad} 
+%for the two approaches. As observed for a set tolerance $\tau$~=~0.05, 8 iterations are needed 
+%to converge in both cases. 
+%At each iteration, 5 new random samples were added for the perturbation approach. As discussed earlier, gradient 
+%computation (using finite difference) at 5 samples requires 100 model runs. Hence, in order to compare the
+%two approaches for the same computational effort, we generate 100 random samples in the 19D input domain for 
+%the regression approach. Therefore, 8 iterations require 800 model runs leading to a total of 900 model runs 
+%including the initial step in both cases.  The accuracy of the two approaches is compared for the same 
+%computational effort by computing $\varepsilon_{\text{L}^{2}}^{N-n}$ using~\eqref{eq:accu} in 
+%Figure~\ref{fig:comp} (right). Once again, $N$
+%corresponds to the case of active subspace computation using the perturbation approach using 1000 samples
+%in the 19D domain; $n$ ranges from 5 to 45 for the perturbation approach, and 100 to 900 for the regression 
+%approach corresponding to iterations 1 to 8. The accuracy of the two approaches is found to be comparable for
+%the same amount of computational effort. However, the perturbation approach is observed to be slightly more
+%accurate.}
+%
+%\begin{figure}[htbp]
+% \begin{center}
+%  \includegraphics[width=0.8\textwidth]{./Figures/eig_convD19}
+%\caption{\rebut{Left: An illustrative comparison of individual squared components of the converged dominant
+%eigenvector obtained using perturbation and regression strategies using $M$~=~900 model runs in each case. 
+%Additionally, the dominant eigenvector components obtained using $M$~=~20000 model runs (corresponding to 
+%$N$~=~1000 samples)
+%in the perturbation strategy (test case), used to assess the accuracy of the two strategies are also plotted.
+%Center: The quantity,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$
+%is plotted for successive iterations to illustrate convergence behavior for the two strategies. Right: The
+%quantity, $\varepsilon_{\text{L}^{2}}^{N-n}$ is plotted as a function of iterations to compare the accuracy
+%of the two strategies. Note that the above plots compare the convergence and accuracy of the two
+%strategies for the same amount of computational effort, quantified by the number of model runs, $M$.}}
+%\label{fig:comp}
+%\end{center}
+%\end{figure}
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.8\textwidth]{./Figures/eig_convD19}
-\caption{\rebut{Left: An illustrative comparison of individual squared components of the converged dominant
+  \includegraphics[width=0.45\textwidth]{./Figures/eig_conv19D}
+\caption{\rebut{An illustrative comparison of individual squared components of the converged dominant
 eigenvector obtained using perturbation and regression strategies using $M$~=~900 model runs in each case. 
 Additionally, the dominant eigenvector components obtained using $M$~=~20000 model runs (corresponding to 
 $N$~=~1000 samples)
-in the perturbation strategy (test case), used to assess the accuracy of the two strategies are also plotted.
-Center: The quantity,  $\max(\delta \hat{\mat{W}}_{1,j}^{(r)})$
-is plotted for successive iterations to illustrate convergence behavior for the two strategies. Right: The
-quantity, $\varepsilon_{\text{L}^{2}}^{N-n}$ is plotted as a function of iterations to compare the accuracy
-of the two strategies. Note that the above plots compare the convergence and accuracy of the two
-strategies for the same amount of computational effort, quantified by the number of model runs, $M$.}}
+in the perturbation strategy (test case), used to assess the accuracy of the two strategies are also plotted.}}
 \label{fig:comp}
 \end{center}
 \end{figure}
 %
-\rebut{In Figure~\ref{fig:comp} (left), we compare the
-squared values of individual components of the dominant eigenvector obtained using the two approaches
-at the end of 8 iterations in each case. Additionally, the dominant eigenvector components obtained
-for a test case involving $N$~=~1000 (and $M$ = 20,000 model runs)
-samples using the perturbation approach are also plotted. 
+\rebut{
 The set of eigenvector components for the three cases are found to be in excellent agreement with
 each other, indicating that both
 approaches have sufficiently converged and are reasonably accurate for this setup.}

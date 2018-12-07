@@ -31,7 +31,7 @@ By \\
 Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan 
 \end{center}
 
-\baselineskip=22pt
+%\baselineskip=22pt
 
 
 \vspace*{1in}
@@ -52,9 +52,10 @@ are summarized as follows:
 \begin{itemize}
 
 \item The complexity of the problem has been increased substantially in two ways: First, 
-the non-linearity of the system response has been signficantly increased by increasing
+the non-linearity of the system response has been significantly increased by increasing
 the perturbations associated with the uncertain rate-controlling parameters: pre-exponent
-and the activation energy. Second, in addition to the rate parameters, the impact of
+and the activation energy. Second, the dimensionality of the problem has also been increased
+significantly. Specifically, in addition to the rate parameters, the impact of
 perturbing the initial conditions: pressure, temperature, and stoichiometry pertaining to the
 H$_2$/O$_2$ reaction mechanism on the ignition delay is investigated. Such analysis using the
 proposed framework would provide useful insights to combustion scientists interested in
@@ -101,7 +102,7 @@ response is observed to increase substantially as seen in Figures 3 and 6 unlike
 observed earlier. Our sensitivity analysis results in Figure 4 using the proposed framework based on the
 active subspace methodology are shown to be consistent with our earlier results using the derivative-based
 global sensitivity analysis (Ref. 35). The sensitivity results for the higher-dimensional problem in the
-revised manuscript reveal that the igntion delay is largely impacted by
+revised manuscript reveal that the ignition delay is largely impacted by
 the uncertainty in the pre-exponents associated with reactions 1, 9, and the initial temperature. Additionally,
 we observe significant sensitivity towards the rate parameters associated with reaction 15 and the pre-exponent
 associated with the rate of reaction 17. 
@@ -119,7 +120,7 @@ the inputs and is therefore applicable to a wide variety of applications.
 
 \item \referee{Related to 1) above, it is of paramount importance that the authors consider, at least, 
 methane, for which I expect less of a spectral gap in the matrix C. Ideally, more complex fuels with 
-more nounced responses.
+more nuanced responses.
 In other words, if the method works well for a simple case, what is its value to the community?
 The authors must try this out on a much more complex hydrocarbon/oxygen system.}
 
@@ -140,9 +141,11 @@ are the authors considering? They seem very unphysical if the yield an ignition 
 I could not find any clarification of the initial conditions for the ignition calculations.
 This is again a symptom of the disconnect between the authors' aims (a novel method, potentially very useful to the combustion community) and the combustion community's aims (more understanding and tools that can be of help in combustion kinetics).}
 
-\noindent  The nominal values of the initial conditions: pressure ($P_0$), temperature ($T_0$), and
+\noindent  Depending upon the initial conditions, the ignition delay can range from $\mathcal{O}(10^{-3})$
+to $\mathcal{O}(10^3)$ seconds for hydrogen-air mixtures as shown by Starostin et al. in~\cite{Starostin:2011}.
+In this work, the initial pressure ($P_0$), temperature ($T_0$), and
 the equivalence ratio~($\Phi_0$) considered in the computations are 1~atm, 900~K, and 2.0
-respectively. These values have been reported in the revised manuscript in the begining of
+respectively. These values have been reported in the revised manuscript in the beginning of
 Section 5 on page 15.
 In this revision, we perturb the initial conditions to study their impact
 on ignition delay estimates. The mean estimate of the ignition delay using data at 10$^4$ random samples in
@@ -231,7 +234,7 @@ to point out that on Page 4 (just below Table 1) in the introduction,
 it is mentioned that the activation energies with a non-zero nominal value are considered as uncertain. 
 Since the uncertainty in the activation energy is considered only in the higher-dimensional case
 presented in Section 5, we have
-specified the reactions for which it is 0 in the begining of that section.
+specified the reactions for which it is 0 in the beginning of that section.
 
 \item \referee{6.19 distribution-$>$density function}
 
@@ -321,8 +324,8 @@ for sensitivity analysis even for the 36-dimensional case with increased non-lin
 when using the same amount of
 computational effort or the same number of model evaluations. Earlier, the two approaches were
 compared for the same number of samples, N. However, the number of model runs in the case of
-perturbation were N(d+1); d is the number of uncertain parameters and inputs to the model. Whereas,
-the number of model runs in the case of regression were only N. Therefore, it can be said that
+perturbation was N(d+1); d is the number of uncertain parameters and inputs to the model. Whereas,
+the number of model runs in the case of regression was only N. Therefore, it can be said that
 the accuracy of the regression-based approximation of the gradient can be increased to the 
 extent of perturbation-based approach by increasing the sample size. 
 
@@ -335,9 +338,9 @@ perturbations to the input. Otherwise, the problem is too simple and does not do
 \noindent We have made a sincere effort to incorporate these valuable suggestions by the 
 reviewer in the revised manuscript. 
 Specifically, we perturb $\log(A)$ instead of $A$ which is observed to significantly increase
-the non-linearity of the system response. In addition to the rate parameters, we analyse the impact
+the non-linearity of the system response. In addition to the rate parameters, we analyze the impact
 of perturbing the initial conditions. Moreover, as suggested by the reviewer, we have
-increased the mangnitude of the perturbations from 1$\%$ to 2$\%$ to illustrate the applicability
+increased the magnitude of the perturbations from 1$\%$ to 2$\%$ to illustrate the applicability
 and robustness of the proposed approach to more complex scenarios. 
 
 \item \referee{14.8: here and in a few other places, I have an issue with statements like
@@ -353,7 +356,8 @@ Or it is actually indicating the fact that there should be no exponential factor
 
 \noindent Based on our conversations with the developers of the TChem software at Sandia
 National Laboratories, we decided not to perturb the activation energies with a 0
-nominal value. 
+nominal value since the exponential factor is not considered for these reactions, as mentioned
+by the reviewer. 
 
 \item \referee{18.35: the remark in the parentheses did not make sense to me.}
 
@@ -364,7 +368,8 @@ gradient of the model output with respect to uncertain parameters and inputs.
 \end{enumerate}
 
 
-
+\bibliographystyle{elsarticle-num}
+\bibliography{REFER}
 
 
 

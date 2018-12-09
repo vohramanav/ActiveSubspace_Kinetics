@@ -29,7 +29,18 @@ variability in the model output. These directions, which constitute the so calle
 of a matrix derived from the gradient information of the model output with
 respect to an input. The active subspace methodology thus focuses on reducing
 the dimensionality of the problem, and hence the computational effort
-associated with uncertainty propagation. 
+associated with uncertainty propagation. The focus here is on input parameter
+dimension reduction. \rebut{This is different from 
+techniques such at Computational
+Singular Perturbation (CSP)~\cite{GoussisLam92,FotacheKreutzLaw97,
+Lam85,LamGoussis89,ValoraniCretaGoussisEtAl06,
+DebusschereMarzoukNajmEtAl12,
+SalloumAlexanderianLeMaitreEtAl12,
+GuptaImValorani13} that aim to reduce the
+complexity of stiff chemical systems by filtering out the 
+fast timescales from the system. The latter is done, for instance, using
+the eigenvectors of the system Jacobian 
+to decouple the fast and slow processes; see e.g.,~\cite{DebusschereMarzoukNajmEtAl12}.}
 
 The application problem considered in this work is the
 H$_2$/O$_2$ reaction mechanism from~\cite{Yetter:1991}. This mechanism has gained

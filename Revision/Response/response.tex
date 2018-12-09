@@ -158,9 +158,18 @@ Sandia National Laboratories, these estimates seem reasonable.
 
 \noindent The reviewer's suggestion has been incorporated in the revised manuscript on Page 3.
 
-\item \referee{p.6, line 32. This is a spectral gap. Need to give credit to the CSP community, 
-although they consider spectral gaps in the nonlinear system, while here the authors consider spectral 
-gaps in C, which is related to the system's response to varying model parameters.}
+\item \referee{p.6, line 32. This is a spectral gap. Need to give credit to the
+CSP community, although they consider spectral gaps in the nonlinear system,
+while here the authors consider spectral gaps in C, which is related to the
+system's response to varying model parameters.}
+
+Thanks for this comment. As the referee notes, while the spectral 
+truncations in active subspace methodology resemble aspects of CSP analysis,
+the goals and approaches of these methods are substantially different. However, 
+we are aware that CSP analysis is well-known in computational
+chemistry community, and therefore, have included a brief mention 
+of CSP in the introduction, clarifying the differences between 
+the active subspace method and CSP. 
 
 \item \referee{p. 16, Fig. 6. y-axis label. Probably $\lambda_i/\lambda_0$ as goes to 1 for i=1? Typo?}
 
@@ -250,20 +259,25 @@ type of independence?}
 \item \referee{7.29-30: Any PDF can be written in a Boltzmann form, V(x) is just the negative log-PDF, 
 I am not sure if it is necessary to bring up a Boltzmann distribution language here.
 Also, it could be confused with Maxwell-Boltzmann distribution, which is a very specific PDF form.}
-Thanks for this comment. We followed the theory in ref [27] in the manuscript, 
-where the authors derive Poincare type inequalities for functions of 
-iid random inputs distributed according to Boltzmann probability laws. We point
-out that the uniform distribution does not belong to this class. That was the reason 
-for assuming the distribution laws of the
-random inputs are either \emph{uniform} or belong to 
-the Boltzmann class, in section 3. An important class of Boltzmann measures are 
-the so called log-concave distributions, such as normal, exponential, and beta, and gamma
-distributions. 
+Thanks for this comment. We followed the theory in ref [35] 
+in the manuscript, where the authors derive Poincare type 
+inequalities for functions of iid random
+inputs distributed according to Boltzmann probability laws. 
+We point out that the uniform distribution does not belong to this class. 
+The required Poincare type inequality for the case of uniform 
+distribution was derived in an earlier paper of Sobol' and Kucherenko (ref [34]). 
+That
+was the reason for assuming the distribution laws of the random inputs are
+either \emph{uniform} or belong to the Boltzmann class, in section 3. An
+important class of Boltzmann measures are the so called log-concave
+distributions such as Normal, Exponential, Beta, and Gamma distributions. These
+points have been clarified in the revised manuscript. 
 
-We share the reviewer's concern about the potential confusions some readers might face when 
-seeing the mention of Boltzmann. We have removed the mention of Boltzmann measures
-from the introduction, and now only refer to this in Section 3, where the theoretical
-results are discussed. 
+Additionally, we share the reviewer's concern about the potential confusions some readers
+might face when seeing the mention of Boltzmann. We have removed the mention of
+Boltzmann measures from the introduction, and now only refer to Boltzman
+measures in Section
+3, where the theoretical results are discussed. 
  
 
 \item \referee{7.40: Explain what E and V are with respect to in Eq (8).}

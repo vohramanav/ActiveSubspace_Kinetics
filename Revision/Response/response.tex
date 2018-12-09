@@ -43,21 +43,22 @@ Manav Vohra, Alen Alexanderian, Hayley Guy, Sankaran Mahadevan
 %modifications, the paper is found suitable for publication in the
 %{\it Journal of Scientific Computing}.
 
-We are thankful to the reviewers for recognizing potential in this effort and 
-for their constructive feedback on the manuscript. A point-by-point
-response to the comments has been provided below. Corresponding modifications have been
-highlighted (in blue) in the revised manuscript. Major changes in the revised manuscript
-are summarized as follows:
+We are very thankful to the reviewers for recognizing potential in this effort
+and for their constructive feedback on the manuscript. A point-by-point
+response to the comments has been provided below. Corresponding modifications
+have been highlighted (in blue) in the revised manuscript. Major changes in the
+revised manuscript are summarized as follows:
 
 \begin{itemize}
 
 \item The complexity of the problem has been increased substantially in two ways: First, 
 the non-linearity of the system response has been significantly increased by increasing
 the perturbations associated with the uncertain rate-controlling parameters: pre-exponent
-and the activation energy. Second, the dimensionality of the problem has also been increased
-significantly. Specifically, in addition to the rate parameters, the impact of
+and the activation energy. Second, the dimensionality of the problem for the higher
+dimensional case has been increased from 33 to 36.
+Specifically, in addition to the rate parameters, the impact of
 perturbing the initial conditions: pressure, temperature, and stoichiometry pertaining to the
-H$_2$/O$_2$ reaction mechanism on the ignition delay is investigated. Such analysis using the
+H$_2$/O$_2$ reaction mechanism on the ignition delay is investigated. Such analyses using the
 proposed framework would provide useful insights to combustion scientists interested in
 kinetics applications. Moreover, it illustrates the applicability and robustness of the 
 framework to complex kinetics applications. 
@@ -129,7 +130,11 @@ uncertain parameters and/or an increased amount of non-linearity in the system r
 we did not implement the framework to a new system, we have significantly increased the non-linearity of the
 response by increasing the degree of uncertainty in the rate parameters. In addition to the rate parameters,
 we perturb the initial conditions to investigate their impact on the response individually as well as due to
-their interaction with the rate parameters. Hence, we have also increased the dimensionality of the problem.
+their interaction with the rate parameters. Hence, we have also increased the dimensionality of the problem
+for the higher dimensional case from 33 to 36. More importantly, the impact of initial conditions on the
+variability in the system response could provide useful insights to combustion scientists interested in 
+reaction kinetics for a range of applications.
+
 As expected by the reviewer, the resulting spectral gap between the first two eigenvalues is observed to
 decrease for this relative more complex scenario as shown in Figure~1 in the revised manuscript. 
 The proposed framework has been used effectively to compute the active subspace, construct a low-dimensional

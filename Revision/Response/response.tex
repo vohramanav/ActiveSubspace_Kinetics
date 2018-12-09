@@ -6,6 +6,7 @@
 \usepackage{algorithm,algorithmic}
 \usepackage{amssymb,mathrsfs}
 \usepackage[margin=1in]{geometry}
+\usepackage{parskip}
 \usepackage{graphicx}
 \usepackage{color,pdfcolmk}
 \usepackage{enumitem,kantlipsum}
@@ -95,7 +96,7 @@ which one can accomplish easily.
 So, if this is the case, is the authors' reduction framework working because the nonlinear system
 is really "simple" in its response to varying parameters}
 
-\noindent The complexity of the H$_2$/O$_2$ reaction kinetics application in the revised manuscript has been significantly
+The complexity of the H$_2$/O$_2$ reaction kinetics application in the revised manuscript has been significantly
 enhanced by increasing the degree of uncertainty in the rate parameters, and considering additional 
 uncertainty in the
 initial pressure, temperature, and stoichiometry of the system. As a result, the non-linearity in the system
@@ -125,7 +126,7 @@ more nuanced responses.
 In other words, if the method works well for a simple case, what is its value to the community?
 The authors must try this out on a much more complex hydrocarbon/oxygen system.}
 
-\noindent  A more complex problem as suggested by the reviewer would manifest itself into an increased number of
+A more complex problem as suggested by the reviewer would manifest itself into an increased number of
 uncertain parameters and/or an increased amount of non-linearity in the system response. Therefore, while
 we did not implement the framework to a new system, we have significantly increased the non-linearity of the
 response by increasing the degree of uncertainty in the rate parameters. In addition to the rate parameters,
@@ -146,7 +147,7 @@ are the authors considering? They seem very unphysical if the yield an ignition 
 I could not find any clarification of the initial conditions for the ignition calculations.
 This is again a symptom of the disconnect between the authors' aims (a novel method, potentially very useful to the combustion community) and the combustion community's aims (more understanding and tools that can be of help in combustion kinetics).}
 
-\noindent  Depending upon the initial conditions, the ignition delay can range from $\mathcal{O}(10^{-3})$
+Depending upon the initial conditions, the ignition delay can range from $\mathcal{O}(10^{-3})$
 to $\mathcal{O}(10^3)$ seconds for hydrogen-air mixtures as shown by Starostin et al. in~\cite{Starostin:2011}.
 In this work, the initial pressure ($P_0$), temperature ($T_0$), and
 the equivalence ratio~($\Phi_0$) considered in the computations are 1~atm, 900~K, and 2.0
@@ -161,7 +162,7 @@ Sandia National Laboratories, these estimates seem reasonable.
 
 \item \referee{p.3, line 36. I would call this the ``temperature exponent".}
 
-\noindent The reviewer's suggestion has been incorporated in the revised manuscript on Page 3.
+The reviewer's suggestion has been incorporated in the revised manuscript on Page 3.
 
 \item \referee{p.6, line 32. This is a spectral gap. Need to give credit to the
 CSP community, although they consider spectral gaps in the nonlinear system,
@@ -181,7 +182,7 @@ the active subspace method and CSP.
 It is in fact $\log(\lambda_i/\lambda_0)$. The typo has been corrected.
 
 
-%\noindent Minor comments by the reviewer have also been addressed in the revised manuscript.
+%Minor comments by the reviewer have also been addressed in the revised manuscript.
 
 \end{enumerate}
 
@@ -196,7 +197,7 @@ local approximation is supposed to be better than a global one. Ideally, much
 more quantitative comparison needs to be made here before reaching any
 meaningful conclusions.}
 
-\noindent  As suggested by the reviewer, we have focused on a quantitative
+As suggested by the reviewer, we have focused on a quantitative
 comparison in terms of the number of samples and associated model runs required
 to obtain a converged active subspace for the two approaches. In addition to
 convergence characteristics, we have also compared the two approaches for their
@@ -214,7 +215,7 @@ equivalently, log(A) is the underlying fundamental parameter with additive
 uncertainty range. In the current form of the uncertainty, the problem is too
 benign, and barely carries any practical usability for the practitioners.}
 
-\noindent The reviewer has made a valuable suggestion. Therefore, in the
+The reviewer has made a valuable suggestion. Therefore, in the
 revised manuscript, we have updated the computations for the active subspace
 using perturbation and regression by considering the uncertainty in $\log(A_i)$
 as opposed to $A_i$.  As a result, the non-linearity of the system response is
@@ -229,13 +230,13 @@ applications.
 \item \referee{Why not use the word 'active' in the title, since active subspace is essentially
 what has been done here?}
 
-\noindent  The title has been updated as ``Active subspace-based dimension
+The title has been updated as ``Active subspace-based dimension
 reduction for chemical kinetics applications with epistemic uncertainty".
 
 \item \referee{3.36 $n_i$ is index or power? Is this an established term for
 the power of T?  Also, what are the values of $n_i$'s?}
 
-\noindent  In the revised manuscript, we denote $n_i$ as the `temperature
+In the revised manuscript, we denote $n_i$ as the `temperature
 exponent' as suggested by the other reviewer. Yes, it is an established
 quantity and its value in addition to the rate constants for the 19 reactions
 in the H$_2$/O$_2$ mechanism is taken from [Yetter et. al., 1991] and
@@ -244,36 +245,41 @@ have clarified this on Page 4 in the revised manuscript.
 
 \item \referee{3.51 'rate of temperature' or 'temperature'?}
 
-\noindent  The ignition delay is considered as the time required for the {\it rate of temperature}
+The ignition delay is considered as the time required for the {\it rate of temperature}
 increase to exceed a threshold, in this work.
 
 \item \referee{4.57 not clear where the number 33 comes from since we have 19
 reactions. I see it is explained at the beginning of Section 5, but it should
 be noted here briefly, too.}
 
-\noindent  We could not locate the number 33 in the location specified by the
-reviewer. Nevertheless, we would like to point out that on Page 4 (just below
-Table 1) in the introduction, it is mentioned that the activation energies with
-a non-zero nominal value are considered as uncertain.  Since the uncertainty in
-the activation energy is considered only in the higher-dimensional case
-presented in Section 5, we have specified the reactions for which it is 0 in
-the beginning of that section.
+
+We mention, in Page 4 (just below Table 1) in the introduction, that only the
+activation energies with a non-zero nominal value are considered as uncertain,
+in the higher-dimensional case.  Since the uncertainty in the activation energy
+is considered only in the higher-dimensional case presented in Section 5, we
+have specified the reactions for which it is 0 in the beginning of that
+section.
 
 \item \referee{6.19 distribution-$>$density function}
 
-\noindent  The revised manuscript has been updated to include the reviewer's suggestion. 
+The revised manuscript has been updated to include the reviewer's suggestion. 
 
 \item \referee{6.38: typo, $w_r$ should be $w_1$}
 
-\noindent  The typo has been fixed in the revised manuscript. 
+The typo has been fixed in the revised manuscript. 
 
 \item \referee{7.23-27: why 'statistical independence' and not just 'independence'? Is there any other 
 type of independence?}
 
+
+We agree; we have removed 'statistical' from that part.
+
 \item \referee{7.29-30: Any PDF can be written in a Boltzmann form, V(x) is
 just the negative log-PDF, I am not sure if it is necessary to bring up a
 Boltzmann distribution language here.  Also, it could be confused with
-Maxwell-Boltzmann distribution, which is a very specific PDF form.} Thanks for
+Maxwell-Boltzmann distribution, which is a very specific PDF form.} 
+
+Thanks for
 this comment. We followed the theory in ref [35] in the manuscript, where the
 authors derive Poincare type inequalities for functions of iid random inputs
 distributed according to Boltzmann probability laws.  We point out that the
@@ -294,19 +300,19 @@ Boltzman measures in Section 3, where the theoretical results are discussed.
 
 \item \referee{7.40: Explain what E and V are with respect to in Eq (8).}
 
-\noindent  
+
 That equation as well as the following description of the conditional 
 expectation and the variance has been updated to address the reviewer's comment.
 
 \item \referee{7.50: Just say in words that it is the i-th diagonal element of matrix C.}
 
-\noindent Following the reviewer's suggestion, we have updated the text in the revised manuscript to
+Following the reviewer's suggestion, we have updated the text in the revised manuscript to
 clearly note that the DGSM $\nu_i(f)$ is the $i^{\text{th}}$ diagonal element in the matrix, $\mathbf{C}$
 on Page 8.
 
 \item \referee{10.56: what if there is no eigenvalue gap of O(100)?}
 
-\noindent A large gap in the eigenvalue spectrum typically indicates that a low-dimensional (1--2) active subspace 
+A large gap in the eigenvalue spectrum typically indicates that a low-dimensional (1--2) active subspace 
 would sufficiently capture the variability in the model output due to uncertainty in the inputs. However,
 in the revised manuscript, we have shown that the variability in the ignition delay is reasonably
 approximated with a 1-dimensional active subspace even though the gap in the first two eigenvalues
@@ -318,12 +324,12 @@ accuracy in situations where the gap is small.
 
 \item \referee{11.33: Alg. 1: should have $\beta$ as input, too?}
 
-\noindent The reviewer is correct. Algorithm 1 in the revised manuscript has been updated to include $\beta$
+The reviewer is correct. Algorithm 1 in the revised manuscript has been updated to include $\beta$
 as an input. 
 
 \item \referee{11.42: Which norm is used? Any intuition why squares of W are used, and not just W?}
 
-\noindent We have used the L$^2$ norm to estimate the relative change in the squared values of corresponding
+We have used the L$^2$ norm to estimate the relative change in the squared values of corresponding
 eigenvector components between successive iterations. The algorithm in the revised manuscript has been updated 
 to specify the norm. 
 We consider square of individual components due to the fact the both W and -W contain legitimate eigenvectors 
@@ -331,12 +337,12 @@ of C. Alternatively, we could have also used the modulus value of the components
 
 \item \referee{11.45: what is max over?}
 
-\noindent The max is over all eigenvectors in the active subspace denoted by $j$. This has been specified in
+The max is over all eigenvectors in the active subspace denoted by $j$. This has been specified in
 the updated algorithm in the revised manuscript.
 
 \item \referee{12.29: 'higher-order' should be replaced with higher-index or smaller-magnitude, to avoid confusion.}
 
-\noindent The reviewer's suggestion has been incorporated in the revised manuscript.
+The reviewer's suggestion has been incorporated in the revised manuscript.
 
 \item \referee{Figs 2a, 3 and 4 demonstrate the regression-based gradient computation is working
 similarly to the perturbation based one. However, the comparison is really qualitative and does
@@ -348,18 +354,18 @@ is a statement about this at the end of Section 4, but it is neither sufficient 
 Same goes for statements in Section 5.2 - it was not clear whether regression- and
 perturbation- based approaches had comparable expenses (in terms of model evaluations) or not.}
 
-\noindent Based on the reviewer's feedback, in the revised manuscript, the analysis has been
+Based on the reviewer's feedback, in the revised manuscript, the analysis has been
 updated to
 compare the perturbation and regression approaches for their convergence and predictive 
 accuracy using the same amount of computational effort. As a result, the comparative 
 analysis is much more conclusive with regards to the performance of the two approaches. 
 
-\item \referee{For Figure 8b, the reasoning why E$_15$ was not captured by the regression approach,
+\item \referee{For Figure 8b, the reasoning why E$_{15}$ was not captured by the regression approach,
 is not satisfactory. I think the authors could have gone a bit deeper in order to explain this
 glaring miss of the regression-based approach. There is some discussion in Section 6, but it is
 equally unsatisfactory.}
 
-\noindent Our latest analysis in the revised manuscript has revealed that the two approaches
+Our latest analysis in the revised manuscript has revealed that the two approaches
 in fact yield consistent results
 for sensitivity analysis even for the 36-dimensional case with increased non-linearity
 when using the same amount of
@@ -376,9 +382,10 @@ complicated case (more than simply going from 19 to 33 parameters), perhaps look
 perturbation instead of A would help? Also consider more than 1$\%$ 
 perturbations to the input. Otherwise, the problem is too simple and does not do justice to the method.}
 
-\noindent We have made a sincere effort to incorporate these valuable suggestions by the 
+We have made a sincere effort to incorporate these valuable suggestions by the 
 reviewer in the revised manuscript. 
-Specifically, we perturb $\log(A)$ instead of $A$ which is observed to significantly increase
+Specifically, we perturb $\log(A_i)$ instead of $A_i$ 
+which is observed to significantly increase
 the non-linearity of the system response. In addition to the rate parameters, we analyze the impact
 of perturbing the initial conditions. Moreover, as suggested by the reviewer, we have
 increased the magnitude of the perturbations from 1$\%$ to 2$\%$ to illustrate the applicability
@@ -390,21 +397,21 @@ so the statement should be changed to something like '1-dimensional active subsp
 most of the variance/uncertainty/dynamics etc..', or '1-dimensional active subspace provides
 very accurate approximation...'.}
 
-\noindent The reviewer's suggestion has been incorporated in the revised manuscript.
+The reviewer's suggestion has been incorporated in the revised manuscript.
 
 \item \referee{14.57: even if nominal is zero, one could perturb them, right? 
 Or it is actually indicating the fact that there should be no exponential factor whatsoever.}
 
-\noindent Based on our conversations with the developers of the TChem software at Sandia
-National Laboratories, we decided not to perturb the activation energies with a 0
-nominal value since the exponential factor is not considered for these reactions, as mentioned
-by the reviewer. 
+The latter statement is correct. We discussed this in our group extensively,
+and also consulted with the developers of the TChem software at Sandia National
+Laboratories, and decided not to perturb the activation energies with a 0
+nominal value since the exponential factor is not considered for these
+reactions, as mentioned by the reviewer. 
 
 \item \referee{18.35: the remark in the parentheses did not make sense to me.}
 
-\noindent We have provided examples for perturbation-based techniques such as finite difference and
-adjoint-based methods for estimating the
-gradient of the model output with respect to uncertain parameters and inputs. 
+Our goal was to list some efficient alternatives to finite-difference gradient
+computations. We have modified that part to make things clearer.
 
 \end{enumerate}
 

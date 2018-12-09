@@ -143,32 +143,33 @@ To address this challenge, we focus on reducing the dimensionality
 of the problem by computing the active subspace.
 This involves repeated evaluations of the gradient of a model output with
 respect to the input parameters. Several numerical techniques are available
-for computing the gradient. Perturbation-based techniques
-include finite differences and more advanced methods involving
+for computing the gradient, such as 
+finite differences and more advanced methods involving
 adjoints~\cite{Jameson:1988,Borzi:2011,Alexanderian:2017}. The
 adjoint-based method requires a solution of the state equation (forward solve)
 and the corresponding adjoint equation. Hence, it is 
 limited by the availability of an adjoint solver. Additional model evaluations
 at neighboring points are required if finite difference is used which increases
-the computational effort. Regression-based techniques on the other hand,
-aim to estimate the
-gradient by approximating the model output using a regression fit. These
-are computationally less intensive than the former. However, as expected,
-there is a trade-off between computational effort and accuracy in the two
-approaches for estimating the gradient. 
+the computational effort. 
+Regression-based techniques, which can be suitable for active subspace computations,
+on the other hand, aim to estimate the gradient by approximating the model
+output using a regression fit.  
+These are computationally less intensive than
+the former. However, as expected, there is a trade-off between computational
+effort and accuracy in the two approaches for estimating the gradient. 
 
 In this work, we adopt an iterative strategy to reduce the computational effort
-associated with active subspace computation. Moreover, we explore two approaches
-for estimating the gradient of the ignition delay with respect to the uncertain
-rate-controlling parameters: pre-exponent, $A_i$ and the activation energy, $E_{a,i}$,
-for $i^{\text{th}}$ reaction in the H$_2$/O$_2$ mechanism \rebut{as well as
-the initial conditions: $P_0$, $T_0$, and $\Phi_0$. Note that the equivalence ratio
-corresponding to the initial molar ratios of $H_2$ and O$_2$ is denoted as $\Phi_0$.}
-As mentioned above, the
-first approach uses finite difference to estimate the gradient and is regarded as
-the perturbation approach. On the other hand, the second approach 
-follows from~\cite{Constantine:2015} and involves repeated
-regression-fits to a subset of available model evaluations, and is 
+associated with active subspace computation. Moreover, we explore two
+approaches for estimating the gradient of the ignition delay with respect to
+the uncertain rate-controlling parameters: pre-exponent, $A_i$ and the
+activation energy, $E_{a,i}$, for $i^{\text{th}}$ reaction in the H$_2$/O$_2$
+mechanism \rebut{as well as the initial conditions: $P_0$, $T_0$, and $\Phi_0$.
+Note that the equivalence ratio corresponding to the initial molar ratios of
+$H_2$ and O$_2$ is denoted as $\Phi_0$.} The first approach uses finite
+difference to estimate the gradient and will be referred to as the
+\emph{perturbation} approach throughout the article.  The second approach
+is adapted from~\cite[Algorithm 1.2]{Constantine:2015} and involves
+repeated regression-fits to a subset of available model evaluations, and is
 regarded as the regression approach in this work.
 
 An alternate strategy to dimension reduction involves computing the global

@@ -29,18 +29,17 @@ global sensitivity analysis.
  
 Active subspace computation requires repeated evaluations of the gradient of
 the QoI i.e. the ignition delay. For this purpose, we explored two approaches,
-namely, perturbation-based (e.g. finite difference - used in this work, adjoint-based
-methods, etc.) and regression-based. Both approaches were shown to yield consistent
-results for the 19-dimensional
-problem wherein only the pre-exponents were considered to be uncertain.
-\rebut{It was observed that the computational effort required to obtain a 
-converged active subspace was comparable for the two approaches. However,
-the predictive accuracy of the perturbation approach was found to be
-relatively higher. Moreover, a 1-dimensional active subspace was shown to
-reasonably approximate the uncertainty in the ignition delay.}
-Additionally, the activity scores were also shown to be consistent with the
-screening metric estimates based on DGSMs in~\cite{Vohra:2018}. An
-iterative procedure was adopted to enhance the computational efficiency. 
+namely, perturbation and regression. Both approaches were shown to yield
+consistent results for the 19-dimensional problem wherein only the
+pre-exponents were considered to be uncertain.  \rebut{It was observed that the
+computational effort required to obtain a converged active subspace was
+comparable for the two approaches. However, the predictive accuracy of the
+perturbation approach was found to be relatively higher. Moreover, a
+1-dimensional active subspace was shown to reasonably approximate the
+uncertainty in the ignition delay.} Additionally, the activity scores were also
+shown to be consistent with the screening metric estimates based on DGSMs
+in~\cite{Vohra:2018}. An iterative procedure was adopted to enhance the
+computational efficiency. 
 
 The active subspace was further computed for a 36-dimensional problem
 wherein all pre-exponents and activation energies with non-zero nominal
@@ -58,11 +57,13 @@ uncertainty in the rate parameters, $A_1$ and $A_9$ with significant
 contributions from $A_{15}$, $A_{17}$, and $E_{a,15}$. Additionally, the
 ignition delay was found to be sensitive towards $T_0$.}
 
-Therefore, in general, perturbation-based approaches should be preferred for 
-active subspace computation especially in situations where efficient gradient
-computation techniques (adjoints-based, automatic differentiation, etc.) are
-feasible. The regression-based approach can be explored in situations involving intensive
-simulations where the perturbation-based methods are intractable.
+Based on our findings, the perturbation approach is preferable for active
+subspace computation; moreover, this can be made extremely efficient, when more
+efficient gradient computation techniques (adjoints-based, automatic
+differentiation, etc.) are feasible. The regression-based approach can be
+explored in situations involving intensive simulations where gradient
+computation is very challenging. 
+
 %
 %and the goal is obtaining rough estimates of the statistics of the QoI as
 %opposed to a more detailed analysis such as those involving parametric
@@ -75,14 +76,14 @@ approach in the context of high-dimensional chemical reaction networks is
 subject to future work. 
 
 The computational framework presented in this work is agnostic to the choice of
-the chemical system and can be easily adapted for other systems as long
-as the quantity of interest is continuously differentiable in the considered
-domain of the inputs.  We have demonstrated that the active subspace could be
-exploited for efficient forward propagation of the uncertainty from inputs to
-the output. The resulting activity scores and the low-dimensional surrogate
-could further guide optimal allocation of computational resources for
-calibration of the important rate-controlling parameters \rebut{and input conditions}
- in a Bayesian setting.
-Additionally, dimension reduction using active subspaces could assist in
-developing robust formulations for predicting discrepancy between simulations
-and measurements due to epistemic uncertainty in the model inputs.
+the chemical system and can be easily adapted for other systems as long as the
+quantity of interest is continuously differentiable in the considered domain of
+the inputs.  We have demonstrated that the active subspace could be exploited
+for efficient forward propagation of the uncertainty from inputs to the output.
+The resulting activity scores and the low-dimensional surrogate could further
+guide optimal allocation of computational resources for calibration of the
+important rate-controlling parameters \rebut{and input conditions} in a
+Bayesian setting.  Additionally, dimension reduction using active subspaces
+could assist in developing robust formulations for predicting discrepancy
+between simulations and measurements due to epistemic uncertainty in the model
+inputs.

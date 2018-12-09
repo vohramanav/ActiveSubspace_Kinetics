@@ -325,7 +325,7 @@ and 0.1050 using perturbation and regression respectively. Hence, the regression
 found to be relatively more accurate. Squared values of the individual components of the 
 dominant eigenvector from the
 two approaches and for the case using $N$~=~1000 in the perturbation approach are plotted in
-Figure~\ref{fig:comp}.}
+Figure~\ref{fig:comp}~(left).}
 %
 %is plotted in
 %Figure~\ref{fig:comp} (center) to illustrate convergence characteristics based on Algorithm~\ref{alg:grad} 
@@ -363,12 +363,16 @@ Figure~\ref{fig:comp}.}
 %
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/eig_conv19D}
-\caption{\rebut{An illustrative comparison of individual squared components of the converged dominant
+  \includegraphics[width=0.38\textwidth]{./Figures/eig_conv19D}
+  \includegraphics[width=0.45\textwidth]{./Figures/comp_ssp19D}
+\caption{\rebut{Left: An illustrative comparison of individual squared components of the converged dominant
 eigenvector obtained using perturbation and regression strategies using $M$~=~900 model runs in each case. 
 Additionally, the dominant eigenvector components obtained using $M$~=~20000 model runs (corresponding to 
 $N$~=~1000 samples)
-in the perturbation strategy (test case), used to assess the accuracy of the two strategies are also plotted.}}
+in the perturbation strategy (test case), used to assess the accuracy of the two strategies are also plotted.
+Right: An illustrative comparison of the SSPs generated using the
+perturbation and the regression strategies for computing the active subspace. 
+}}
 \label{fig:comp}
 \end{center}
 \end{figure}
@@ -385,16 +389,16 @@ $f(\bm{\xi})$ can be approximated as $G(\hat{\mat{W}}_1^\top\bm{\xi})$ in
 the \rebut{1-dimensional active} subspace. The plot of $G$ versus $\hat{\mat{W}}_1^\top\bm{\xi}$, 
 regarded as the \textit{sufficient summary plot} (SSP), obtained using the perturbation-based and
 regression-based gradient estimates are
-compared in Figure~\ref{fig:comp_ssp}.
+compared in Figure~\ref{fig:comp}~(right).
 %
-\begin{figure}[htbp]
- \begin{center}
-  \includegraphics[width=0.45\textwidth]{./Figures/comp_ssp19D}
-\caption{\rebut{An illustrative comparison of the SSPs generated using the 
-perturbation and the regression strategies for computing the active subspace.}}
-\label{fig:comp_ssp}
-\end{center}
-\end{figure}
+%\begin{figure}[htbp]
+% \begin{center}
+%  \includegraphics[width=0.45\textwidth]{./Figures/comp_ssp19D}
+%\caption{\rebut{An illustrative comparison of the SSPs generated using the 
+%perturbation and the regression strategies for computing the active subspace.}}
+%\label{fig:comp_ssp}
+%\end{center}
+%\end{figure}
 %
 \rebut{The dominant eigenvector obtained using perturbation is based on $N$~=~45 samples which requires
 $M$~=~900 model runs. For the same amount of computational effort, we can afford $N$~=~900 samples

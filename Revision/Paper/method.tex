@@ -2,7 +2,8 @@
 \label{sec:method}
 
 In this section, we present an efficient framework for computing the
-active subspace. The framework is employed to the H$_2$/O$_2$ reaction kinetics
+active subspace. The framework is employed to analyze 
+the H$_2$/O$_2$ reaction kinetics
 problem whereby the \rebut{logarithm of the} 
 pre-exponent ($A_i$) in the rate law associated with individual reactions provided in
 Table~\ref{tab:kinetics} is considered to be uniformly
@@ -29,7 +30,7 @@ Hence, for $N$ samples in a $d$-dimensional parameter space, $N(d+1)$
 model evaluations are needed. On the other hand, gradient estimation
 using the regression-based approach involves a series of linear regression
 fits to subsets of available evaluations as discussed 
-in~\cite{Constantine:2015} (see Algorithm 1.2). Hence, the computational effort is  
+in~\cite[Algorithm 1.2]{Constantine:2015}. Hence, the computational effort is  
 reduced by a factor $(d+1)$ when using the regression-based approach.
 In other words, for the same amount of computational effort, the regression
 approach can afford a sample size that is (d+1) times larger than that in the
@@ -316,7 +317,7 @@ However, as discussed earlier, as total of 100 (=5$\times$(19+1)) model runs wer
 model prediction and its gradients at these newly generated samples. Hence, in the case of
 regression, 100 new random samples were generated at each iteration since gradient computation does
 not require additional model runs in this case. Thus, including the initial step, a total of 900
-model runs were required to obtained a converged active subspace in both cases. 
+model runs were required to obtain a converged active subspace in both cases. 
 
 The accuracy of the two approaches was assessed by estimating $\varepsilon_{\text{L}^{2}}^{N-n}$ 
 using the components of the dominant eigenvector in the converged active subspace in each case

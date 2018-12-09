@@ -160,13 +160,15 @@ output~\cite{Sobol:2001}. Mathematically, this can be expressed as follows:
 %
 \be
 T_i(f) = 1 - 
-\frac{\V_{\rebut{\vec{\xi}_{\sim i}}}[\mathbb{E}_{\rebut{\xi_i}}(f|\vec{\xi}_{\sim i})]}{\V(f)},
+\frac{\V_{\rebut{\vec{\xi}_{\sim i}}}\big[\mathbb{E}[f|\vec{\xi}_{\sim i}]\big]}{\V(f)},
 \label{eq:total}
 \ee
 %
 where $\vec{\xi}_{\sim i}$ is the input parameter vector with the  
-$i^\text{th}$ entry removed. \rebut{The expectation is taken over all possible
-values of $\xi_i$ and its variance is computed with respect to all parameters except $\xi_i$.}
+$i^\text{th}$ entry removed. \rebut{
+Here $\mathbb{E}[f|\vec{\xi}_{\sim i}]$ denotes the conditional
+expectation of $f$ given $\vec{\xi}_{\sim i}$
+and its variance is computed with respect to $\vec{\xi}_{\sim i}$.}
 The quantity, $\V(f)$ denotes the total variance of the model output.
  The total-effect Sobol' index accounts
 for the contribution of a given input to the variability in the output by itself

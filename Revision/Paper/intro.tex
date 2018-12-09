@@ -32,11 +32,10 @@ the dimensionality of the problem, and hence the computational effort
 associated with uncertainty propagation. The focus here is on input parameter
 dimension reduction. \rebut{This is different from 
 techniques such at Computational
-Singular Perturbation (CSP)~\cite{GoussisLam92,FotacheKreutzLaw97,
-Lam85,LamGoussis89,ValoraniCretaGoussisEtAl06,
+Singular Perturbation (CSP)~\cite{Lam85,
+LamGoussis89,ValoraniCretaGoussisEtAl06,
 DebusschereMarzoukNajmEtAl12,
-SalloumAlexanderianLeMaitreEtAl12,
-GuptaImValorani13} that aim to reduce the
+SalloumAlexanderianLeMaitreEtAl12} that aim to reduce the
 complexity of stiff chemical systems by filtering out the 
 fast timescales from the system. The latter is done, for instance, using
 the eigenvectors of the system Jacobian 
@@ -127,9 +126,10 @@ temperature increase to exceed a given threshold, regarded as \emph{ignition del
 is recorded. 
 
 We seek to understand the impact of uncertainty in the
-rate-controlling parameters, pre-exponent~($A_i$) and the activation
-energy~($E_{a,i}$) \rebut{as well as the initial pressure, temperature, and the
-equivalence ratio} on the ignition delay. The $A_i$'s associated with all
+rate-controlling parameters, pre-exponents~($A_i$'s) 
+and the activation energies~($E_{a,i}$'s) 
+\rebut{as well as the initial pressure, temperature, and the
+equivalence ratio} on the ignition delay. The \rebut{$\log(A_i)$'s} associated with all
 reactions and the $E_{a,i}$'s with non-zero nominal estimates
 are considered to be uniformly distributed about their nominal estimates provided
 in~\cite{Yetter:1991}. \rebut{Temperature exponent, $n_i$ for each reaction is fixed to
@@ -163,13 +163,13 @@ for estimating the gradient of the ignition delay with respect to the uncertain
 rate-controlling parameters: pre-exponent, $A_i$ and the activation energy, $E_{a,i}$,
 for $i^{\text{th}}$ reaction in the H$_2$/O$_2$ mechanism \rebut{as well as
 the initial conditions: $P_0$, $T_0$, and $\Phi_0$. Note that the equivalence ratio
-corresponding to the initial molar ratios of $H_2$ and O$_2$ is denotes as $\Phi_0$.}
+corresponding to the initial molar ratios of $H_2$ and O$_2$ is denoted as $\Phi_0$.}
 As mentioned above, the
 first approach uses finite difference to estimate the gradient and is regarded as
 the perturbation approach. On the other hand, the second approach 
 follows from~\cite{Constantine:2015} and involves repeated
-linear regression-fits to a subset of available model evaluations, and is 
-regarded as the regression approach in this work. 
+regression-fits to a subset of available model evaluations, and is 
+regarded as the regression approach in this work.
 
 An alternate strategy to dimension reduction involves computing the global
 sensitivity measures associated with the uncertain inputs of a model. Depending

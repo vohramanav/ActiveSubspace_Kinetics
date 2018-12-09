@@ -1,5 +1,7 @@
 all:
 	pdflatex response 
+	bibtex response
+	pdflatex response
 	pdflatex response
 
 clean:

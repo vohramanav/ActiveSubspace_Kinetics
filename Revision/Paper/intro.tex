@@ -112,7 +112,7 @@ be considered as follows:
 The equivalence ratio ($\Phi$) is given as follows:
 %
 \be
-\Phi = \frac{(M_{\text{H}_2}/M_{\text{O}_2})_\text{obs}}{(M_{\text{H}_2}/M_{\text{O}_2})_\text{st}}.
+\Phi = \frac{(M_{\text{H}_2}/M_{\text{O}_2})_\text{obs}}{(M_{\text{H}_2}/M_{\text{O}_2})_\text{st}},
 \label{eq:phi}
 \ee
 %
@@ -161,12 +161,12 @@ effort and accuracy in the two approaches for estimating the gradient.
 In this work, we adopt an iterative strategy to reduce the computational effort
 associated with active subspace computation. Moreover, we explore two
 approaches for estimating the gradient of the ignition delay with respect to
-the uncertain rate-controlling parameters: pre-exponent, $A_i$ and the
-activation energy, $E_{a,i}$, for $i^{\text{th}}$ reaction in the H$_2$/O$_2$
-mechanism \rebut{as well as the initial conditions: $P_0$, $T_0$, and $\Phi_0$.
+the uncertain rate-controlling parameters: pre-exponents ($A_i$'s), 
+the activation energies ($E_{a,i}$'s),
+\rebut{as well as the initial conditions: $P_0$, $T_0$, and $\Phi_0$.
 Note that the equivalence ratio corresponding to the initial molar ratios of
 $H_2$ and O$_2$ is denoted as $\Phi_0$.} The first approach uses finite
-difference to estimate the gradient and will be referred to as the
+differences to estimate the gradient and will be referred to as the
 \emph{perturbation} approach throughout the article.  The second approach
 is adapted from~\cite[Algorithm 1.2]{Constantine:2015} and involves
 repeated regression-fits to a subset of available model evaluations, and is

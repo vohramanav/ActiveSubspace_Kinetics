@@ -58,18 +58,18 @@ contributions from $A_{15}$, $A_{17}$, and $E_{a,15}$. Additionally, the
 ignition delay was found to be sensitive towards $T_0$.}
 
 Based on our findings, the perturbation approach is preferable for active
-subspace computation; moreover, this can be made extremely efficient, when more
-efficient gradient computation techniques (adjoints-based, automatic
-differentiation, etc.) are feasible. The regression-based approach can be
-explored in situations involving intensive simulations where gradient
-computation is very challenging. 
+subspace computation; the computational cost of this approach can be reduced
+significantly, if more efficient gradient computation techniques (e.g.,
+adjoint-based approaches or automatic differentiation) are feasible. The
+regression-based approach can be explored in situations involving intensive
+simulations where gradient computation is very challenging. 
 
 %
 %and the goal is obtaining rough estimates of the statistics of the QoI as
 %opposed to a more detailed analysis such as those involving parametric
 %sensitivity.  
 %
-We also mention that alternate regression based approaches such as ones based
+We also mention that alternate regression-based approaches such as ones based
 on computing a global quadratic model have been proposed and used in the
 literature; see e.g.,~\cite{Constantine:2017a}.  The applicability of such an
 approach in the context of high-dimensional chemical reaction networks is

@@ -71,9 +71,9 @@ computational effort in the revised manuscript, as suggested by one of the revie
 
 \end{itemize} 
 
-%We sincerely hope that based on the modifications in the revised manuscript and our 
-%response to reviewers' comments, the paper is found suitable for publication in
-%{\it Combustion and Flame}. 
+We sincerely hope that based on the modifications in the revised manuscript and our 
+response to reviewers' comments, the paper is found suitable for publication in
+{\it Combustion and Flame}. 
 
 \clearpage
 
@@ -103,7 +103,7 @@ initial pressure, temperature, and stoichiometry of the system. As a result, the
 response is observed to increase substantially as seen in Figures 3 and 6 unlike a straight line as 
 observed earlier. Our sensitivity analysis results in Figure 4 using the proposed framework based on the
 active subspace methodology are shown to be consistent with our earlier results using the derivative-based
-global sensitivity analysis (Ref. 35{\color{blue} Update}). The sensitivity results for the higher-dimensional problem in the
+global sensitivity analysis~\cite{Vohra:2018}. The sensitivity results for the higher-dimensional problem in the
 revised manuscript reveal that the ignition delay is largely impacted by
 the uncertainty in the pre-exponents associated with reactions 1, 9, and the initial temperature. Additionally,
 we observe significant sensitivity towards the rate parameters associated with reaction 15 and the pre-exponent
@@ -129,7 +129,10 @@ The authors must try this out on a much more complex hydrocarbon/oxygen system.}
 A more complex problem as suggested by the reviewer would manifest itself into an increased number of
 uncertain parameters and/or an increased amount of non-linearity in the system response. Therefore, while
 we did not implement the framework to a new system, we have significantly increased the non-linearity of the
-response by increasing the degree of uncertainty in the rate parameters. In addition to the rate parameters,
+response by increasing the degree of uncertainty in the rate parameters. Specifically, instead of
+the pre-exponent, $A_i$, we perturb $\log(A_i)$ as suggested by the other reviewer. Moreover, 
+the magnitude of the perturbation has been increased from 1$\%$ to $2\%$.
+In addition to the rate parameters,
 we perturb the initial conditions to investigate their impact on the response individually as well as due to
 their interaction with the rate parameters. Hence, we have also increased the dimensionality of the problem
 for the higher dimensional case from 33 to 36. More importantly, the impact of initial conditions on the
@@ -147,18 +150,15 @@ are the authors considering? They seem very unphysical if the yield an ignition 
 I could not find any clarification of the initial conditions for the ignition calculations.
 This is again a symptom of the disconnect between the authors' aims (a novel method, potentially very useful to the combustion community) and the combustion community's aims (more understanding and tools that can be of help in combustion kinetics).}
 
+The model predictions for ignition delay in this work have been obtained using the 
+TChem software as mentioned in the paper.
 Depending upon the initial conditions, the ignition delay can range from $\mathcal{O}(10^{-3})$
 to $\mathcal{O}(10^3)$ seconds for hydrogen-air mixtures as shown by Starostin et al. in~\cite{Starostin:2011}.
 In this work, the initial pressure ($P_0$), temperature ($T_0$), and
 the equivalence ratio~($\Phi_0$) considered in the computations are 1~atm, 900~K, and 2.0
 respectively. These values have been reported in the revised manuscript in the beginning of
-Section 5 on page 15.
-In this revision, we perturb the initial conditions to study their impact
-on ignition delay estimates. The mean estimate of the ignition delay using data at 10$^4$ random samples in
-the 36-dimensional space is found to be approximately 0.15 as reported in Table 2 on page 18 in the
-revised manuscript. As mentioned in the paper, we have used 
-the TChem software for model predictions and based on our recent communication with the developers at
-Sandia National Laboratories, these estimates seem reasonable. 
+Section 5 on page 15. Based on these initial conditions, we have verified with the developers of
+TChem at Sandia National Laboratories that our estimates for the ignition delay are reasonable. 
 
 \item \referee{p.3, line 36. I would call this the ``temperature exponent".}
 
@@ -169,12 +169,12 @@ CSP community, although they consider spectral gaps in the nonlinear system,
 while here the authors consider spectral gaps in C, which is related to the
 system's response to varying model parameters.}
 
-Thanks for this comment. As the referee notes, while the spectral 
+As the reviewer notes, while the spectral 
 truncations in active subspace methodology resemble aspects of CSP analysis,
 the goals and approaches of these methods are substantially different. However, 
 we are aware that CSP analysis is well-known in combustion 
 community, and therefore, have included a brief mention 
-of CSP in the introduction, clarifying the differences between 
+of CSP in the introduction along with references, and clarified the differences between 
 the active subspace method and CSP. 
 
 \item \referee{p. 16, Fig. 6. y-axis label. Probably $\lambda_i/\lambda_0$ as goes to 1 for i=1? Typo?}

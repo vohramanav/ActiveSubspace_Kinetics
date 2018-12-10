@@ -11,11 +11,11 @@ temperature~($T_0$), and stoichiometry~($\Phi_0$)}.
 \rebut{The $\log(A_i)$'s, $E_{a,i}$'s for all reactions except $\mathcal{R}_6$
 -- $\mathcal{R}_9$, $\mathcal{R}_{13}$ (due to zero nominal values for $E_a$),
 and the initial conditions were perturbed by 2$\%$ about their nominal values.
-Note that the mangnitude of the perturbation was selected such that the
+Note that the magnitude of the perturbation was selected such that the
 ignition delay assumes a physically meaningful value in the input domain. 
 The nominal values of the rate parameters, $A_i$'s and $E_{a,i}$'s 
 were taken from~\cite{Yetter:1991}. The nominal values of $P_0$, $T_0$, and
-$\Phi_0$ were considered to be 1.0 atm, 900~K, and 2.0 respectively.}
+$\Phi_0$ were considered to be 1.0~atm, 900~K, and 2.0 respectively.}
 
 \subsection{Computing the active subspace}
 
@@ -80,26 +80,11 @@ surrogates is also provided (right).}}
 \subsection{Surrogate Assessment}
 \label{sub:verify}
 
-The 1-dimensional surrogate ($\hat{G}$) shown in Figure~\ref{fig:hd} is investigated
-for its accuracy as well as the ability to capture the uncertainty in the
-model output in two ways. Firstly, we estimate the relative L$^2$ norm of the discrepancy~($\varepsilon_d$)
-between estimates of ignition delay in the case of H$_2$/O$_2$ reaction, obtained using the 
-model output and the surrogate in the following equation:
-%
-\be
-\varepsilon_d = \frac{\|G(\bm{\xi}) - \hat{G}(\bm{\xi})\|_2}{\|G(\bm{\xi})\|_2}
-\ee
-%
-Model evaluations ($G$) at 10$^{4}$ random samples in the input domain were used to evaluate $\varepsilon_d$. 
-\rebut{It was estimated to be approximately 0.17 for both approaches. Hence, the predictive accuracy of
-the two approaches is comparable with respect to the relative L$^2$ norm of the discrepancy.
- However, as mentioned earlier, the computational effort required for
-obtaining a converged active subspace using perturbation was half of that required when using
-regression to estimate the model gradient at random samples in the 36-dimensional input domain.}
-
-Secondly, we verified the accuracy of the two surrogates in a probabilistic setting. In particular, we compared 
-probability density functions (PDFs) obtained using the true set of model evaluations, and 1-dimensional
-surrogates ($\hat{G}$'s) based on the two approaches for gradient estimation as shown in 
+The 1-dimensional surrogate ($\hat{G}$) shown in Figure~\ref{fig:hd} for the perturbation
+and regression approaches is investigated for its ability to capture the uncertainty in the
+ignition delay. Specifically, we compare probability density functions (PDFs)
+obtained using the true set of model evaluations, and 1-dimensional
+surrogates ($\hat{G}$'s) based on the two approaches, as shown in 
 Figure~\ref{fig:pdf_36D}. Note that the three PDFs were evaluated using the same set of 10$^4$ samples in the 
 cross-validation set. 
 %
@@ -116,7 +101,8 @@ used in each case.}}
 %
 \rebut{The PDFs are observed to be in close agreement with each other. Specifically, the modal
 estimate and the uncertainty (quantified by the spread in the distributions) is found to be consistent for the three 
-cases. To confirm this, we compute the first-order (mean) and the second-order (standard deviation) statistics
+cases. To confirm this, we further compute the first-order (mean) and the second-order (standard deviation) 
+statistics
 of the estimates of the ignition delay obtained using the model, 1-dimensional surrogate from perturbation, and
 1-dimensional surrogate from regression at the cross-validation sample set. The mean and standard deviation
 estimates are provided in Table~\ref{tab:stats}.}
@@ -140,9 +126,8 @@ set.}
 \end{table}
 %
 \rebut{The mean and the standard deviation estimates obtained using the model and the 1-dimensional surrogates
-are found to be in close agreement. Hence, although the relative L$^2$ norm of the discrepancy~($\varepsilon_d$)
-is found to be considerably large, the uncertainty in the ignition delay is captured by both 
-approaches with reasonable accuracy. 
+are found to be in close agreement. Hence, the uncertainty in the ignition delay is accurately captured 
+in both cases.
 It is however interesting to note that estimates from the regression approach are
 observed to be slightly more accurate. This is potentially due to the fact that the 
 converged active subspace in this case is 

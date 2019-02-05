@@ -1,0 +1,89 @@
+\section{Summary and Discussion}
+\label{sec:conc}
+ 
+In this work, we focused on the uncertainty associated with the
+rate-controlling parameters in the H$_2$/O$_2$ reaction mechanism
+as well as the initial pressure, temperature, and stoichiometry and its
+impact on ignition delay predictions. The mechanism involves 19 different
+reactions and in each case, the reaction rate depends upon the choice of a
+pre-exponent and an activation energy. Hence, in theory, the evolution of the
+chemical system depends upon 38 rate parameters and three initial conditions.
+However, we considered 
+epistemic uncertainty in all pre-exponents and activation energies with non-zero
+nominal values i.e. a total of 33 rate parameters instead of 38 in addition to
+the three initial conditions.  
+%Conventional means for uncertainty quantification such as those involving
+%surrogate model construction as well as sensitivity analysis would thus be
+%computationally challenging.
+To facilitate efficient uncertainty analysis, we focused our efforts on
+reducing the dimensionality of the problem by identifying important directions
+in the parameter space such that the model output 
+predominantly varies along these directions. These important directions
+constitute the active subspace. Additionally, we demonstrated that the activity scores,
+computed using the components of the dominant eigenvectors provide an efficient
+means for approximating derivative based global sensitivity measures (DGSMs).
+Furthermore, we established generalized mathematical linkages between the
+different global sensitivity measures: activity scores, DGSMs, and total Sobol'
+index which could be exploited to reduce computational effort associated with
+global sensitivity analysis. 
+ 
+Active subspace computation requires repeated evaluations of the gradient of
+the QoI i.e. the ignition delay. For this purpose, we explored two approaches,
+namely, perturbation and regression. Both approaches were shown to yield
+consistent results for the 19-dimensional problem wherein only the
+pre-exponents were considered to be uncertain. It was observed that the
+computational effort required to obtain a converged active subspace was
+comparable for the two approaches. However, the predictive accuracy of the
+perturbation approach was found to be relatively higher. Moreover, a
+1-dimensional active subspace was shown to reasonably approximate the
+uncertainty in the ignition delay. Additionally, the activity scores were also
+shown to be consistent with the screening metric estimates based on DGSMs
+in~\cite{Vohra:2018}. An iterative procedure was adopted to enhance the
+computational efficiency. 
+
+The active subspace was further computed for a 36-dimensional problem
+wherein all pre-exponents and activation energies with non-zero nominal
+estimates as well as the initial conditions were considered uncertain. 
+Once again, consistent results were obtained using the two approaches.
+A 1-dimensional active subspace was shown to reasonably
+capture the uncertainty in the ignition delay in this case. However, the
+computational effort required to compute a converged active subspace
+using perturbation was found to be half of the effort required in the case
+of regression. Predictive accuracy of the two approaches was found to 
+be comparable. Hence, perturbation seems like a preferred approach
+for the higher-dimensional problem based on our findings. GSA results indicated
+that the variability in the ignition delay is predominantly due to the 
+uncertainty in the rate parameters, $A_1$ and $A_9$ with significant
+contributions from $A_{15}$, $A_{17}$, and $E_{a,15}$. Additionally, the
+ignition delay was found to be sensitive towards $T_0$.
+
+Based on our findings, the perturbation approach is preferable for active
+subspace computation; the computational cost of this approach can be reduced
+significantly, if more efficient gradient computation techniques (e.g.,
+adjoint-based approaches or automatic differentiation) are feasible. The
+regression-based approach can be explored in situations involving intensive
+simulations where gradient computation is very challenging. 
+
+%
+%and the goal is obtaining rough estimates of the statistics of the QoI as
+%opposed to a more detailed analysis such as those involving parametric
+%sensitivity.  
+%
+We also mention that alternate regression-based approaches such as ones based
+on computing a global quadratic model have been proposed and used in the
+literature; see e.g.,~\cite{Constantine:2017a}.  The applicability of such an
+approach in the context of high-dimensional chemical reaction networks is
+subject to future work. 
+
+The computational framework presented in this work is agnostic to the choice of
+the chemical system and can be easily adapted for other systems as long as the
+quantity of interest is continuously differentiable in the considered domain of
+the inputs.  We have demonstrated that the active subspace could be exploited
+for efficient forward propagation of the uncertainty from inputs to the output.
+The resulting activity scores and the low-dimensional surrogate could further
+guide optimal allocation of computational resources for calibration of the
+important rate-controlling parameters and input conditions in a
+Bayesian setting.  Additionally, dimension reduction using active subspaces
+could assist in developing robust formulations for predicting discrepancy
+between simulations and measurements due to epistemic uncertainty in the model
+inputs.

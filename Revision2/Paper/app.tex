@@ -1,0 +1,164 @@
+\section{$\text{H}_2$/$\text{O}_2$ reaction kinetics: higher-dimensional case}
+\label{sec:app}
+
+For the high-dimensional case, we aim to investigate the impact of 
+uncertainty in the following problem parameters on 
+the ignition delay associated with the H$_2$/O$_2$ reaction:
+(i) pre-exponents ($A_i$'s); (ii) the activation energies
+($E_{a,i}$'s); and (iii) the initial pressure~($P_0$),
+temperature~($T_0$), and stoichiometry~($\Phi_0$). 
+%
+The $\log(A_i)$'s, $E_{a,i}$'s for all reactions except $\mathcal{R}_6$
+-- $\mathcal{R}_9$, $\mathcal{R}_{13}$ (due to zero nominal values for $E_a$),
+and the initial conditions were considered to be uniformly distributed, and
+perturbed by 2$\%$ about their nominal values.
+Note that the magnitude of the perturbation was selected such that the
+ignition delay assumes a physically meaningful value in the input domain. 
+The nominal values of the rate parameters, $A_i$'s and $E_{a,i}$'s 
+were taken from~\cite{Yetter:1991}. The nominal values of $P_0$, $T_0$, and
+$\Phi_0$ were considered to be 1.0~atm, 900~K, and 2.0 respectively.
+
+\subsection{Computing the active subspace}
+
+The active subspace was computed using the iterative procedure outlined in 
+Algorithm~\ref{alg:grad}. The convergence of the eigenvectors was examined
+by tracking the quantity `$\rebut{\max\limits_j}(\delta \hat{\mat{W}}_{1,j}^{(i)})$'. 
+In Figure~\ref{fig:conv_app}~(right), we examine $\rebut{\max\limits_j}(\delta \hat{\mat{W}}_{1,j}^{(i)})$
+with increasing iterations for the perturbation and the regression approaches 
+discussed earlier in Section~\ref{sec:method}. 
+%
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=0.8\textwidth]{./Figures/eig_conv36Dp2}
+\caption{Left: An illustrative comparison of individual components of the 
+dominant eigenvector in the converged active subspace i.e., at the end
+of 4 iterations in the perturbation approach and 9 iterations in the
+regression approach. Right: A comparison of the convergence behavior
+of the perturbation and the
+regression approaches. Convergence is accomplished once 
+$\rebut{\max\limits_j}(\delta \hat{\mat{W}}_{1,j}^{(i)})$ assumes a value smaller
+than 0.05.}
+\label{fig:conv_app}
+\end{center}
+\end{figure}
+%
+At each iteration, we improve our estimates of the matrix $\hat{\mat{C}}$ by
+estimating the gradient of the ignition delay at 5 new randomly generated samples 
+in the 36-dimensional input space. However, gradient computation at these
+5 samples requires 185 (=5$\times$(36+1)) model runs when using perturbation. 
+For the same computational effort, the regression approach can afford 185 new
+samples at each iteration. It is observed that using $\tau$ = 0.05, the 
+active subspace requires 4 iterations (925 model runs) to converge in the case of perturbation, and
+9 iterations (1850 model runs) to converge in the case of regression. Hence, the computational effort
+required to obtain a converged active subspace is doubled when using
+regression to approximate the gradient. Moreover, gradient estimation in the perturbation approach
+can be made more efficient by using techniques such as automatic differentiation~\cite{Kiparissides:2009}
+and adjoint computation~\cite{Jameson:1988}. These techniques although not pursued here are 
+promising directions for
+future efforts pertaining to this work. In Figure~\ref{fig:conv_app}~(right), we compare
+individual components of the dominant eigenvector in the converged active subspace
+obtained using the two approaches. The components are observed to be in excellent
+agreement with each other.
+
+In Figure~\ref{fig:hd}, we plot the SSP for the perturbation approach (left) and the regression
+approach (center) in a 1-dimensional active subspace. A 1-dimensional polynomial fit is also
+illustrated in both cases. Moreover, the two surrogates are shown to be consistent with each other (right).
+From these results, it is clear that a 1-dimensional active subspace captures the variability in the
+ignition delay with reasonable accuracy, and that the two approaches yield consistent results.
+%
+\begin{figure}[htbp]
+ \begin{center}
+   \includegraphics[width=0.9\textwidth]{./Figures/SSP_plot36Dp2}
+\caption{Sufficient summary plots (SSPs) for the case of perturbation (left) and regression (center).
+A polynomial fit of degree 2 and 3 as shown in the plots is used as a surrogate in the 
+perturbation and regression approaches respectively. An illustrative comparison of the two
+surrogates is also provided (right).}
+\label{fig:hd}
+\end{center}
+\end{figure}
+%
+
+\subsection{Surrogate Assessment}
+\label{sub:verify}
+
+The 1-dimensional surrogate ($\hat{G}$) shown in Figure~\ref{fig:hd} for the perturbation
+and regression approaches is investigated for its ability to capture the uncertainty in the
+ignition delay. Specifically, we compare probability density functions (PDFs)
+obtained using the true set of model evaluations, and 1-dimensional
+surrogates ($\hat{G}$'s) based on the two approaches, as shown in 
+Figure~\ref{fig:pdf_36D}. Note that the three PDFs were evaluated using the same set of 10$^4$ samples in the 
+cross-validation set. 
+%
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=3.0in]{./Figures/pdf_plot36Dp2}
+\end{center} 
+\caption{A comparison of the PDFs of ignition delay, obtained using model 
+evaluations (solid line) and 1-dimensional surrogates using the regression-based strategy (dashed line) and the
+perturbation-based strategy (dashed-dotted line). The same set of 10$^4$ samples in the cross-validation set were 
+used in each case.}
+\label{fig:pdf_36D}
+\end{figure}
+%
+The PDFs are observed to be in close agreement with each other. Specifically, the modal
+estimate and the uncertainty (quantified by the spread in the distributions) is found to be consistent for the three 
+cases. To confirm this, we further compute the first-order (mean) and the second-order (standard deviation) 
+statistics
+of the estimates of the ignition delay obtained using the model, 1-dimensional surrogate from perturbation, and
+1-dimensional surrogate from regression at the cross-validation sample set. The mean and standard deviation
+estimates are provided in Table~\ref{tab:stats}.
+%
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$\textbf{Distribution}$ & $\mu$ & $\sigma$ \\ 
+\bottomrule
+$G$~(Model) & \rebut{0.15} & \rebut{0.14} \\
+$\hat{G}$~(Perturbation-based) & \rebut{0.15} & \rebut{0.13} \\
+$\hat{G}$~(Regression-based) & \rebut{0.15} & \rebut{0.13} \\
+\bottomrule
+\end{tabular}
+\caption{The mean ($\mu$), and the standard deviation ($\sigma$), computed using the model ($G$), and
+the surrogate ($\hat{G}$) based on the two strategies at 10$^4$ samples in the cross-validation
+set.}
+\label{tab:stats}
+\end{center}
+\end{table}
+%
+The mean and the standard deviation estimates obtained using the model and the 1-dimensional surrogates
+are found to be in close agreement. Hence, the uncertainty in the ignition delay is accurately captured 
+in both cases.
+
+\subsection{GSA consistency check}
+
+The normalized activity scores ($\tilde{\nu}_{i,r}$) based on the 1-dimensional active subspace, obtained
+using the two approaches for gradient estimation (perturbation and regression),
+are compared with the 
+total-effect Sobol' indices
+in Figure~\ref{fig:as_36D}. Note that the Sobol' indices were computed using the verified
+1-dimensional surrogate ($\hat{G}$) in the active subspace, obtained using the 
+perturbation approach. 
+%
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=0.8\textwidth]{./Figures/as_36Dp2_rev2}
+\caption{Bar graphs illustrating individual activity scores for the uncertain 
+rate parameters and the initial conditions for the H$_2$/O$_2$ reaction.}
+\label{fig:as_36D}
+\end{center}
+\end{figure}
+%
+Several useful inferences can be drawn. Firstly, the normalized activity scores from the two approaches
+and the total-effect Sobol' indices are found to be in close agreement with each other. Secondly, as expected, 
+$\tilde{\nu}_{i,r}$ based on perturbation exhibits a better agreement with the total-effect Sobol' indices since
+the 1-dimensional
+surrogate based on the same approach was used to evaluate the Sobol' indices. This observation demonstrates
+that the proposed framework is self-consistent. Thirdly, the variability in the ignition delay is predominantly due
+to the uncertainty in $A_1$, $A_9$, and $T_0$ while contributions from the uncertainty in $A_{15}$, $A_{17}$, and
+$E_{a,15}$, and $T_0$ are also found to be significant. The remaining rate parameters, initial pressure ($P_0$),
+and  stoichiometry ($\Phi_0$) do not seem to impact the ignition delay in their considered intervals. 
+Therefore, GSA has helped
+identify the important rate parameters i.e. key contributors to the uncertainty, and also demonstrated that among the 
+considered uncertain initial conditions, the ignition delay is mainly impacted by the perturbations in the initial 
+temperature in the considered interval.

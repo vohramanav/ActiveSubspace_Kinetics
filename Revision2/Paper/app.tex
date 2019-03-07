@@ -22,8 +22,8 @@ $\Phi_0$ were considered to be 1.0~atm, 900~K, and 2.0 respectively.
 
 The active subspace was computed using the iterative procedure outlined in 
 Algorithm~\ref{alg:grad}. The convergence of the eigenvectors was examined
-by tracking the quantity `$\rebut{\max\limits_j}(\delta \hat{\mat{W}}_{1,j}^{(i)})$'. 
-In Figure~\ref{fig:conv_app}~(right), we examine $\rebut{\max\limits_j}(\delta \hat{\mat{W}}_{1,j}^{(i)})$
+by tracking the quantity `$\max\limits_j(\delta \hat{\mat{W}}_{1,j}^{(i)})$'. 
+In Figure~\ref{fig:conv_app}~(right), we examine $\max\limits_j(\delta \hat{\mat{W}}_{1,j}^{(i)})$
 with increasing iterations for the perturbation and the regression approaches 
 discussed earlier in Section~\ref{sec:method}. 
 %
@@ -36,7 +36,7 @@ of 4 iterations in the perturbation approach and 9 iterations in the
 regression approach. Right: A comparison of the convergence behavior
 of the perturbation and the
 regression approaches. Convergence is accomplished once 
-$\rebut{\max\limits_j}(\delta \hat{\mat{W}}_{1,j}^{(i)})$ assumes a value smaller
+$\max\limits_j(\delta \hat{\mat{W}}_{1,j}^{(i)})$ assumes a value smaller
 than 0.05.}
 \label{fig:conv_app}
 \end{center}
@@ -114,9 +114,9 @@ estimates are provided in Table~\ref{tab:stats}.
 \toprule
 $\textbf{Distribution}$ & $\mu$ & $\sigma$ \\ 
 \bottomrule
-$G$~(Model) & \rebut{0.15} & \rebut{0.14} \\
-$\hat{G}$~(Perturbation-based) & \rebut{0.15} & \rebut{0.13} \\
-$\hat{G}$~(Regression-based) & \rebut{0.15} & \rebut{0.13} \\
+$G$~(Model) & 0.15 & 0.14 \\
+$\hat{G}$~(Perturbation-based) & 0.15 & 0.13 \\
+$\hat{G}$~(Regression-based) & 0.15 & 0.13 \\
 \bottomrule
 \end{tabular}
 \caption{The mean ($\mu$), and the standard deviation ($\sigma$), computed using the model ($G$), and
@@ -163,13 +163,13 @@ identify the important rate parameters i.e. key contributors to the uncertainty,
 considered uncertain initial conditions, the ignition delay is mainly impacted by the perturbations in the initial 
 temperature in the considered interval.
 
-\rebut{As shown in the PDF plotted in Figure~\ref{fig:pdf_36D}, the ignition delay assumes a wide range of values, i.e.
+As shown in the PDF plotted in Figure~\ref{fig:pdf_36D}, the ignition delay assumes a wide range of values, i.e.
 from about 2~ms to 400~ms. However, for many practical applications, a much smaller ignition delay (0.1~ms--1~ms) might
 be of interest. The authors would like to point out that the proposed framework was also implemented to such a regime
 by using a nominal value of the initial temperature, $T_0$ = 1000~K, and the initial pressure, $P_0$ = 1.5~atm. 
 Our analysis for this
-regime once again revealed that a 1-dimensional active subspace was able to capture the variability in the ingition delay due to
+regime once again revealed that a 1-dimensional active subspace was able to capture the variability in the ignition delay due to
 the uncertainty in the rate-controlling parameters and the input conditions. The sensitivity trends were also found to
 be qualitatively similar to those presented in Figure~\ref{fig:as_36D}. We have not included these results in the interest
 of brevity. Therefore, the proposed methodology was tested
-for is robustness and applicability for a wide range of conditions pertaining to the considered application.}  
+for is robustness and applicability for a wide range of conditions pertaining to the considered application. 

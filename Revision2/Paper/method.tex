@@ -147,7 +147,7 @@ $\hat{\mat{C}}$ was initially constructed using a large set of samples
 finite difference, and hence, a total of 20,000 model runs were performed. 
 In Figure~\ref{fig:eig_comp}, we illustrate the comparison of
 the resulting normalized eigenvalue spectrum by plotting 
-\rebut{$(\lambda_i/\lambda_0)$}
+$(\lambda_i/\lambda_0)$
 ($i = 1,\ldots,19$) corresponding to $N$~=~1000 and the same quantity corresponding to
 a much smaller set of samples, $n$~=~$\{20,40,80,120\}$.
 %
@@ -156,7 +156,7 @@ a much smaller set of samples, $n$~=~$\{20,40,80,120\}$.
   \includegraphics[width=0.45\textwidth]{./Figures/eig_comp_p3}
 %   \includegraphics[width=0.48\textwidth]{./Figures/err_eigv_1}
 \caption{A comparison of the normalized eigenvalue spectrum, 
-\rebut{($\lambda_i/\lambda_0)$}
+($\lambda_i/\lambda_0)$
 using $n$~=~$\{20,40,80,120\}$ samples with that
 obtained using a much larger sample size, $N$~=~1000. 
 %Right: Relative $L_2$ 
@@ -311,12 +311,12 @@ discussed earlier.
 %\end{breakablealgorithm}
 %\bigskip
 %
-The quantity, $\rebut{\max\limits_j}(\delta \hat{\mat{W}}_{1,j}^{(r)})$ defined in Algorithm~\ref{alg:grad} was
+The quantity, $\max\limits_j(\delta \hat{\mat{W}}_{1,j}^{(r)})$ defined in Algorithm~\ref{alg:grad} was
 used to assess the convergence behavior of the two approaches. Using a set tolerance, $\tau$~=~0.05,
 it was observed that both perturbation and regression approaches took 8 iterations to converge. 
 Note that the computational effort at each iteration was considered to be the same in both cases.
 More specifically, 5 new random samples were added for the perturbation approach at each iteration.
-However, as discussed earlier, \rebut{a} total of 100 (=5$\times$(19+1)) model runs were needed to obtain the
+However, as discussed earlier, a total of 100 (=5$\times$(19+1)) model runs were needed to obtain the
 model prediction and its gradients at these newly generated samples. Hence, in the case of
 regression, 100 new random samples were generated at each iteration since gradient computation does
 not require additional model runs in this case. Thus, including the initial step, a total of 900
@@ -351,7 +351,7 @@ Figure~\ref{fig:comp}~(left).
 %\begin{figure}[htbp]
 % \begin{center}
 %  \includegraphics[width=0.8\textwidth]{./Figures/eig_convD19}
-%\caption{\rebut{Left: An illustrative comparison of individual squared components of the converged dominant
+%\caption{Left: An illustrative comparison of individual squared components of the converged dominant
 %eigenvector obtained using perturbation and regression strategies using $M$~=~900 model runs in each case. 
 %Additionally, the dominant eigenvector components obtained using $M$~=~20000 model runs (corresponding to 
 %$N$~=~1000 samples)
